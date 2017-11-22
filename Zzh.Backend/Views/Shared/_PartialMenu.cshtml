@@ -1,0 +1,25 @@
+﻿<div class="easyui-accordion" data-options="border:false">
+    <div title="Tabs操作" style="overflow:auto;padding:5px;">
+        <ul style="list-style-type:none">
+            <li onclick="OpenTabs('基础选项卡','Menu/Index')">
+                <div>
+                    <a href="javascript:void (0);">基础选项卡</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<script>
+    function OpenTabs(title, url) {
+        if ($("#tab_Content").tabs("exists", title)) {
+            $("#tab_Content").tabs("select", title);
+        } else {
+            $("#tab_Content").tabs("add", {
+                title: title,
+                closable: true,
+                href: url,
+                pandding:0
+            });
+        }
+    }
+</script>

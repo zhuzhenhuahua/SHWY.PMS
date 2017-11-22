@@ -6,8 +6,9 @@ using System.Web.Mvc;
 
 namespace Zzh.Backend.Controllers
 {
-    public class HomeController : Controller
+    public class MenuController : Controller
     {
+        // GET: Menu
         public ActionResult Index()
         {
             return View();
