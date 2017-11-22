@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zzh.Model", "Zzh.Model\Zzh.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "test\test.csproj", "{C197AB76-1C58-4521-89EF-94786112403D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zzh.Backend", "Zzh.Backend\Zzh.Backend.csproj", "{D70585DF-8DE2-4E8C-8717-2EE8C97E886C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{C197AB76-1C58-4521-89EF-94786112403D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C197AB76-1C58-4521-89EF-94786112403D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C197AB76-1C58-4521-89EF-94786112403D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D70585DF-8DE2-4E8C-8717-2EE8C97E886C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D70585DF-8DE2-4E8C-8717-2EE8C97E886C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D70585DF-8DE2-4E8C-8717-2EE8C97E886C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D70585DF-8DE2-4E8C-8717-2EE8C97E886C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
