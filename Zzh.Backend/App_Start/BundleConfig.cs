@@ -26,6 +26,12 @@ namespace Zzh.Backend
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/Content/EasyUiCss").Include(
+"~/Content/jquery-easyui-1.5.3/themes/default/easyui.css",
+"~/Content/jquery-easyui-1.5.3/themes/icon.css"));
+            bundles.Add(new ScriptBundle("~/bundles/jqueryEasyUi").Include(
+                "~/Content/jquery-easyui-1.5.3/jquery.easyui.min.js"));
         }
     }
 }
