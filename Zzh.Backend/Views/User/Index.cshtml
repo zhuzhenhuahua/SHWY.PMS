@@ -13,7 +13,7 @@
         $("#tt").datagrid({
             url: '/User/GetList',
             columns: [[
-                { field: 'id', title: 'id' },
+                { field: 'Uid', title: 'Uid' },
                 { field: 'Name', title: 'Name' },
                 { field: 'LoginName', title: 'LoginName' },
                 { field: 'RoleId', title: 'RoleId' }
@@ -27,7 +27,7 @@
                 iconCls: 'icon-add',
                 text: '新增',
                 handler: function () {
-                    showDialog("用户管理", 500, 400, "/User/EditUser", saveUser);
+                    showDialog("用户管理", 500, 400, "/User/EditUser?uid=0", saveUser);
                 }
             }, '-', {
                 iconCls: 'icon-edit',
@@ -42,12 +42,28 @@
             rownumbers: true,
             fit: true,
             queryParams: {
-                username: $("#txt_name").val()
+                username: ""
             }
         });
     }
+    function GridReload() {
+        $("#tt").datagrid("reload");
+    }
     function saveUser() {
         var check = $("#formsubmit").form('enableValidation').form('validate');
-        alert(check);
+        if (check) {
+            var postData = $("#formUserEidt").serialize();
+            $.post("/User/SaveUser", postData, function (result) {
+                if (result.isOk) {
+                    $('#PopWindow').dialog('close');
+                    $("#PopWindow").remove();
+                    GridReload();
+                }
+                else {
+                    alert(result.errmsg);
+                }
+
+            });
+        }
     }
 </script>

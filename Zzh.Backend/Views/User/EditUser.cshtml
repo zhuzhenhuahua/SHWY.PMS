@@ -3,7 +3,7 @@
     ViewBag.Title = "EditUser";
     Layout = "~/Views/Shared/_BaseContent.cshtml";
 }
-<form id="formsubmit">
+<form id="formUserEidt">
     <table>
         <tr>
             <td>Name:</td>
@@ -22,5 +22,6 @@
             <td>@Html.TextBoxFor(p => p.RoleId, new { @class = "easyui-textbox", data_options = "required:true" })</td>
         </tr>
     </table>
+    <input type="hidden" name="Uid" value="@Model.Uid" />
 </form>
 

@@ -11,24 +11,28 @@ namespace Zzh.Backend.Controllers
 {
     public class UserController : Controller
     {
+        Sys_UserRepository repo = new Sys_UserRepository();
         // GET: User
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             return View();
         }
 
         public async Task<JsonResult> GetList(int page, int rows, string username)
         {
-            using (Sys_UserRepository repo = new Sys_UserRepository())
-            {
-                var result = await repo.GetList(page, rows, username);
-                return Json(new { total = result.Item1, rows = result.Item2 });
-            }
+            var result = await repo.GetList(page, rows, username);
+            return Json(new { total = result.Item1, rows = result.Item2 });
         }
-        public ActionResult EditUser()
+        public async Task<ActionResult> EditUser(int uid)
         {
-            Sys_User user = new Sys_User();
+            Sys_User user = await repo.GetUser(uid);
             return View(user);
+
+        }
+        public async Task<JsonResult> SaveUser(Sys_User user)
+        {
+            var result = await repo.AddOrUpdate(user);
+            return Json(new { isOk = result, errmsg = "保存失败" });
         }
     }
 }
