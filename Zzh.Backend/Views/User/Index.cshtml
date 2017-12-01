@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "用户管理";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+
+<table id="tt"></table>
+<script>
+    $(function () {
+        Query();
+    });
+    function Query() {
+        $("#tt").datagrid({
+            url: '/User/GetList',
+            columns: [[
+                { field: 'id', title: 'id' },
+                { field: 'Name', title: 'Name' },
+                { field: 'LoginName', title: 'LoginName' },
+                { field: 'RoleId', title: 'RoleId' }
+            ]],
+            fitColumns: true,//	设置为 true，则会自动扩大或缩小列的尺寸以适应网格的宽度并且防止水平滚动。
+            resizeHandle: 'right',//调整列的位置，可用的值有：'left'、'right'、'both'。当设置为 'right' 时，用户可通过拖拽列头部的右边缘来调整列。该属性自版本 1.3.2 起可用。
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            toolbar: [{
+                iconCls: 'icon-add',
+                text: '新增',
+                handler: function () {
+                    showDialog("用户管理", 500, 400, "/User/EditUser", saveUser);
+                }
+            }, '-', {
+                iconCls: 'icon-edit',
+                text: '修改',
+                handler: function () {
+                    // showDialog();
+                }
+            }],
+            pagination: true,
+            pageSize: 20,
+            idField: 'id',
+            rownumbers: true,
+            fit: true,
+            queryParams: {
+                username: $("#txt_name").val()
+            }
+        });
+    }
+    function saveUser() {
+        var check = $("#formsubmit").form('enableValidation').form('validate');
+        alert(check);
+    }
+</script>

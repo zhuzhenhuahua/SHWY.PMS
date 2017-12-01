@@ -11,7 +11,7 @@ namespace Zzh.Lib.DB.Repositorys
     public class EntAppAsnHeadRepository : BaseRepository
     {
 
-        public EntAppAsnHeadRepository() : base("name=Default2Connection")
+        public EntAppAsnHeadRepository() : base("name=LocalConnection")
         {
 
         }

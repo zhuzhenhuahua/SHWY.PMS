@@ -1,0 +1,26 @@
+﻿@model Zzh.Model.DB.Sys_User
+@{
+    ViewBag.Title = "EditUser";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+<form id="formsubmit">
+    <table>
+        <tr>
+            <td>Name:</td>
+            <td>@Html.TextBoxFor(p => p.Name, new { @class = "easyui-textbox", data_options = "required:true" })</td>
+        </tr>
+        <tr>
+            <td>LoginName:</td>
+            <td>@Html.TextBoxFor(p => p.LoginName, new { @class = "easyui-textbox", data_options = "required:true" })</td>
+        </tr>
+        <tr>
+            <td>PWD:</td>
+            <td>@Html.TextBoxFor(p => p.PassWord, new { @class = "easyui-textbox", data_options = "required:true" })</td>
+        </tr>
+        <tr>
+            <td>Role:</td>
+            <td>@Html.TextBoxFor(p => p.RoleId, new { @class = "easyui-textbox", data_options = "required:true" })</td>
+        </tr>
+    </table>
+</form>
+
