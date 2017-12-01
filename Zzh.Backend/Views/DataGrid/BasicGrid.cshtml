@@ -1,6 +1,6 @@
 ﻿
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
 }
 
 <!DOCTYPE html>
@@ -9,10 +9,52 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>BasicGrid</title>
+    <script type="text/javascript">
+        $(function () {
+            InitGrid();
+        })
+        function InitGrid() {
+            $("#dg").datagrid({
+                url: '/DataGrid/GetList',
+                columns: [[
+                    { field: 'id', title: 'id' },
+                    { field: 'Asn_No', title: 'Asn_No' },
+                    { field: 'Customer_No', title: 'Customer_No' },
+                    { field: 'Bill_No_All', title: 'Bill_No_All' },
+                    { field: 'Bill_No_Split', title: 'Bill_No_Split' },
+                    { field: 'Fob_Type', title: 'Fob_Type' }
+                ]],
+                fitColumns: true,//	设置为 true，则会自动扩大或缩小列的尺寸以适应网格的宽度并且防止水平滚动。
+                resizeHandle: 'right',//调整列的位置，可用的值有：'left'、'right'、'both'。当设置为 'right' 时，用户可通过拖拽列头部的右边缘来调整列。该属性自版本 1.3.2 起可用。
+                autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+                striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+                nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+                toolbar: "#tb",
+                pagination: true,
+                pageSize: 20,
+                idField: 'id',
+                rownumbers: true,
+                fit:true,
+                queryParams: {
+                    asn_no: $("#txt_asn_no").val()
+                }
+            });
+        }
+        //重新加载行，就像 load 方法一样，但是保持在当前页。适合在修改后调用此方法
+        function refresh() {
+            $("#dg").datagrid('reload', {
+                asn_no: $("#txt_asn_no").val()
+            });
+        }
+    </script>
 </head>
-<body>
-    <div> 
-        dfdfd
+<body style="background-color:red; height:600px;">
+    <table id="dg"></table>
+    <div id="tb">
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">修改</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-help',plain:true">帮助</a>
+        <input type="text" id="txt_asn_no" />
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true" onclick="refresh()">重新加载</a>
     </div>
 </body>
 </html>
