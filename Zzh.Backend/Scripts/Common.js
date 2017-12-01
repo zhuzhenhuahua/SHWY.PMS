@@ -1,4 +1,4 @@
-﻿function showDialog(title, width, height, url, btnSaveFun) {
+﻿function ShowDialog(title, width, height, url, btnSaveFun) {
     var div = $("#PopWindow");
     if (div.length <= 0) {
         div = "<div id=\"PopWindow\" style=\"margin: 0; padding-top: 5px; border: 0\"></div>";
@@ -25,4 +25,12 @@
             $("#PopWindow").remove();
         }
     }).dialog("open");
+}
+function AlertMsg(msg) {
+    $.messager.show({
+        title: '提示',
+        msg: msg,
+        showType: 'slide',
+        timeout: 5000
+    });
 }

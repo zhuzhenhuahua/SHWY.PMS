@@ -64,9 +64,9 @@ namespace Zzh.Lib.DB.Repositorys
                     context.Sys_Users.Add(sysUser);
                 return await context.SaveChangesAsync() == 1;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                return false;
             }
         }
     }

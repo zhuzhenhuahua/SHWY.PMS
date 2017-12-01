@@ -23,17 +23,23 @@
             autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
             striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
             nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            singleSelect: true,
             toolbar: [{
                 iconCls: 'icon-add',
                 text: '新增',
                 handler: function () {
-                    showDialog("用户管理", 500, 400, "/User/EditUser?uid=0", saveUser);
+                    EditUser(0);
                 }
             }, '-', {
                 iconCls: 'icon-edit',
                 text: '修改',
                 handler: function () {
-                    // showDialog();
+                    var row = $("#tt").datagrid("getSelected");
+                    if (row == null) {
+                        AlertMsg("请选择一行数据后再操作");
+                        return;
+                    }
+                    EditUser(row.Uid);
                 }
             }],
             pagination: true,
@@ -46,8 +52,16 @@
             }
         });
     }
-    function GridReload() {
-        $("#tt").datagrid("reload");
+    function GridReload(loaded) {
+        $("#tt").datagrid(loaded);
+    }
+    var isAdd = false;
+    function EditUser(uid) {
+        if (uid == 0)
+            isAdd = true;
+        else
+            isAdd = false;
+        ShowDialog("用户管理", 500, 400, "/User/EditUser?uid=" + uid, saveUser);
     }
     function saveUser() {
         var check = $("#formsubmit").form('enableValidation').form('validate');
@@ -57,7 +71,7 @@
                 if (result.isOk) {
                     $('#PopWindow').dialog('close');
                     $("#PopWindow").remove();
-                    GridReload();
+                    GridReload(isAdd ? "load" : "reload");
                 }
                 else {
                     alert(result.errmsg);
