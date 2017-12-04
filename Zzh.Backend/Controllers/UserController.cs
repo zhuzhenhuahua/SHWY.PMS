@@ -32,7 +32,12 @@ namespace Zzh.Backend.Controllers
         public async Task<JsonResult> SaveUser(Sys_User user)
         {
             var result = await repo.AddOrUpdate(user);
-            return Json(new { isOk = result, errmsg = "保存失败" });
+            return Json(new { isOk = result});
+        }
+        public async Task<JsonResult> DelUser(int uid)
+        {
+            var result = await repo.DeleteUser(uid);
+            return Json(new { isOk = result });
         }
     }
 }

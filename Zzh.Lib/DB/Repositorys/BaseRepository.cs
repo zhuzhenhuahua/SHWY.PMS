@@ -50,5 +50,9 @@ namespace Zzh.Lib.DB.Repositorys
             GC.SuppressFinalize(this);
         }
         #endregion
+
+        #region 公共虚方法
+        
+        #endregion
     }
 }

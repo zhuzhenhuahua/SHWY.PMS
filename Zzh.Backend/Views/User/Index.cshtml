@@ -41,6 +41,17 @@
                     }
                     EditUser(row.Uid);
                 }
+            }, '-', {
+                iconCls: 'icon-clear',
+                text: '删除',
+                handler: function () {
+                    var row = $("#tt").datagrid("getSelected");
+                    if (row == null) {
+                        AlertMsg("请选择一行数据后再操作");
+                        return;
+                    }
+                    DelUser(row.Uid);
+                }
             }],
             pagination: true,
             pageSize: 20,
@@ -63,8 +74,23 @@
             isAdd = false;
         ShowDialog("用户管理", 500, 400, "/User/EditUser?uid=" + uid, saveUser);
     }
+    function DelUser(uid) {
+        $.messager.confirm('提示', "确定要删除吗？", function (r) {
+            if (r) {
+                $.post("/User/DelUser", { uid: uid }, function (result) {
+                    if (result.isOk) {
+                        AlertMsg("删除成功");
+                        GridReload("reload");
+                    }
+                    else {
+                        AlertMsg('删除失败');
+                    }
+                });
+            }
+        });
+    }
     function saveUser() {
-        var check = $("#formsubmit").form('enableValidation').form('validate');
+        var check = $("#formUserEidt").form('enableValidation').form('validate');
         if (check) {
             var postData = $("#formUserEidt").serialize();
             $.post("/User/SaveUser", postData, function (result) {
@@ -74,7 +100,7 @@
                     GridReload(isAdd ? "load" : "reload");
                 }
                 else {
-                    alert(result.errmsg);
+                    alert('保存失败');
                 }
 
             });

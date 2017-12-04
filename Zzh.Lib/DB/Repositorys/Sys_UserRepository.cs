@@ -69,5 +69,16 @@ namespace Zzh.Lib.DB.Repositorys
                 return false;
             }
         }
+
+        public async Task<bool> DeleteUser(int uid)
+        {
+            var user = await context.Sys_Users.Where(p => p.Uid == uid).FirstOrDefaultAsync();
+            if (user != null)
+            {
+                context.Sys_Users.Remove(user);
+                return await context.SaveChangesAsync() == 1;
+            }
+            return false;
+        }
     }
 }
