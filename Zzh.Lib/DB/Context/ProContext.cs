@@ -36,5 +36,6 @@ namespace Zzh.Lib.DB.Context
         }
         public DbSet<EntAppAsnHead> EntAppAsnHeads { get; set; }
         public DbSet<Sys_User> Sys_Users { get; set; }
+        public DbSet<Sys_Role> Sys_Roles { get; set; }
     }
 }

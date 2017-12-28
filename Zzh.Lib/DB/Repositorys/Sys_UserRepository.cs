@@ -10,7 +10,7 @@ namespace Zzh.Lib.DB.Repositorys
 {
     public class Sys_UserRepository : BaseRepository
     {
-        public async Task<Tuple<int, List<Sys_User>>> GetList(int pageIndex, int pageSize, string userName)
+        public async Task<Tuple<int, List<Sys_User>>> GetListAsync(int pageIndex, int pageSize, string userName)
         {
             int from = (pageIndex - 1) * pageSize;
             int total = await (from j in context.Sys_Users
@@ -23,7 +23,7 @@ namespace Zzh.Lib.DB.Repositorys
             return Tuple.Create(total, list);
         }
 
-        public async Task<Sys_User> GetUser(int uid)
+        public async Task<Sys_User> GetUserAsync(int uid)
         {
             try
             {
@@ -39,11 +39,11 @@ namespace Zzh.Lib.DB.Repositorys
                 throw ex;
             }
         }
-        public async Task<bool> AddOrUpdate(Sys_User user)
+        public async Task<bool> AddOrUpdateAsync(Sys_User user)
         {
             try
             {
-                var sysUser = await GetUser(user.Uid);
+                var sysUser = await GetUserAsync(user.Uid);
                 bool isNew = false;
 
                 if (sysUser.Uid.Equals(0))

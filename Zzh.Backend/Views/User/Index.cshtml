@@ -13,13 +13,11 @@
         $("#tt").datagrid({
             url: '/User/GetList',
             columns: [[
-                { field: 'Uid', title: 'Uid' },
-                { field: 'Name', title: 'Name' },
-                { field: 'LoginName', title: 'LoginName' },
-                { field: 'RoleId', title: 'RoleId' }
+                { field: 'Uid', title: 'ID' },
+                { field: 'Name', title: '姓名' },
+                { field: 'LoginName', title: '登录名' },
+                { field: 'RoleId', title: '所属角色' }
             ]],
-            fitColumns: true,//	设置为 true，则会自动扩大或缩小列的尺寸以适应网格的宽度并且防止水平滚动。
-            resizeHandle: 'right',//调整列的位置，可用的值有：'left'、'right'、'both'。当设置为 'right' 时，用户可通过拖拽列头部的右边缘来调整列。该属性自版本 1.3.2 起可用。
             autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
             striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
             nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
@@ -55,7 +53,7 @@
             }],
             pagination: true,
             pageSize: 20,
-            idField: 'id',
+            idField: 'Uid',
             rownumbers: true,
             fit: true,
             queryParams: {

@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DB\EntAppAsnHead.cs" />
+    <Compile Include="DB\Sys_Role.cs" />
     <Compile Include="DB\Sys_User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

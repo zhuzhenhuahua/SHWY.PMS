@@ -20,18 +20,18 @@ namespace Zzh.Backend.Controllers
 
         public async Task<JsonResult> GetList(int page, int rows, string username)
         {
-            var result = await repo.GetList(page, rows, username);
+            var result = await repo.GetListAsync(page, rows, username);
             return Json(new { total = result.Item1, rows = result.Item2 });
         }
         public async Task<ActionResult> EditUser(int uid)
         {
-            Sys_User user = await repo.GetUser(uid);
+            Sys_User user = await repo.GetUserAsync(uid);
             return View(user);
 
         }
         public async Task<JsonResult> SaveUser(Sys_User user)
         {
-            var result = await repo.AddOrUpdate(user);
+            var result = await repo.AddOrUpdateAsync(user);
             return Json(new { isOk = result});
         }
         public async Task<JsonResult> DelUser(int uid)

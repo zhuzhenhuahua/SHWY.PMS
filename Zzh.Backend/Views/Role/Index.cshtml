@@ -1,0 +1,105 @@
+﻿
+@{
+    ViewBag.Title = "角色管理";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+<table id="tt"></table>
+<div id="tb">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditRole(0)">新增</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="GetSelect('edit')">修改</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="GetSelect('del')">删除</a>
+</div>
+<script>
+    $(function () {
+        Query();
+    });
+    function Query() {
+        $("#tt").datagrid({
+            url: '/Role/GetList',
+            columns: [[
+                { field: 'Rid', title: '角色ID', width: 70 },
+                { field: 'RName', title: '角色名称', width: 120 },
+                { field: 'ww', title: '权限配置', width: 70, formatter: QXFormatter,align:'center' },
+                //,
+            ]],
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            singleSelect: true,
+            toolbar: '#tb',
+            pagination: true,
+            pageSize: 20,
+            idField: 'Rid',
+            rownumbers: true,
+            fit: true,
+            queryParams: {
+                roleName: ""
+            }
+        });
+    }
+    function GridReload(loaded) {
+        $("#tt").datagrid(loaded);
+    }
+    function GetSelect(type) {
+        var selectRow = $("#tt").datagrid("getSelected");
+        if (selectRow == null) {
+            AlertMsg("请选择一行数据后再操作");
+            return;
+        }
+        if (type == "edit")
+            EditRole(selectRow.Rid);
+        else if (type == "del")
+            DelRole(selectRow.Rid);
+    }
+    var isAdd = false;
+    function EditRole(Rid) {
+        if (Rid == 0)
+            isAdd = true;
+        else
+            isAdd = false;
+        ShowDialog("角色管理", 500, 400, "/Role/EditRole?rid=" + Rid, saveRole);
+    }
+    function DelRole(rid) {
+        $.messager.confirm('提示', "确定要删除吗？", function (r) {
+            if (r) {
+                $.post("/Role/DelRole", { rid: rid }, function (result) {
+                    if (result.isOk) {
+                        AlertMsg("删除成功");
+                        GridReload("reload");
+                        $("#tt").datagrid("clearSelections");//因为reload/load后不会清除选择项
+
+                    }
+                    else {
+                        AlertMsg('删除失败');
+                    }
+                });
+            }
+        });
+    }
+    function saveRole() {
+        var check = $("#formRoleEidt").form('enableValidation').form('validate');
+        if (check) {
+            var postData = $("#formRoleEidt").serialize();
+            $.post("/Role/SaveRole", postData, function (result) {
+                if (result.isOk) {
+                    $('#PopWindow').dialog('close');
+                    $("#PopWindow").remove();
+                    GridReload(isAdd ? "load" : "reload");
+                }
+                else {
+                    alert('保存失败');
+                }
+
+            });
+        }
+    }
+    function QXFormatter(value, row, index) {
+        return '<a href="javascript:void(0)" onclick="ShowSetQX(' + row.Rid + ')">权限</a>';
+    }
+    function ShowSetQX(rid) {
+        ShowDialog("权限配置", 500, 400, "/Menu/ShowTreeMenu", SaveRoleMenu);
+    }
+    function SaveRoleMenu(){
+        AlertMsg('1');
+    }
+</script>

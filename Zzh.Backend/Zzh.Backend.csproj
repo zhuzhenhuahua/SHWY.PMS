@@ -159,6 +159,7 @@
     <Compile Include="Controllers\DataGridController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -960,6 +961,8 @@
     <Content Include="Views\Shared\_BaseContent.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\EditUser.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\Role\EditRole.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

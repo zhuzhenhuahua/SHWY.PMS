@@ -1,12 +1,12 @@
 ﻿<div class="easyui-accordion" data-options="fit:true,border:false" style="width:100%">
     <div title="系统管理" style="overflow:auto;padding:5px;">
         <ul style="list-style-type:none">
-            <li onclick="OpenTabs('用户管理', 'User/Index')">
+            <li onclick="OpenTabs(11,'用户管理', 'User/Index')">
                 <div>
                     <a href="javascript:void (0);">用户管理</a>
                 </div>
             </li>
-            <li onclick="OpenTabs('角色管理', 'Role/Index')">
+            <li onclick="OpenTabs(12,'角色管理', 'Role/Index')">
                 <div>
                     <a href="javascript:void (0);">角色管理</a>
                 </div>
@@ -15,7 +15,7 @@
     </div>
     <div title="Tabs操作" style="overflow:auto;padding:5px;">
         <ul style="list-style-type:none">
-            <li onclick="OpenTabs('基础选项卡','Menu/Index')">
+            <li onclick="OpenTabs(21,'基础选项卡','Menu/Index')">
                 <div>
                     <a href="javascript:void (0);">基础选项卡</a>
                 </div>
@@ -24,7 +24,7 @@
     </div>
     <div title="数据表格DataGrid" style="overflow:auto;padding:5px;">
         <ul style="list-style-type:none">
-            <li onclick="OpenTabs('基础数据表格','DataGrid/BasicGrid')">
+            <li onclick="OpenTabs(31,'基础数据表格','DataGrid/BasicGrid')">
                 <div>
                     <a href="javascript:void (0);">基础数据表格</a>
                 </div>
@@ -33,15 +33,45 @@
     </div>
 </div>
 <script>
-    function OpenTabs(title, url) {
-        if ($("#tab_Content").tabs("exists", title)) {
-            $("#tab_Content").tabs("select", title);
+    $.extend($.fn.tabs.methods, {
+        getTabById: function (jq, id) {
+            var tabs = $.data(jq[0], 'tabs').tabs;
+            for (var i = 0; i < tabs.length; i++) {
+                var tab = tabs[i];
+                if (tab.panel('options').id == id) {
+                    return tab;
+                }
+            }
+            return null;
+        },
+        selectById: function (jq, id) {
+            var tab;
+            var tabs = $.data(jq[0], 'tabs').tabs;
+            for (var i = 0; i < tabs.length; i++) {
+                tab = tabs[i];
+                if (tab.panel('options').id == id) {
+                    break;
+                }
+            }
+            if (tab != undefined) {
+                var curTabIndex = $("#tab_Content").tabs("getTabIndex", tab);
+                $('#tab_Content').tabs('select', curTabIndex);
+            }
+        },
+        existsById: function (jq, id) {
+            return jq.tabs('getTabById', id) != null;
+        }
+    });
+    function OpenTabs(menuID, title, url) {
+        if ($("#tab_Content").tabs("existsById", menuID)) {
+            $("#tab_Content").tabs("selectById", menuID);
         } else {
+            var content = '<iframe scrolling="auto" frameborder="0"  src="' + url + '" style="width:100%;height:100%;"></iframe>';
             $("#tab_Content").tabs("add", {
+                id:menuID,
                 title: title,
                 closable: true,
-                href: url,
-                pandding:0
+                content: content
             });
         }
     }

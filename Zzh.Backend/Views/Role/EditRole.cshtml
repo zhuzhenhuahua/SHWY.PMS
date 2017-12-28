@@ -1,0 +1,16 @@
+﻿@model Zzh.Model.DB.Sys_Role
+@{
+    ViewBag.Title = "EditRole";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+<form id="formRoleEidt">
+    <table>
+        <tr>
+            <td>角色名称:</td>
+            <td>@Html.TextBoxFor(p => p.RName, new { @class = "easyui-textbox", data_options = "required:true" })</td>
+        </tr>
+    </table>
+    <input type="hidden" name="Rid" value="@Model.Rid" />
+</form>
+
+
