@@ -62,8 +62,13 @@ namespace Zzh.Lib.DB.Repositorys
             var role = await context.Sys_Roles.Where(p => p.Rid == rid).FirstOrDefaultAsync();
             if (role != null)
             {
+                var roleMenus =await context.Sys_RoleMenus.Where(p => p.RoleId == rid).ToListAsync();
+                foreach (var item in roleMenus)
+                {
+                    context.Sys_RoleMenus.Remove(item);
+                }
                 context.Sys_Roles.Remove(role);
-                return await context.SaveChangesAsync() == 1;
+                return await context.SaveChangesAsync() >0;
             }
             return false;
         }

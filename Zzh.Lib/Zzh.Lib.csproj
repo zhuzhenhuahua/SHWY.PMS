@@ -64,6 +64,8 @@
     <Compile Include="DB\Context\ProContext.cs" />
     <Compile Include="DB\Repositorys\BaseRepository.cs" />
     <Compile Include="DB\Repositorys\EntAppAsnHeadRepository.cs" />
+    <Compile Include="DB\Repositorys\Sys_MenuRepository.cs" />
+    <Compile Include="DB\Repositorys\Sys_RoleMenuRepository.cs" />
     <Compile Include="DB\Repositorys\Sys_RoleRepository.cs" />
     <Compile Include="DB\Repositorys\Sys_UserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

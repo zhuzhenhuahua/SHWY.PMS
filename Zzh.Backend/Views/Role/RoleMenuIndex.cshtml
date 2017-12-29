@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "RoleMenuIndex";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+<ul id="menuTree"></ul>
+<input type="hidden" value=@ViewBag.rid id="txtRid" />
+<script>
+    $(function () {
+        var rid=$("#txtRid").val();
+        $('#menuTree').tree({
+            url: '/Menu/GetMenuListTree?rid=' + rid + '',
+            animate: true,
+            checkbox:true
+        });
+    })
+</script>
+

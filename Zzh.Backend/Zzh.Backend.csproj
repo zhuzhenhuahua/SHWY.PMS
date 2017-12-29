@@ -165,8 +165,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\BaseViewModel.cs" />
-    <Compile Include="Models\EntAppAsnHeadListViewModel.cs" />
-    <Compile Include="Models\EntAppAsnHeadViewModel.cs" />
+    <Compile Include="Models\EasyUiTreeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -963,6 +962,8 @@
     <Content Include="Views\User\EditUser.cshtml" />
     <Content Include="Views\Role\Index.cshtml" />
     <Content Include="Views\Role\EditRole.cshtml" />
+    <Content Include="Views\Menu\EditMenu.cshtml" />
+    <Content Include="Views\Role\RoleMenuIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

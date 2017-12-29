@@ -19,7 +19,7 @@
             columns: [[
                 { field: 'Rid', title: '角色ID', width: 70 },
                 { field: 'RName', title: '角色名称', width: 120 },
-                { field: 'ww', title: '权限配置', width: 70, formatter: QXFormatter,align:'center' },
+                { field: 'ww', title: '权限配置', width: 70, formatter: QXFormatter, align: 'center' },
                 //,
             ]],
             autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
@@ -77,7 +77,7 @@
         });
     }
     function saveRole() {
-        var check = $("#formRoleEidt").form('enableValidation').form('validate');
+        var check = $("#formRoleEidt").form('validate');
         if (check) {
             var postData = $("#formRoleEidt").serialize();
             $.post("/Role/SaveRole", postData, function (result) {
@@ -97,9 +97,31 @@
         return '<a href="javascript:void(0)" onclick="ShowSetQX(' + row.Rid + ')">权限</a>';
     }
     function ShowSetQX(rid) {
-        ShowDialog("权限配置", 500, 400, "/Menu/ShowTreeMenu", SaveRoleMenu);
+        ShowDialog("权限配置", 500, 400, "/Role/RoleMenuIndex?rid=" + rid + "", SaveRoleMenu);
     }
-    function SaveRoleMenu(){
-        AlertMsg('1');
+    function SaveRoleMenu() {
+        var rid = $("#txtRid").val();
+        var node = $("#menuTree").tree('getChecked', 'checked');
+        var checkNode = [];
+        $.each(node, function (index, value) {
+            checkNode.push(value.id);
+        });
+        if (checkNode.length > 0 && rid != 0) {
+            var parm = {
+                roleId: rid,
+                checkedIdList: checkNode
+            };
+            $.post("/Role/SaveRoleMenu", parm, function (res) {
+                if (res.isOK) {
+                    AlertMsg('保存成功');
+                }
+                else {
+                    AlertMsg('保存失败，请重试');
+                }
+            })
+        }
+        $('#PopWindow').dialog('close');
+        $("#PopWindow").remove();
+
     }
 </script>

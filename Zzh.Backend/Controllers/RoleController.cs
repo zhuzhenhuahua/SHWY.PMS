@@ -52,5 +52,24 @@ namespace Zzh.Backend.Controllers
                 return Json(new { isOk = result });
             }
         }
+
+        public ActionResult RoleMenuIndex(int rid)
+        {
+            ViewBag.rid = rid;
+            return View();
+        }
+
+        public async Task<JsonResult> SaveRoleMenu(int roleId, List<int> checkedIdList)
+        {
+            using (Sys_RoleMenuRepository repo = new Sys_RoleMenuRepository())
+            {
+                bool result = false;
+                if (roleId > 0 && checkedIdList.Count > 0)
+                {
+                    result = await repo.SaveRoleMenuAsync(roleId, checkedIdList);
+                }
+                return Json(new { isOK = result });
+            }
+        }
     }
 }
