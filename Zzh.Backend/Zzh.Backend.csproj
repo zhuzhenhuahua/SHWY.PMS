@@ -156,6 +156,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AppAsnController.cs" />
     <Compile Include="Controllers\DataGridController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
@@ -964,6 +965,8 @@
     <Content Include="Views\Role\EditRole.cshtml" />
     <Content Include="Views\Menu\EditMenu.cshtml" />
     <Content Include="Views\Role\RoleMenuIndex.cshtml" />
+    <Content Include="Views\AppAsn\IndexSplitNo.cshtml" />
+    <Content Include="Views\AppAsn\EditAsn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

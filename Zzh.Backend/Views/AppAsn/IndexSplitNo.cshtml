@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "IndexSplitNo";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+<table id="tt"></table>
+<div id="tb">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="Edit()">修改</a>
+    <span>
+        分单号:
+    </span>
+    <input id="txtSplitNo" name="txtSplitNo" type="text" class="easyui-textbox">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="DoSearch('load')">搜索</a>
+</div>
+<script type="text/javascript">
+    $(function () {
+        InitGrid();
+    });
+    function InitGrid() {
+        $("#tt").datagrid({
+            url: '/AppAsn/GetList',
+            columns: [[
+                { field: 'id', title: 'id', width: 50 },
+                { field: 'Asn_No', title: 'Asn_No', width: 130 },
+                { field: 'Bill_No_All', title: '总单号', width: 130 },
+                { field: 'Bill_No_Split', title: '分单号', width: 170 },
+            ]],
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            singleSelect: true,
+            toolbar: '#tb',
+            pagination: true,
+            pageSize: 20,
+            rownumbers: true,
+            fit: true,
+        });
+    }
+    function DoSearch(loaded) {
+        $("#tt").datagrid(loaded, {
+            asnNo: "",
+            bill_No_Split: $('#txtSplitNo').val()
+        });
+    }
+    function Edit() {
+        var selectRow = $("#tt").datagrid("getSelected");
+        if (selectRow == null) {
+            AlertMsg("请选择一行数据后再操作");
+            return;
+        }
+        ShowDialog("修改分单号", 500, 400, "/AppAsn/EditAsn?id="+selectRow.id,SaveAsn);
+    }
+    function SaveAsn() {
+        var check = $("#FormEditAsn").form('validate');
+        if (check)
+        {
+            var postData = $("#FormEditAsn").serialize();
+            $.post("/AppAsn/Edit", postData, function (result) {
+                if (result.isOk) {
+                    $('#PopWindow').dialog('close');
+                    $("#PopWindow").remove();
+                    AlertMsg('保存成功');
+                    DoSearch("reload");
+                }
+                else {
+                    alert('保存失败');
+                }
+
+            });
+        }
+    }
+</script>

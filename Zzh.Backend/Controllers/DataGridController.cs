@@ -20,7 +20,7 @@ namespace Zzh.Backend.Controllers
         {
             using (EntAppAsnHeadRepository repo = new EntAppAsnHeadRepository())
             {
-                var tuple = await repo.GetList(page, rows,asn_no);
+                var tuple = await repo.GetListAsync(page, rows,asn_no,"");
                 return Json(new { total = tuple.Item1, rows = tuple.Item2 });
             }
         }

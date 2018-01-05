@@ -29,11 +29,6 @@ namespace Zzh.Model.DB
         public string Customer_No { get; set; }
 
         /// <summary>
-        /// 入库类型
-        /// </summary>
-        public string Asn_Type { get; set; }
-
-        /// <summary>
         /// 总单号
         /// </summary>
         public string Bill_No_All { get; set; }

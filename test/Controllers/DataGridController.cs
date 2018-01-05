@@ -20,7 +20,7 @@ namespace test.Controllers
         {
             using (EntAppAsnHeadRepository repo = new EntAppAsnHeadRepository())
             {
-                var tuple = await repo.GetList(page, rows,"");
+                var tuple = await repo.GetListAsync(page, rows,"","");
                 return Json(new { total = tuple.Item1, rows = tuple.Item2 });
             }
         }

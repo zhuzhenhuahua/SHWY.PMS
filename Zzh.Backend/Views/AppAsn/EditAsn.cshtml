@@ -1,0 +1,19 @@
+﻿@model Zzh.Model.DB.EntAppAsnHead
+@{
+    ViewBag.Title = "EditAsn";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+<form id="FormEditAsn">
+    <table>
+        <tr>
+            <td>
+                分单号：
+            </td>
+            <td>
+                @Html.TextBoxFor(p=>p.Bill_No_Split,new { @class = "easyui-textbox", data_options = "required:true" })
+            </td>
+        </tr>
+    </table>
+    @Html.HiddenFor(p => p.id)
+</form>
+
