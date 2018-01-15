@@ -19,7 +19,7 @@
         </tr>
         <tr>
             <td>Role:</td>
-            <td>@Html.TextBoxFor(p => p.RoleId, new { @class = "easyui-textbox", data_options = "required:true" })</td>
+            <td>@Html.DropDownListFor(p => p.RoleId,new SelectList(ViewBag.RoleList,"Rid","RName") ,new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
         </tr>
     </table>
     <input type="hidden" name="Uid" value="@Model.Uid" />

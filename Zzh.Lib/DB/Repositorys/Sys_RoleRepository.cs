@@ -10,6 +10,13 @@ namespace Zzh.Lib.DB.Repositorys
 {
     public class Sys_RoleRepository : BaseRepository
     {
+        public async Task<List<Sys_Role>> GetListAsync()
+        {
+            var list = await (from j in context.Sys_Roles
+                              orderby j.Rid descending
+                              select j).ToListAsync();
+            return list;
+        }
         public async Task<Tuple<int, List<Sys_Role>>> GetListAsync(int page, int rows, string roleName)
         {
             int from = (page - 1) * rows;
@@ -33,7 +40,7 @@ namespace Zzh.Lib.DB.Repositorys
                 var sysRole = await GetRoleAsync(role.Rid);
                 bool isNew = false;
 
-                if (sysRole==null)
+                if (sysRole == null)
                 {
                     isNew = true;
                     sysRole = new Sys_Role();
@@ -62,13 +69,13 @@ namespace Zzh.Lib.DB.Repositorys
             var role = await context.Sys_Roles.Where(p => p.Rid == rid).FirstOrDefaultAsync();
             if (role != null)
             {
-                var roleMenus =await context.Sys_RoleMenus.Where(p => p.RoleId == rid).ToListAsync();
+                var roleMenus = await context.Sys_RoleMenus.Where(p => p.RoleId == rid).ToListAsync();
                 foreach (var item in roleMenus)
                 {
                     context.Sys_RoleMenus.Remove(item);
                 }
                 context.Sys_Roles.Remove(role);
-                return await context.SaveChangesAsync() >0;
+                return await context.SaveChangesAsync() > 0;
             }
             return false;
         }

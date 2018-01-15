@@ -20,6 +20,12 @@ namespace Zzh.Model.DB
         /// <summary>
         /// 所属角色ID
         /// </summary>
-        public int? RoleId { get; set; }
+        public int RoleId { get; set; }
+
+        /// <summary>
+        /// 所属角色名称
+        /// </summary>
+        [NotMapped]
+        public string RoleName { get; set; }
     }
 }

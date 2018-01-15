@@ -20,6 +20,15 @@ namespace Zzh.Lib.DB.Repositorys
                               where userName == "" ? 1 == 1 : j.Name.Contains(userName)
                               orderby j.Uid descending
                               select j).Skip(from).Take(pageSize).ToListAsync();
+            using (Sys_RoleRepository repoRole = new Sys_RoleRepository())
+            {
+                foreach (var item in list)
+                {
+                    var role = await repoRole.GetRoleAsync(item.RoleId);
+                    if (role != null)
+                        item.RoleName = role.RName;
+                }
+            }
             return Tuple.Create(total, list);
         }
 

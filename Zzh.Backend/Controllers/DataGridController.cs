@@ -15,14 +15,5 @@ namespace Zzh.Backend.Controllers
         {
             return View();
         }
-
-        public async Task<JsonResult> GetList(int page, int rows,string asn_no)
-        {
-            using (EntAppAsnHeadRepository repo = new EntAppAsnHeadRepository())
-            {
-                var tuple = await repo.GetListAsync(page, rows,asn_no,"");
-                return Json(new { total = tuple.Item1, rows = tuple.Item2 });
-            }
-        }
     }
 }

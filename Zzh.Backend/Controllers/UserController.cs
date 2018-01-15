@@ -12,6 +12,7 @@ namespace Zzh.Backend.Controllers
     public class UserController : Controller
     {
         Sys_UserRepository repo = new Sys_UserRepository();
+        Sys_RoleRepository roleRepo = new Sys_RoleRepository();
         // GET: User
         public async Task<ActionResult> Index()
         {
@@ -26,6 +27,7 @@ namespace Zzh.Backend.Controllers
         public async Task<ActionResult> EditUser(int uid)
         {
             Sys_User user = await repo.GetUserAsync(uid);
+            ViewBag.RoleList = await roleRepo.GetListAsync();
             return View(user);
 
         }

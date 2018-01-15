@@ -13,10 +13,10 @@
         $("#tt").datagrid({
             url: '/User/GetList',
             columns: [[
-                { field: 'Uid', title: 'ID' },
-                { field: 'Name', title: '姓名' },
-                { field: 'LoginName', title: '登录名' },
-                { field: 'RoleId', title: '所属角色' }
+                { field: 'Uid', title: 'ID',width:50 },
+                { field: 'Name', title: '姓名', width: 100 },
+                { field: 'LoginName', title: '登录名', width: 100 },
+                { field: 'RoleName', title: '所属角色', width: 100 }
             ]],
             autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
             striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
