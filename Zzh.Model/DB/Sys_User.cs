@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -14,12 +15,16 @@ namespace Zzh.Model.DB
     {
         [Key]
         public int Uid { get; set; }
+        [DisplayName("姓名")]
         public string Name { get; set; }
+        [DisplayName("登录名")]
         public string LoginName { get; set; }
+        [DisplayName("密码")]
         public string PassWord { get; set; }
         /// <summary>
         /// 所属角色ID
         /// </summary>
+        [DisplayName("所属角色")]
         public int RoleId { get; set; }
 
         /// <summary>

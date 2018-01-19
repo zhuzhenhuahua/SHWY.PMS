@@ -6,11 +6,11 @@ using System.Web.Mvc;
 
 namespace Zzh.Backend.Controllers.Filter
 {
-    public class ExceptionFilter : IExceptionFilter
+    public class ExceptionFilterAttribute : FilterAttribute, IExceptionFilter
     {
         public void OnException(ExceptionContext filterContext)
         {
-             
+
             throw new NotImplementedException();
         }
     }

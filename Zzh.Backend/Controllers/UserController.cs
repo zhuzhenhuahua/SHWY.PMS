@@ -4,17 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Zzh.Backend.Controllers.Filter;
 using Zzh.Lib.DB.Repositorys;
 using Zzh.Model.DB;
 
 namespace Zzh.Backend.Controllers
 {
+    [ExceptionFilter]
     public class UserController : Controller
     {
         Sys_UserRepository repo = new Sys_UserRepository();
         Sys_RoleRepository roleRepo = new Sys_RoleRepository();
         // GET: User
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
             return View();
         }
