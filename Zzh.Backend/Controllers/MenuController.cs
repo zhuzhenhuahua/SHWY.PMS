@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using Zzh.Backend.Models;
 using Zzh.Lib.DB.Repositorys;
@@ -76,7 +74,7 @@ namespace Zzh.Backend.Controllers
                 using (Sys_RoleMenuRepository rep_RoleMenu = new Sys_RoleMenuRepository())
                 {
                     var menuList = await rep_Menu.GetListAsync();//所有菜单
-                    var roleMenu =await rep_RoleMenu.GetListAsync(rid);//该角色已经有的菜单ID
+                    var roleMenu = await rep_RoleMenu.GetListAsync(rid);//该角色已经有的菜单ID
                     List<int> menuIds = roleMenu.Select(p => p.MenuId).ToList();
                     var result = ConvertMenuToEasyUiTree(menuList, menuIds);
                     return Json(result);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -31,11 +32,13 @@ namespace Zzh.Model.DB
         /// <summary>
         /// 总单号
         /// </summary>
+        [DisplayName("总单号")]
         public string Bill_No_All { get; set; }
 
         /// <summary>
         /// 分单号
         /// </summary>
+        [DisplayName("分单号")]
         public string Bill_No_Split { get; set; }
 
         /// <summary>
