@@ -974,10 +974,10 @@
     <Content Include="Views\Role\RoleMenuIndex.cshtml" />
     <Content Include="Views\AppAsn\IndexSplitNo.cshtml" />
     <Content Include="Views\AppAsn\EditAsn.cshtml" />
+    <Content Include="Views\XMLSerializa\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\XMLSerializa\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

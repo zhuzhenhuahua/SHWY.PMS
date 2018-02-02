@@ -26,17 +26,4 @@ namespace Zzh.Model.XML
         [XmlElement("errmsg")]
         public string errmsg { get; set; }
     }
-                        //<Response>
-	                       // <status>All-ok</status>
-	                       // <failureItems>
-		                      //  <item>
-			                     //   <systemId>管理号</systemId>
-			                     //   <errmsg>错误原因</errmsg>
-		                      //  </item>
-		                      //  <item>
-			                     //   <systemId>管理号</systemId>
-			                     //   <errmsg>错误原因</errmsg>
-		                      //  </item>
-	                       // </failureItems>
-                        //</Response>
 }
