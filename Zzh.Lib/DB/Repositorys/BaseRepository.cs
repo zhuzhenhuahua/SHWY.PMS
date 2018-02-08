@@ -52,7 +52,7 @@ namespace Zzh.Lib.DB.Repositorys
         #endregion
 
         #region 公共虚方法
-        
+
         #endregion
     }
 }

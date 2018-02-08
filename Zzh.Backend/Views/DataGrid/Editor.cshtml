@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewBag.Title = "Editor";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+<table id="tt"></table>
+<script type="text/javascript">
+    $(function () {
+        Query();
+    })
+    function editrow(target) {
+        $("#tt").datagrid('beginEdit', getRowIndex(target));
+    }
+    function getRowIndex(target) {
+        var tr = $(target).closest('tr.datagrid-row');
+        return parseInt(tr.attr('datagrid-row-index'));
+    }
+    function Query() {
+        $("#tt").datagrid({
+            url: '/User/GetList',
+            columns: [[
+                { field: 'Uid', title: 'ID', width: 50 },
+                { field: 'Name', title: '姓名', width: 100 },
+                { field: 'LoginName', title: '登录名', width: 100 },
+                { field: 'RoleName', title: '所属角色', width: 100 },
+                {
+                    field: 'Action', title: 'Action', width: 130, align: 'center', formatter: function (value, row, index) {
+                        if (row.editing) {
+                            var s = '<a href="#" onclick="saverow(this)">Save</a> ';
+                            var c = '<a href="#" onclick="cancelrow(this)">Cancel</a>';
+                            return s + c;
+                        } else {
+                            var e = '<a href="#" onclick="editrow(this)">Edit</a> ';
+                            var d = '<a href="#" onclick="deleterow(this)">Delete</a>';
+                            return e + d;
+                        }
+                    }
+                }
+            ]],
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            singleSelect: true,
+            toolbar: [{
+                iconCls: 'icon-add',
+                text: '新增',
+                handler: function () {
+                    
+                }
+            }],
+            pagination: true,
+            pageSize: 20,
+            idField: 'Uid',
+            rownumbers: true,
+            fit: true,
+            queryParams: {
+                username: ""
+            }
+        });
+    }
+</script>
+

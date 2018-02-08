@@ -26,6 +26,12 @@ namespace Zzh.Backend.Controllers
             var result = await repo.GetListAsync(page, rows, username);
             return Json(new { total = result.Item1, rows = result.Item2 });
         }
+        public async Task<JsonResult> GetListTest()
+        {
+            var result = await repo.GetListAsync(1, 10, "");
+            var json= Json(result.Item2);
+            return json;
+        }
         public async Task<ActionResult> EditUser(int uid)
         {
             Sys_User user = await repo.GetUserAsync(uid);

@@ -15,5 +15,9 @@ namespace Zzh.Backend.Controllers
         {
             return View();
         }
+        public ActionResult Editor()
+        {
+            return View();
+        }
     }
 }
