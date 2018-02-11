@@ -4,27 +4,39 @@
     Layout = "~/Views/Shared/_BaseContent.cshtml";
 }
 <table id="tt"></table>
-<script type="text/javascript">
+<script>
+    var roles;
+    $.post("/Role/GetlistAll", {}, function (result) {
+        roles = result;
+    });
     $(function () {
-        Query();
-    })
-    function editrow(target) {
-        $("#tt").datagrid('beginEdit', getRowIndex(target));
-    }
-    function getRowIndex(target) {
-        var tr = $(target).closest('tr.datagrid-row');
-        return parseInt(tr.attr('datagrid-row-index'));
-    }
-    function Query() {
         $("#tt").datagrid({
             url: '/User/GetList',
             columns: [[
+                { field: 'RoleId', title: 'RoleId', hidden: true },
                 { field: 'Uid', title: 'ID', width: 50 },
-                { field: 'Name', title: '姓名', width: 100 },
-                { field: 'LoginName', title: '登录名', width: 100 },
-                { field: 'RoleName', title: '所属角色', width: 100 },
+                { field: 'Name', title: '姓名', width: 100, editor: { type: 'textbox', options: { required: true } } },
+                { field: 'LoginName', title: '登录名', width: 100, editor: { type: 'textbox', options: { required: true } } },
                 {
-                    field: 'Action', title: 'Action', width: 130, align: 'center', formatter: function (value, row, index) {
+                    field: 'RoleName', title: '所属角色', width: 100,
+                    formatter: function (value) {
+                        for (var i = 0; i < roles.length; i++) {
+                            if (roles[i].Rid == value) return roles[i].RName;
+                        }
+                        return value;
+                    },
+                    editor: {
+                        type: 'combobox', options: {
+                            url: '/Role/GetlistAll',
+                            textField: 'RName',
+                            valueField: 'Rid',
+                            required: true,
+                            editable: false
+                        }
+                    }
+                },
+                {
+                    field: 'action', title: 'Action', width: 130, align: 'center', formatter: function (value, row, index) {
                         if (row.editing) {
                             var s = '<a href="#" onclick="saverow(this)">Save</a> ';
                             var c = '<a href="#" onclick="cancelrow(this)">Cancel</a>';
@@ -37,16 +49,29 @@
                     }
                 }
             ]],
+            onBeforeEdit: function (index, row) {
+                row.editing = true;
+                updateActions(index, row.editing);
+            },
+            onAfterEdit: function (index, row) {
+                row.editing = false;
+                updateActions(index, row.editing);
+                //SaveData(row);
+            },
+            onCancelEdit: function (index, row) {
+                row.editing = false;
+                updateActions(index, row.editing);
+            },
             autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
-            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
-            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
             singleSelect: true,
             toolbar: [{
                 iconCls: 'icon-add',
                 text: '新增',
-                handler: function () {
-                    
-                }
+                handler: insert
+            }, {
+                iconCls: 'icon-save',
+                text: '保存',
+                handler: BatchSave
             }],
             pagination: true,
             pageSize: 20,
@@ -57,6 +82,77 @@
                 username: ""
             }
         });
+    })
+    function editrow(target) {
+        $("#tt").datagrid('beginEdit', getRowIndex(target));
+    }
+    function saverow(target) {
+        $("#tt").datagrid('endEdit', getRowIndex(target));
+    }
+    function deleterow(target) {
+        $("#tt").datagrid('deleteRow', getRowIndex(target));
+    }
+    function cancelrow(target) {
+        $('#tt').datagrid('cancelEdit', getRowIndex(target));
+    }
+    function getRowIndex(target) {
+        var tr = $(target).closest('tr.datagrid-row');
+        return parseInt(tr.attr('datagrid-row-index'));
+    }
+    function insert() {
+        var row = $('#tt').datagrid('getSelected');
+        if (row) {
+            var index = $('#tt').datagrid('getRowIndex', row);
+        } else {
+            index = 0;
+        }
+        $('#tt').datagrid('insertRow', {
+            index: index,
+            row: {}
+        });
+        $('#tt').datagrid('selectRow', index);
+        $('#tt').datagrid('beginEdit', index);
+    }
+    function updateActions(index, editing) {
+        $('#tt').datagrid('updateRow', {
+            index: index,
+            row: { action: editing }//此处不知是版本原因还是其他，必须要传editing才会重新渲染，示例上是不用的(示例直接row：{}，没有editing参数)
+        });
+    }
+    //单行提交
+    function SaveData(row) {
+        //先找到修改后RoleName对应的id.RoleName为名称时表示没有修改
+        for (var i = 0; i < roles.length; i++) {
+            if (roles[i].Rid == row.RoleName) {
+                row.RoleId = row.RoleName;
+                break;
+            }
+        }
+        $.post("/User/SaveUser", row, function (result) {
+            if (result.isOk) {
+                AlertMsg('保存成功');
+                //$("#tt").datagrid('acceptChanges');
+            } else {
+                AlertMsg('保存失败');
+            }
+        });
+    }
+    //批量提交
+    function BatchSave() {
+        var rows = $("#tt").datagrid('getChanges');
+        if (rows.length == 0) {
+            AlertMsg('暂时无保存的数据!')
+            return;
+        }
+        $.post("/User/BatchSave", { userList: JSON.stringify(rows) }, function (result) {
+            if (result.isOk) {
+                AlertMsg('批量保存成功');
+                $("#tt").datagrid('acceptChanges');
+            } else {
+                AlertMsg('批量保存失败');
+            }
+        })
+        $("#tt").datagrid('acceptChanges');
+        debugger;
     }
 </script>
-

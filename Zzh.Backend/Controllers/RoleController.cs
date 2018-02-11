@@ -26,6 +26,14 @@ namespace Zzh.Backend.Controllers
             }
 
         }
+        public async Task<JsonResult> GetlistAll()
+        {
+            using (Sys_RoleRepository rep = new Sys_RoleRepository())
+            {
+                var result = await rep.GetListAsync();
+                return Json(result);
+            }
+        }
         public async Task<ActionResult> EditRole(int rid)
         {
             using (Sys_RoleRepository rep = new Sys_RoleRepository())
