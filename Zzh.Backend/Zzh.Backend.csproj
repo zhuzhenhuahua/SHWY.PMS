@@ -161,6 +161,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AlgorithmController.cs" />
     <Compile Include="Controllers\AppAsnController.cs" />
     <Compile Include="Controllers\DataGridController.cs" />
     <Compile Include="Controllers\Filter\ExceptionFilter.cs" />
@@ -976,6 +977,8 @@
     <Content Include="Views\AppAsn\EditAsn.cshtml" />
     <Content Include="Views\XMLSerializa\Index.cshtml" />
     <Content Include="Views\DataGrid\Editor.cshtml" />
+    <Content Include="Views\Algorithm\Triangle.cshtml" />
+    <Content Include="Views\DataGrid\MergeCells.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

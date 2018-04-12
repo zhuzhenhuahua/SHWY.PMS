@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "Triangle";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+<script type="text/javascript">
+    $(function () {
+        var row = 5;//总行数
+        for (var r = 1; r <= row; r++) {
+            var triangle = "";
+            for (var space = r; space < row; space++) { //此循环控制空格数 space表示空格数
+                triangle += " ";
+            }
+            for (var star = 1; star <= 2 * r - 1; star++) { //此循环控制 * 数 star表示*数
+                triangle += "*";
+            }
+            console.log(triangle);
+        }
+      
+    });
+</script>
+<label id="labValue"></label>
+

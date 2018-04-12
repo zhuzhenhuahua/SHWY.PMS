@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "单元格合并";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+<table id="tt"></table>
+<script type="text/javascript">
+    $(function () {
+        InitGrid();
+    });
+    function InitGrid() {
+        $("#tt").datagrid({
+            url: '/DataGrid/GetProductList',
+            columns: [[
+                { field: 'Pid', title: '商品ID', width: 70 },
+                { field: 'PName', title: '商品名称', width: 120 },
+                { field: 'PSize', title: '型号', width: 150 },
+                { field: 'CostPrice', title: '成本价', width: 70 },
+                { field: 'MarketPrice', title: '市场价', width: 70 }
+            ]],
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            singleSelect: true,
+            pagination: true,
+            pageSize: 20,
+            rownumbers: true,
+            fit: true,
+            onLoadSuccess: function (data) {
+                for (var i = 0; i < data.mergeGroup.length; i++) {
+                    $("#tt").datagrid('mergeCells', {
+                        index: data.mergeGroup[i].index,
+                        field: 'PSize',
+                        rowspan: data.mergeGroup[i].rowSpan
+                    });
+                }
+            }
+        });
+    }
+</script>
