@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Zzh.Lib.DB.Repositorys;
-using Zzh.Model.DB;
+using Zzh.Backend.Controllers.Filter;
 
 namespace Zzh.Backend.Controllers
 {
-    public class DataGridController : Controller
+    public class DataGridController : BaseController
     {
         // GET: DataGrid
         public ActionResult BasicGrid()

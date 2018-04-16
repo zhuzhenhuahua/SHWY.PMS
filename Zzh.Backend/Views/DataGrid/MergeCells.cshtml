@@ -12,10 +12,13 @@
         $("#tt").datagrid({
             url: '/DataGrid/GetProductList',
             columns: [[
-                { field: 'Pid', title: '商品ID', width: 70 },
-                { field: 'PName', title: '商品名称', width: 120 },
-                { field: 'PSize', title: '型号', width: 150 },
-                { field: 'CostPrice', title: '成本价', width: 70 },
+                { field: 'Pid', title: '商品ID', width: 70,rowspan:2 },
+                { field: 'PName', title: '商品名称', width: 120, rowspan: 2 },
+                { field: 'PSize', title: '型号', width: 150, rowspan: 2 },
+                  { title: '价格', width: 70,colspan:2 }
+
+            ], [
+                     { field: 'CostPrice', title: '成本价', width: 70 },
                 { field: 'MarketPrice', title: '市场价', width: 70 }
             ]],
             autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。

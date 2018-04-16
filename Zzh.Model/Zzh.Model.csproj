@@ -51,6 +51,7 @@
     <Compile Include="DB\EntApp_SJ_Head.cs" />
     <Compile Include="DB\EntAppAsnHead.cs" />
     <Compile Include="DB\Product.cs" />
+    <Compile Include="DB\Sys_Configuration.cs" />
     <Compile Include="DB\Sys_Menu.cs" />
     <Compile Include="DB\Sys_Role.cs" />
     <Compile Include="DB\Sys_RoleMenu.cs" />
