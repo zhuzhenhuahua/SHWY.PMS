@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DB\Configuration\ActConfig.cs" />
+    <Compile Include="DB\Configuration\Att\ConfigAttribute.cs" />
     <Compile Include="DB\EntApp_SJ_Head.cs" />
     <Compile Include="DB\EntAppAsnHead.cs" />
     <Compile Include="DB\Product.cs" />

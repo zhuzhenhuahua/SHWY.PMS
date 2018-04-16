@@ -6,6 +6,9 @@ using System.Web;
 using System.Web.Mvc;
 using Zzh.Lib.DB.Repositorys;
 using Zzh.Backend.Controllers.Filter;
+using Zzh.Model.DB.Configuration;
+using System.Configuration;
+using Zzh.Lib.Util;
 
 namespace Zzh.Backend.Controllers
 {
@@ -26,6 +29,9 @@ namespace Zzh.Backend.Controllers
         }
         public async Task<JsonResult> GetProductList(int rows, int page)
         {
+            ActConfig actConfi = MDConfigurationManager.GetConfig<ActConfig>();
+
+
             using (ProductRepository repo = new ProductRepository())
             {
                 var result = await repo.GetListAsync(rows, page);

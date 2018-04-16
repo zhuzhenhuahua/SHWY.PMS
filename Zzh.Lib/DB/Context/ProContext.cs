@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Zzh.Model.DB;
+using Zzh.Model.DB.Configuration;
 
 namespace Zzh.Lib.DB.Context
 {
@@ -34,6 +35,7 @@ namespace Zzh.Lib.DB.Context
                 throw ex;
             }
         }
+        public DbSet<Sys_Configuration> SysConfigurations { get; set; }
         public DbSet<EntAppAsnHead> EntAppAsnHeads { get; set; }
         public DbSet<EntApp_SJ_Head> EndAppSjHeads { get; set; }
         public DbSet<Sys_User> Sys_Users { get; set; }

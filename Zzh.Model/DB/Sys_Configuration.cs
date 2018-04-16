@@ -10,7 +10,7 @@ namespace Zzh.Model.DB
 {
     [Serializable]
     [Table("Sys_Configuration")]
-   public class Sys_Configuration
+    public class Sys_Configuration
     {
         [Key]
         public int Id { get; set; }
