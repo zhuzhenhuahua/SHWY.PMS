@@ -30,7 +30,7 @@ namespace Zzh.Backend.Controllers
         public async Task<JsonResult> GetProductList(int rows, int page)
         {
             ActConfig actConfi = MDConfigurationManager.GetConfig<ActConfig>();
-
+           var sdf=await QQEmailHelper.SendMailAsync("标题标题标题标题标题标题标题标题","865729986@qq.com", "内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容");
 
             using (ProductRepository repo = new ProductRepository())
             {

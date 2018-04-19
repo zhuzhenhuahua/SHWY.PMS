@@ -73,6 +73,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\MDConfigurationManager.cs" />
     <Compile Include="Util\JsonResponseHelper.cs" />
+    <Compile Include="Util\QQEmailHelper.cs" />
     <Compile Include="Util\XMLHelper.cs" />
   </ItemGroup>
   <ItemGroup>

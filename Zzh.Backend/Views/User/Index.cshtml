@@ -7,9 +7,9 @@
 <table id="tt"></table>
 <script>
     $(function () {
-        Query();
+        InitGrid();
     });
-    function Query() {
+    function InitGrid() {
         $("#tt").datagrid({
             url: '/User/GetList',
             columns: [[
@@ -50,6 +50,14 @@
                     }
                     DelUser(row.Uid);
                 }
+            }, '-', {
+                text:'用户名：<input type="text" id="txtUserNameQ" style="width:120px;" />'
+            }, {
+                iconCls: 'icon-search',
+                text: '查询',
+                handler: function () {
+                    GridReload("load");
+                }
             }],
             pagination: true,
             pageSize: 20,
@@ -57,12 +65,14 @@
             rownumbers: true,
             fit: true,
             queryParams: {
-                username: ""
+                userName: ""
             }
         });
     }
     function GridReload(loaded) {
-        $("#tt").datagrid(loaded);
+        $("#tt").datagrid(loaded, {
+            userName: $("#txtUserNameQ").val()
+        });
     }
     var isAdd = false;
     function EditUser(uid) {

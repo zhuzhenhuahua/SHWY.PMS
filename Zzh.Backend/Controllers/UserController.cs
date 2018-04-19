@@ -21,9 +21,9 @@ namespace Zzh.Backend.Controllers
             return View();
         }
 
-        public async Task<JsonResult> GetList(int page, int rows, string username)
+        public async Task<JsonResult> GetList(int page, int rows, string userName)
         {
-            var result = await repo.GetListAsync(page, rows, username);
+            var result = await repo.GetListAsync(page, rows, userName);
             return Json(new { total = result.Item1, rows = result.Item2 });
         }
         public async Task<JsonResult> GetListTest()
