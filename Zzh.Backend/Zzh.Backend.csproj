@@ -165,6 +165,7 @@
     <Compile Include="Controllers\AppAsnController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DataGridController.cs" />
+    <Compile Include="Controllers\Demo\OperFileController.cs" />
     <Compile Include="Controllers\Filter\ExceptionFilter.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
@@ -982,6 +983,7 @@
     <Content Include="Views\Algorithm\Triangle.cshtml" />
     <Content Include="Views\DataGrid\MergeCells.cshtml" />
     <Content Include="Views\Tree\checker.cshtml" />
+    <Content Include="Views\OperFile\UpDownload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -5,9 +5,11 @@
 }
 
 <h2>CheckBox Tree</h2>
-<p>父节点勾选或取消，其子节点全部勾选或取消<br>
+<p>
+    父节点勾选或取消，其子节点全部勾选或取消<br>
     子节点勾选，其父节点全部勾选<br>
-    全部子节点取消勾选不影响父节点</p>
+    全部子节点取消勾选不影响父节点
+</p>
 <div style="margin:20px 0;">
     <a href="#" class="easyui-linkbutton" onclick="getChecked()">GetChecked</a>
 </div>
@@ -15,7 +17,6 @@
 
     <ul id="tt" class="easyui-tree" data-options="url:'',method:'get',animate:true,checkbox:true"></ul>
 </div>
-
 @*父节点勾选或取消，其子节点全部勾选或取消
     子节点勾选，其父节点全部勾选
     全部子节点取消勾选不影响父节点*@
@@ -59,6 +60,7 @@
         }]
     }]
     var check_switch = true;
+
     $(function () {
         $("#tt").tree({
             data: data,
@@ -79,8 +81,8 @@
                 check_switch = true;
             }
         });
-    });
 
+    });
     function SetChildChecked(nodeTarget, checked) {
         var child = $("#tt").tree('getChildren', nodeTarget);
         if (child) {
