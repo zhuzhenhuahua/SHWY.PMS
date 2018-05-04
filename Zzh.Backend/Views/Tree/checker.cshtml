@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "checker";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+
+<h2>CheckBox Tree</h2>
+<p>父节点勾选或取消，其子节点全部勾选或取消<br>
+    子节点勾选，其父节点全部勾选<br>
+    全部子节点取消勾选不影响父节点</p>
+<div style="margin:20px 0;">
+    <a href="#" class="easyui-linkbutton" onclick="getChecked()">GetChecked</a>
+</div>
+<div class="easyui-panel" style="padding:5px">
+
+    <ul id="tt" class="easyui-tree" data-options="url:'',method:'get',animate:true,checkbox:true"></ul>
+</div>
+
+@*父节点勾选或取消，其子节点全部勾选或取消
+    子节点勾选，其父节点全部勾选
+    全部子节点取消勾选不影响父节点*@
+<script type="text/javascript">
+    var data = [{
+        "id": 1,
+        "text": "My Documents",
+        "children": [{
+            "id": 11,
+            "text": "Photos",
+            "children": [{
+                "id": 111,
+                "text": "Friend"
+            }, {
+                "id": 112,
+                "text": "Wife"
+            }, {
+                "id": 113,
+                "text": "Company"
+            }]
+        }, {
+            "id": 12,
+            "text": "Program Files",
+            "children": [{
+                "id": 121,
+                "text": "Intel"
+            }, {
+                "id": 122,
+                "text": "Java",
+                "attributes": {
+                    "p1": "Custom Attribute1",
+                    "p2": "Custom Attribute2"
+                }
+            }, {
+                "id": 123,
+                "text": "Microsoft Office"
+            }, {
+                "id": 124,
+                "text": "Games"
+            }]
+        }]
+    }]
+    var check_switch = true;
+    $(function () {
+        $("#tt").tree({
+            data: data,
+            checkbox: true,
+            cascadeCheck: false,
+            onCheck: function (node, paraChecked) {
+                if (check_switch) {
+                    //父节点勾选或取消，其子节点全部勾选或取消
+                    SetChildChecked(node.target, paraChecked);
+                }
+                if (paraChecked) {
+                    var parent = $('#tt').tree('getParent', node.target);
+                    if (parent) {
+                        check_switch = false;//关键点，此时改变状态，是为了不级联子节点
+                        SetChecked(parent.target, paraChecked);
+                    }
+                }
+                check_switch = true;
+            }
+        });
+    });
+
+    function SetChildChecked(nodeTarget, checked) {
+        var child = $("#tt").tree('getChildren', nodeTarget);
+        if (child) {
+            for (var i = 0; i < child.length; i++) {
+                SetChecked(child[i].target, checked);
+            }
+        }
+    }
+    function SetChecked(target, checked) {
+        $("#tt").tree(checked ? 'check' : 'uncheck', target);
+    }
+    function getChecked() {
+        var nodes = $("#tt").tree("getChecked");
+        $.each(nodes, function (index, node) {
+            alert(node.text);
+        });
+    }
+</script>

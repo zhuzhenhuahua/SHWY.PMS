@@ -169,6 +169,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\TreeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\XMLSerializaController.cs" />
     <Compile Include="Global.asax.cs">
@@ -980,6 +981,7 @@
     <Content Include="Views\DataGrid\Editor.cshtml" />
     <Content Include="Views\Algorithm\Triangle.cshtml" />
     <Content Include="Views\DataGrid\MergeCells.cshtml" />
+    <Content Include="Views\Tree\checker.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
