@@ -38,6 +38,10 @@ namespace Zzh.Backend.Controllers
             string xml3 = XMLHelper.XmlSerializer<soToWmsResponse>(model);
 
 
+
+
+
+
             string s = HttpUtility.HtmlEncode(xml2);
             string s2 = HttpUtility.HtmlDecode(s);
 
@@ -46,16 +50,7 @@ namespace Zzh.Backend.Controllers
             string str = Encoding.Unicode.GetString(bytes);
 
 
-            Dem dem = new Dem();
-            //dem.Height = 20;
-
-            int d = dem.Height;
             return View();
         }
-    }
-    struct Dem
-    {
-        public int Width;
-        public int Height;
     }
 }
