@@ -178,6 +178,7 @@
     </Compile>
     <Compile Include="Models\BaseViewModel.cs" />
     <Compile Include="Models\EasyUiTreeViewModel.cs" />
+    <Compile Include="Models\JTFileModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
