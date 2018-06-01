@@ -48,7 +48,7 @@ namespace Zzh.Backend.Controllers.Demo
                 filePara.SaveAs(Path.Combine(filePath, fileName));
                 ViewBag.msg = "上传成功";
             }
-          
+
             List<JTFileModel> fileModels = new List<JTFileModel>();
             DirectoryInfo directoryInfo = new DirectoryInfo(filePath);
             foreach (FileInfo file in directoryInfo.GetFiles())
@@ -70,6 +70,17 @@ namespace Zzh.Backend.Controllers.Demo
             public List<JTFileModel> List { get; set; }
             public int pageIndex { get; set; }
             public int pageSize { get; set; }
+        }
+        private List<JTFileModel> GetDirectoryFiles()
+        {
+            string filePath = Server.MapPath(string.Format("~/{0}", "Files"));
+            List<JTFileModel> fileModels = new List<JTFileModel>();
+            DirectoryInfo directoryInfo = new DirectoryInfo(filePath);
+            foreach (FileInfo file in directoryInfo.GetFiles())
+            {
+
+            }
+            return null;
         }
     }
 }
