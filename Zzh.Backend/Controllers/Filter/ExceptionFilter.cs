@@ -10,8 +10,8 @@ namespace Zzh.Backend.Controllers.Filter
     {
         public void OnException(ExceptionContext filterContext)
         {
-            
-            throw new NotImplementedException();
+            Exception ex = filterContext.Exception;
+            filterContext.HttpContext.Response.Write(ex.Message);
         }
     }
 }

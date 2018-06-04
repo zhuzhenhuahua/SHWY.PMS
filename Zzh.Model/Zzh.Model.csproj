@@ -55,6 +55,7 @@
     <Compile Include="DB\Product.cs" />
     <Compile Include="DB\Sys_Configuration.cs" />
     <Compile Include="DB\Sys_Menu.cs" />
+    <Compile Include="DB\Sys_MenuOper.cs" />
     <Compile Include="DB\Sys_Role.cs" />
     <Compile Include="DB\Sys_RoleMenu.cs" />
     <Compile Include="DB\Sys_User.cs" />

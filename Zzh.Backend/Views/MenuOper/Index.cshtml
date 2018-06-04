@@ -1,0 +1,96 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+
+<table id="tt"></table>
+<script type="text/javascript">
+    $(function () {
+        InitGrid();
+        bindChildMenu();
+    });
+    function InitGrid() {
+        $("#tt").datagrid({
+            url: '/MenuOper/GetListPager',
+            columns: [[
+                { field: 'MenuOperId', title: '菜单操作ID', hidden: true },
+                { field: 'MenuName', title: '菜单名称', width: 120 },
+                { field: 'MenuOperBtnID', title: '菜单操作ID', width: 120 },
+                { field: 'MenuOperBtnName', title: '操作按钮名称', width: 120 }
+            ]],
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            singleSelect: true,
+            toolbar: [{
+                iconCls: 'icon-add',
+                text: '新增',
+                handler: function () {
+                    EditData(0);
+                }
+            }, '-', {
+                iconCls: 'icon-edit',
+                text: '修改',
+                handler: function () {
+                    var row = $("#tt").datagrid("getSelected");
+                    if (row == null) {
+                        AlertMsg("请选择一行数据后再操作");
+                        return;
+                    }
+                    EditData(row.MenuOperId);
+                }
+            }, '-', {
+                iconCls: 'icon-clear',
+                text: '删除',
+                handler: function () {
+                    var row = $("#tt").datagrid("getSelected");
+                    if (row == null) {
+                        AlertMsg("请选择一行数据后再操作");
+                        return;
+                    }
+                   // DelUser(row.Uid);
+                }
+            }, '-', {
+                text: '菜单：<input type="text" id="txtMenuList" style="width:120px;" />'
+            }, {
+                iconCls: 'icon-search',
+                text: '查询',
+                handler: function () {
+                    GridReload("load");
+                }
+            }],
+            pagination: true,
+            pageSize: 20,
+            idField: 'MenuOperId',
+            rownumbers: true,
+            fit: true,
+            queryParams: {
+                menuId: 0
+            }
+        });
+    }
+    function bindChildMenu() {
+        $("#txtMenuList").combobox({
+            url: '/Menu/GetAllChildMeunList',
+            valueField: 'MenuId',
+            textField: 'MenuName'
+        });
+    }
+    function GridReload(loaded) {
+        $("#tt").datagrid(loaded, {
+            menuId: $("#txtMenuList").val()
+        });
+    }
+    var isAdd = false;
+    function EditData(menuOperId) {
+        if (menuOperId == 0)
+            isAdd = true;
+        else
+            isAdd = false;
+        ShowDialog("菜单操作管理", 500, 400, "/MenuOper/EditMeunOper?MenuOperId=" + menuOperId, saveData);
+    }
+    function saveData() {
+
+    }
+</script>

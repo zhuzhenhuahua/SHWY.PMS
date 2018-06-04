@@ -66,6 +66,7 @@
     <Compile Include="DB\Repositorys\BaseRepository.cs" />
     <Compile Include="DB\Repositorys\EntAppAsnHeadRepository.cs" />
     <Compile Include="DB\Repositorys\ProductRepository.cs" />
+    <Compile Include="DB\Repositorys\Sys_MenuOperRepository.cs" />
     <Compile Include="DB\Repositorys\Sys_MenuRepository.cs" />
     <Compile Include="DB\Repositorys\Sys_RoleMenuRepository.cs" />
     <Compile Include="DB\Repositorys\Sys_RoleRepository.cs" />

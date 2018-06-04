@@ -33,6 +33,17 @@ namespace Zzh.Backend.Controllers
                 return Json(result);
             }
         }
+        //获取所有二级菜单列表
+        public async Task<JsonResult> GetAllChildMeunList()
+        {
+            using (Sys_MenuRepository rep = new Sys_MenuRepository())
+            {
+                var result = await rep.GetAllChildMeunList();
+                result.Insert(0, new Sys_Menu() { MenuId = 0, MenuName = "全部" });
+                return Json(result);
+            }
+        }
+        #region 增删改操作
         public async Task<ActionResult> EditMenu(int mid)
         {
             using (Sys_MenuRepository rep = new Sys_MenuRepository())
@@ -81,6 +92,7 @@ namespace Zzh.Backend.Controllers
                 }
             }
         }
+        #endregion
         /// <summary>
         /// 将menuList转换为EasyUiTreeViewModel
         /// </summary>

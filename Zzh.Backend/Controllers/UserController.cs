@@ -10,8 +10,7 @@ using Zzh.Model.DB;
 
 namespace Zzh.Backend.Controllers
 {
-    [ExceptionFilter]
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         Sys_UserRepository repo = new Sys_UserRepository();
         Sys_RoleRepository roleRepo = new Sys_RoleRepository();

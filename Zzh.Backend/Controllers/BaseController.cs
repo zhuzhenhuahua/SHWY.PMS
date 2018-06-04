@@ -7,13 +7,9 @@ using Zzh.Backend.Controllers.Filter;
 
 namespace Zzh.Backend.Controllers
 {
+    [ActionFilter]
     [ExceptionFilter]
     public class BaseController : Controller
     {
-        // GET: Base
-        public ActionResult Index()
-        {
-            return View();
-        }
     }
 }

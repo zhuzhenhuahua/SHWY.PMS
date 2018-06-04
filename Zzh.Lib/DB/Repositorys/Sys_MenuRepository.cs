@@ -78,5 +78,9 @@ namespace Zzh.Lib.DB.Repositorys
         {
             return await context.Sys_Menus.Where(p => p.ParentId == parentId).ToListAsync();
         }
+        public async Task<List<Sys_Menu>> GetAllChildMeunList()
+        {
+            return await context.Sys_Menus.Where(p => p.ParentId > 0).ToListAsync();
+        }
     }
 }

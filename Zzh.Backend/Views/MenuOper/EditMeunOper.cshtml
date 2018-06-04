@@ -1,0 +1,35 @@
+﻿@model Zzh.Model.DB.Sys_MenuOper
+@{
+    ViewBag.Title = "EditMeunOper";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+
+<form id="formMenuOperEidt">
+    <table>
+        <tr>
+            <td>主菜单：</td>
+            <td>
+                <input id="cmbMenuParentList" class="easyui-combobox" name="MenuParentList"
+                       data-options="valueField:'MenuId',textField:'MenuName',url:'/Menu/GetParentMenuList'">
+            </td>
+        </tr>
+        <tr>
+            <td>二级菜单：</td>
+            <td>
+                <input id="cmbMenuChildList" class="easyui-combobox" name="MenuChildList"
+                       data-options="valueField:'MenuId',textField:'MenuName',url:'/Menu/GetParentMenuList'">
+            </td>
+        </tr>
+        <tr>
+            <td>操作按钮ID：</td>
+            <td>@Html.TextBoxFor(p => p.MenuOperBtnID, new { @class = "easyui-textbox", data_options = "required:true" })</td>
+        </tr>
+        <tr>
+            <td>操作按钮名称</td>
+            <td>@Html.TextBoxFor(p => p.MenuOperBtnName, new { @class = "easyui-textbox", data_options = "required:true" })</td>
+        </tr>
+    </table>
+    <input type="hidden" name="Uid" value="@Model.MenuOperId" />
+</form>
+
+
