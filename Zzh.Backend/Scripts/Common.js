@@ -1,4 +1,33 @@
-﻿$.fn.serializeObject = function () {
+﻿$.extend($.fn.datagrid.defaults, {
+    onLoadError: function () {
+        ButtonAuthentication();
+    },
+    onLoadSuccess: function () {
+        ButtonAuthentication();
+    }
+});
+function ButtonAuthentication() {
+    //针对toolbar直接写到datagrid初始化中
+    $(".datagrid-toolbar").find("a").hide().each(function () {
+        SetBtnDisplay();
+    });
+    //针对toolbar写到html中
+    $(".easyui-linkbutton").hide().each(function () {
+        SetBtnDisplay();
+    });
+}
+function SetBtnDisplay() {
+    if ($("#user_buttons").val()) {
+        var btns = JSON.parse($("#user_buttons").val());
+        var id = $(this).attr("id");
+        for (var i = 0; i < btns.length; i++) {
+            if (id == btns[i].MenuOpid) {
+                $(this).show();
+            }
+        }
+    }
+}
+$.fn.serializeObject = function () {
     var o = {};
     var a = this.serializeArray();
     $.each(a, function () {

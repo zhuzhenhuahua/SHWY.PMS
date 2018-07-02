@@ -28,7 +28,7 @@
                 handler: function () {
                     EditUser(0);
                 }
-            }, '-', {
+            }, {
                 iconCls: 'icon-edit',
                 text: '修改',
                 handler: function () {
@@ -39,7 +39,7 @@
                     }
                     EditUser(row.Uid);
                 }
-            }, '-', {
+            }, {
                 iconCls: 'icon-clear',
                 text: '删除',
                 handler: function () {
@@ -50,7 +50,7 @@
                     }
                     DelUser(row.Uid);
                 }
-            }, '-', {
+            }, {
                 text:'用户名：<input type="text" id="txtUserNameQ" style="width:120px;" />'
             }, {
                 iconCls: 'icon-search',

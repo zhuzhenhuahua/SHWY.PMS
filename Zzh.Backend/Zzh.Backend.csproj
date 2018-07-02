@@ -184,6 +184,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\BaseViewModel.cs" />
+    <Compile Include="Models\CurrentUser.cs" />
     <Compile Include="Models\EasyUiTreeViewModel.cs" />
     <Compile Include="Models\JTFileModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

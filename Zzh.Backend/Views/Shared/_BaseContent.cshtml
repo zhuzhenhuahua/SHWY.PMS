@@ -7,8 +7,10 @@
     @Scripts.Render("~/bundles/jquery")
     @Styles.Render("~/Content/EasyUiCss")
     @Scripts.Render("~/bundles/jqueryEasyUi")
+    @Scripts.Render("~/bundles/CommonJS")
 </head>
 <body>
     @RenderBody()
+    <input type="hidden" id="user_buttons" value="@Session["user_buttons"]" />
 </body>
 </html>

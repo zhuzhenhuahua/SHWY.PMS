@@ -31,6 +31,7 @@ namespace Zzh.Backend.Controllers
             var json= Json(result.Item2);
             return json;
         }
+        #region 增删改
         public async Task<ActionResult> EditUser(int uid)
         {
             Sys_User user = await repo.GetUserAsync(uid);
@@ -53,5 +54,6 @@ namespace Zzh.Backend.Controllers
             var result = await repo.DeleteUser(uid);
             return Json(new { isOk = result });
         }
+        #endregion
     }
 }

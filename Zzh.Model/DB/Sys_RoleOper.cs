@@ -9,15 +9,18 @@ using System.Threading.Tasks;
 namespace Zzh.Model.DB
 {
     /// <summary>
-    /// 角色对应菜单
+    /// 角色对应操作按钮ID
     /// </summary>
     [Serializable]
-    [Table("Sys_RoleMenu")]
-    public class Sys_RoleMenu
+    [Table("Sys_RoleOper")]
+   public class Sys_RoleOper
     {
-        [Key, Column(Order = 1)]
-        public int RoleId { get; set; }
-        [Key, Column(Order = 2)]
+        /// <summary>
+        /// 主键
+        /// </summary>
+        [Key]
+        public int ROId { get; set; }
         public int MenuId { get; set; }
+        public int MenuOperId { get; set; }
     }
 }

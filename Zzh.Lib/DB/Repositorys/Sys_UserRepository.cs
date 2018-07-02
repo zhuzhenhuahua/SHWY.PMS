@@ -48,6 +48,14 @@ namespace Zzh.Lib.DB.Repositorys
                 throw ex;
             }
         }
+        public async Task<Sys_User> GetUserAsync(string loginName, string pwd)
+        {
+            var user = await (from j in context.Sys_Users
+                              where j.LoginName == loginName && j.PassWord == pwd
+                              select j).FirstOrDefaultAsync();
+            return user;
+        }
+        #region 增删改
         public async Task<bool> AddOrUpdateAsync(Sys_User user)
         {
             try
@@ -89,5 +97,6 @@ namespace Zzh.Lib.DB.Repositorys
             }
             return false;
         }
+        #endregion
     }
 }

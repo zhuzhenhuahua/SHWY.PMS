@@ -9,8 +9,7 @@ namespace Zzh.Backend
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/Common.js"));
+                        "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -34,6 +33,7 @@ namespace Zzh.Backend
             bundles.Add(new ScriptBundle("~/bundles/jqueryEasyUi").Include(
                 "~/Content/jquery-easyui-1.5.3/jquery.easyui.min.js",
                 "~/Content/jquery-easyui-1.5.3/locale/easyui-lang-zh_CN.js"));
+            bundles.Add(new ScriptBundle("~/bundles/CommonJS").Include("~/Scripts/Common.js"));
         }
     }
 }
