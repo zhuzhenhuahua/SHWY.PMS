@@ -3,21 +3,48 @@
     ViewBag.Title = "EditMeunOper";
     Layout = "~/Views/Shared/_BaseContent.cshtml";
 }
-
+<script type="text/javascript">
+    $(function () {
+        InitMenuList();
+    })
+    function InitMenuList() {
+        $("#cmbMenuParentList").combobox({
+            url: '/Menu/GetParentMenuList?isAddAll=0',
+            valueField: 'MenuId',
+            textField: 'MenuName',
+            required: true,
+            readonly:@Model.MenuParentID!=0,
+            onSelect: function (record) {
+                var selectMenuID = record.MenuId;
+                BindChildMenuList(selectMenuID);
+            }
+        });
+        var menuParentID=@Model.MenuParentID;
+        if(menuParentID!=0){//修改时先给主菜单赋值，再绑定子菜单并赋值
+            $("#cmbMenuParentList").combobox("setValue",menuParentID);
+        }
+    }
+    function BindChildMenuList(parentMenuID){
+        $("#cmbMenuChildList").combobox('clear');
+        $("#cmbMenuChildList").combobox('reload','/Menu/GetMeunListByParentID?parentID=' + parentMenuID);
+        var menuID=@Model.MenuId;
+        if (menuID!=0) {
+            $("#cmbMenuChildList").combobox("setValue",menuID);
+        }
+    }
+</script>
 <form id="formMenuOperEidt">
     <table>
         <tr>
             <td>主菜单：</td>
             <td>
-                <input id="cmbMenuParentList" class="easyui-combobox" name="MenuParentList"
-                       data-options="valueField:'MenuId',textField:'MenuName',url:'/Menu/GetParentMenuList'">
+                <input id="cmbMenuParentList">
             </td>
         </tr>
         <tr>
             <td>二级菜单：</td>
             <td>
-                <input id="cmbMenuChildList" class="easyui-combobox" name="MenuChildList"
-                       data-options="valueField:'MenuId',textField:'MenuName',url:'/Menu/GetParentMenuList'">
+                <input id="cmbMenuChildList" class="easyui-combobox" data-options="valueField:'MenuId',textField:'MenuName',required: true,readonly:@Model.MenuId!=0">
             </td>
         </tr>
         <tr>
@@ -29,7 +56,7 @@
             <td>@Html.TextBoxFor(p => p.MenuOperBtnName, new { @class = "easyui-textbox", data_options = "required:true" })</td>
         </tr>
     </table>
-    <input type="hidden" name="Uid" value="@Model.MenuOperId" />
+    @Html.HiddenFor(p => p.MenuOperId)
 </form>
 
 

@@ -1,4 +1,19 @@
-﻿function ShowDialog(title, width, height, url, btnSaveFun) {
+﻿$.fn.serializeObject = function () {
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function () {
+        if (o[this.name]) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+function ShowDialog(title, width, height, url, btnSaveFun) {
     var div = $("#PopWindow");
     if (div.length <= 0) {
         div = "<div id=\"PopWindow\" style=\"margin: 0; padding-top: 5px; border: 0\"></div>";

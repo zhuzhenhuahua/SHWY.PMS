@@ -1,0 +1,29 @@
+﻿@model Zzh.Backend.Controllers.AccountController.LoginViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>登录</title>
+    @Scripts.Render("~/bundles/jquery")
+    <script type="text/javascript">
+        function Login() {
+            $("#formLogin").submit();
+        }
+    </script>
+</head>
+<body>
+    <form id="formLogin" method="post" action="/Account/LoginSubmit">
+        <div>
+            用户名：@Html.TextBoxFor(p=>p.LoginName)<br />
+            &nbsp;&nbsp;&nbsp;密码：@Html.PasswordFor(p=>p.Password)
+            <input type="button" value="登录" onclick="Login()" /><br />
+            <p id="p_msg">@ViewBag.errorMsg</p>
+        </div>
+    </form>
+</body>
+</html>

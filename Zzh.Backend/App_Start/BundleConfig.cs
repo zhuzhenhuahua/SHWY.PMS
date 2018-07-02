@@ -32,7 +32,8 @@ namespace Zzh.Backend
 "~/Content/jquery-easyui-1.5.3/themes/default/easyui.css",
 "~/Content/jquery-easyui-1.5.3/themes/icon.css"));
             bundles.Add(new ScriptBundle("~/bundles/jqueryEasyUi").Include(
-                "~/Content/jquery-easyui-1.5.3/jquery.easyui.min.js"));
+                "~/Content/jquery-easyui-1.5.3/jquery.easyui.min.js",
+                "~/Content/jquery-easyui-1.5.3/locale/easyui-lang-zh_CN.js"));
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Zzh.Backend.Controllers
         {
             return View();
         }
+        //获取列表分页数据
         public async Task<JsonResult> GetList(int rows, int page, string menuName, int parentId)
         {
             using (Sys_MenuRepository rep = new Sys_MenuRepository())
@@ -24,22 +25,34 @@ namespace Zzh.Backend.Controllers
             }
 
         }
-        public async Task<JsonResult> GetParentMenuList()
+        //获取所有父级菜单
+        public async Task<JsonResult> GetParentMenuList(int isAddAll)
         {
             using (Sys_MenuRepository rep = new Sys_MenuRepository())
             {
                 var result = await rep.GetListByParentIdAsync(0);
-                result.Insert(0, new Sys_Menu() { MenuId = 0, MenuName = "全部" });
+                if (isAddAll == 1)
+                    result.Insert(0, new Sys_Menu() { MenuId = 0, MenuName = "全部" });
+                return Json(result);
+            }
+        }
+        //根据父ID获取子菜单列表
+        public async Task<JsonResult> GetMeunListByParentID(int parentID)
+        {
+            using (Sys_MenuRepository rep = new Sys_MenuRepository())
+            {
+                var result = await rep.GetListByParentIdAsync(parentID);
                 return Json(result);
             }
         }
         //获取所有二级菜单列表
-        public async Task<JsonResult> GetAllChildMeunList()
+        public async Task<JsonResult> GetAllChildMeunList(int isAddAll)
         {
             using (Sys_MenuRepository rep = new Sys_MenuRepository())
             {
                 var result = await rep.GetAllChildMeunList();
-                result.Insert(0, new Sys_Menu() { MenuId = 0, MenuName = "全部" });
+                if (isAddAll == 1)
+                    result.Insert(0, new Sys_Menu() { MenuId = 0, MenuName = "全部" });
                 return Json(result);
             }
         }

@@ -21,7 +21,7 @@
     });
     function bindGrid() {
         $("#cmbParentMenu").combobox({
-            url: '/Menu/GetParentMenuList',
+            url: '/Menu/GetParentMenuList?isAddAll=1',
             valueField: 'MenuId',
             textField: 'MenuName'
         });

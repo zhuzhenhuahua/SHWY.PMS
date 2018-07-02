@@ -11,7 +11,7 @@ namespace Zzh.Lib.DB.Repositorys
     {
         public readonly ProContext context;
 
-        public ProContext Context => context;
+        //public ProContext Context => context;
         static object _syncObject = new object();
 
         public BaseRepository()

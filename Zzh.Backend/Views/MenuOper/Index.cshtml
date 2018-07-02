@@ -4,11 +4,18 @@
     Layout = "~/Views/Shared/_BaseContent.cshtml";
 }
 
+<div id="tb">
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditData(0)">新增</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditData(1)">修改</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelMenuOper()">删除</a>
+    <input class="easyui-textbox" id="txtMenuList" />
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
+</div>
 <table id="tt"></table>
 <script type="text/javascript">
     $(function () {
-        InitGrid();
         bindChildMenu();
+        InitGrid();
     });
     function InitGrid() {
         $("#tt").datagrid({
@@ -23,43 +30,7 @@
             striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
             nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
             singleSelect: true,
-            toolbar: [{
-                iconCls: 'icon-add',
-                text: '新增',
-                handler: function () {
-                    EditData(0);
-                }
-            }, '-', {
-                iconCls: 'icon-edit',
-                text: '修改',
-                handler: function () {
-                    var row = $("#tt").datagrid("getSelected");
-                    if (row == null) {
-                        AlertMsg("请选择一行数据后再操作");
-                        return;
-                    }
-                    EditData(row.MenuOperId);
-                }
-            }, '-', {
-                iconCls: 'icon-clear',
-                text: '删除',
-                handler: function () {
-                    var row = $("#tt").datagrid("getSelected");
-                    if (row == null) {
-                        AlertMsg("请选择一行数据后再操作");
-                        return;
-                    }
-                   // DelUser(row.Uid);
-                }
-            }, '-', {
-                text: '菜单：<input type="text" id="txtMenuList" style="width:120px;" />'
-            }, {
-                iconCls: 'icon-search',
-                text: '查询',
-                handler: function () {
-                    GridReload("load");
-                }
-            }],
+            toolbar: 'tb',
             pagination: true,
             pageSize: 20,
             idField: 'MenuOperId',
@@ -72,25 +43,73 @@
     }
     function bindChildMenu() {
         $("#txtMenuList").combobox({
-            url: '/Menu/GetAllChildMeunList',
+            url: '/Menu/GetAllChildMeunList?isAddAll=1',
             valueField: 'MenuId',
-            textField: 'MenuName'
+            textField: 'MenuName',
+            onLoadSuccess: function () {
+                $("#txtMenuList").combobox("select", 0);
+            }
         });
     }
     function GridReload(loaded) {
         $("#tt").datagrid(loaded, {
-            menuId: $("#txtMenuList").val()
+            menuId: $("#txtMenuList").combobox("getValue")
         });
     }
     var isAdd = false;
     function EditData(menuOperId) {
         if (menuOperId == 0)
             isAdd = true;
-        else
+        else {
+            var row = $("#tt").datagrid("getSelected");
+            if (row == null) {
+                AlertMsg("请选择一行数据后再操作");
+                return;
+            }
+            menuOperId = row.MenuOperId;
             isAdd = false;
+        }
         ShowDialog("菜单操作管理", 500, 400, "/MenuOper/EditMeunOper?MenuOperId=" + menuOperId, saveData);
     }
     function saveData() {
-
+        var check = $("#formMenuOperEidt").form('enableValidation').form('validate');
+        if (check) {
+            var postData = $("#formMenuOperEidt").serializeObject(); //将表单序列化为JSON对象（自定义扩展方法，在Common.js中定义）
+            var menuID = $("#cmbMenuChildList").combobox("getValue");
+            var parentMenuID = $("#cmbMenuParentList").combobox("getValue");
+            postData.MenuId = menuID;
+            postData.MenuParentID = parentMenuID;
+            $.post("/MenuOper/Save", postData, function (result) {
+                if (result.isOk) {
+                    AlertMsg('保存成功');
+                    GridReload(isAdd ? "load" : "reload");
+                }
+                else {
+                    alert('保存失败');
+                }
+                $('#PopWindow').dialog('close');
+                $("#PopWindow").remove();
+            });
+        }
+    }
+    function DelMenuOper() {
+        var row = $("#tt").datagrid("getSelected");
+        if (row == null) {
+            AlertMsg("请选择一行数据后再操作");
+            return;
+        }
+        $.messager.confirm('提示', '确定要删除吗？', function (r) {
+            if (r)
+                $.post("/MenuOper/DelMenuOper", { MenuOperID: row.MenuOperId }, function (result) {
+                    if (result.isOk) {
+                        AlertMsg("删除成功");
+                        GridReload("reload");
+                        $("#tt").datagrid("clearSelections");//因为reload/load后不会清除选择项,getSelected的值还是原索引
+                    }
+                    else {
+                        AlertMsg('删除失败');
+                    }
+                });
+        });
     }
 </script>

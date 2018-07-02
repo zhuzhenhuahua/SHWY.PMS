@@ -18,5 +18,11 @@ namespace Zzh.Model.DB
         public string MenuOperBtnID { get; set; }
         public string MenuOperBtnName { get; set; }
         public DateTime CreateTime { get; set; }
+
+        /// <summary>
+        /// 菜单ID的父ID
+        /// </summary>
+        [NotMapped]
+        public int MenuParentID { get; set; }
     }
 }
