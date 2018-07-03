@@ -42,6 +42,7 @@ namespace Zzh.Backend.Controllers
             currentUser.Sys_RoleMenu = await repo_RoleMeun.GetListAsync(userModel.RoleId);
             currentUser.Sys_RoleOper = await repo_RoleOper.GetListAsync(userModel.RoleId);
             Session["CurrentUser"] = currentUser;
+            Session.Timeout = 1;
             return Redirect("/Home/Index"); ; 
 
         }
