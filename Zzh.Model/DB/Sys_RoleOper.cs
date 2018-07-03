@@ -15,12 +15,11 @@ namespace Zzh.Model.DB
     [Table("Sys_RoleOper")]
    public class Sys_RoleOper
     {
-        /// <summary>
-        /// 主键
-        /// </summary>
-        [Key]
-        public int ROId { get; set; }
+        [Key, Column(Order = 1)]
+        public int RoleId { get; set; }
+        [Key, Column(Order = 2)]
         public int MenuId { get; set; }
+        [Key, Column(Order = 3)]
         public int MenuOperId { get; set; }
     }
 }

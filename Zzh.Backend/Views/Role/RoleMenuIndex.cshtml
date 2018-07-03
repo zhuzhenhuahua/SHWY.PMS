@@ -6,13 +6,40 @@
 <ul id="menuTree"></ul>
 <input type="hidden" value=@ViewBag.rid id="txtRid" />
 <script>
+    var check_switch = true;
     $(function () {
         var rid=$("#txtRid").val();
         $('#menuTree').tree({
             url: '/Menu/GetMenuListTree?rid=' + rid + '',
             animate: true,
-            checkbox:true
+            checkbox: true,
+            cascadeCheck: false,
+            onCheck: function (node, paraChecked) {
+                if (check_switch) {
+                    //父节点勾选或取消，其子节点全部勾选或取消
+                    SetChildChecked(node.target, paraChecked);
+                }
+                if (paraChecked) {
+                    var parent = $('#menuTree').tree('getParent', node.target);
+                    if (parent) {
+                        check_switch = false;//关键点，此时改变状态，是为了不级联子节点
+                        SetChecked(parent.target, paraChecked);
+                    }
+                }
+                check_switch = true;
+            }
         });
     })
+    function SetChildChecked(nodeTarget, checked) {
+        var child = $("#menuTree").tree('getChildren', nodeTarget);
+        if (child) {
+            for (var i = 0; i < child.length; i++) {
+                SetChecked(child[i].target, checked);
+            }
+        }
+    }
+    function SetChecked(target, checked) {
+        $("#menuTree").tree(checked ? 'check' : 'uncheck', target);
+    }
 </script>
 

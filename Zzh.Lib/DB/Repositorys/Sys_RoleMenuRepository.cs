@@ -10,22 +10,33 @@ namespace Zzh.Lib.DB.Repositorys
 {
     public class Sys_RoleMenuRepository : BaseRepository
     {
+        Sys_RoleOperRepository repo_RoleOper = new Sys_RoleOperRepository();
+        Sys_MenuOperRepository repo_menuOper = new Sys_MenuOperRepository();
         public async Task<bool> SaveRoleMenuAsync(int rid, List<int> menuListId)
         {
             try
             {
                 var roleMenus = await context.Sys_RoleMenus.Where(p => p.RoleId == rid).ToListAsync();
-                foreach (var item in roleMenus)
-                {
-                    context.Sys_RoleMenus.Remove(item);
-                }
-                await context.SaveChangesAsync();
+                context.Sys_RoleMenus.RemoveRange(roleMenus);//先全部删除该角色下所有的菜单权限
+                var roleMenuOper = await context.Sys_RoleOpers.Where(p => p.RoleId == rid).ToListAsync();
+                context.Sys_RoleOpers.RemoveRange(roleMenuOper);//先全部删除该角色下所有的操作权限
+                var menuOperList = await repo_menuOper.GetListAsync();//所有的实体，用于获取menuID
+                //await context.SaveChangesAsync();
                 foreach (int menuid in menuListId)
                 {
-                    var newRoleMenu = await context.Sys_RoleMenus.Where(p => p.RoleId == rid && p.MenuId == menuid).FirstOrDefaultAsync();
-                    if (newRoleMenu == null)
+                    if (menuid.ToString().Length == 7)
                     {
-                        newRoleMenu = new Sys_RoleMenu();
+                        //插入Sys_RoleOper表
+                        var newRoleOper = new Sys_RoleOper();
+                        newRoleOper.RoleId = rid;
+                        newRoleOper.MenuId = menuOperList.Where(p => p.MenuOperId == menuid).FirstOrDefault().MenuId;
+                        newRoleOper.MenuOperId = menuid;
+                        context.Sys_RoleOpers.Add(newRoleOper);
+                    }
+                    else
+                    {
+                        //插入Sys_RoleMenu表
+                        var newRoleMenu = new Sys_RoleMenu();
                         newRoleMenu.RoleId = rid;
                         newRoleMenu.MenuId = menuid;
                         context.Sys_RoleMenus.Add(newRoleMenu);

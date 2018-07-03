@@ -11,6 +11,8 @@ namespace Zzh.Backend.Controllers
     public class AccountController : Controller
     {
         Sys_UserRepository userRepo = new Sys_UserRepository();
+        Sys_RoleMenuRepository repo_RoleMeun = new Sys_RoleMenuRepository();
+        Sys_RoleOperRepository repo_RoleOper = new Sys_RoleOperRepository();
         // GET: Account
         public ActionResult Login()
         {
@@ -35,7 +37,11 @@ namespace Zzh.Backend.Controllers
                 ViewData["errorMsg"] = "账号或密码输入错误";
                 return View("Login", viewModel);
             }
-
+            CurrentUser currentUser = new CurrentUser();
+            currentUser.Sys_User = userModel;
+            currentUser.Sys_RoleMenu = await repo_RoleMeun.GetListAsync(userModel.RoleId);
+            currentUser.Sys_RoleOper = await repo_RoleOper.GetListAsync(userModel.RoleId);
+            Session["CurrentUser"] = currentUser;
             return Redirect("/Home/Index"); ; 
 
         }

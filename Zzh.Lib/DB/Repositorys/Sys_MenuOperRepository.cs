@@ -32,6 +32,15 @@ namespace Zzh.Lib.DB.Repositorys
             return Tuple.Create(total, list as object);
 
         }
+        public async Task<List<Sys_MenuOper>> GetListAsync()
+        {
+            var list = await (from j in context.Sys_MenuOpers select j).ToListAsync();
+            return list;
+        }
+        public async Task<int> GetListCountAsync(int menuId)
+        {
+            return await context.Sys_MenuOpers.Where(p => p.MenuId == menuId).CountAsync();
+        }
         public async Task<Sys_MenuOper> GetModelAsync(int menuOperId)
         {
             var model = await context.Sys_MenuOpers.Where(p => p.MenuOperId == menuOperId).FirstOrDefaultAsync();
@@ -52,6 +61,8 @@ namespace Zzh.Lib.DB.Repositorys
                 }
                 foreach (var p in sysMenuOper.GetType().GetProperties())
                 {
+                    if (p.Name == "MenuOperId")
+                        continue;
                     //更新属性
                     var v = menuOper.GetType().GetProperty(p.Name).GetValue(menuOper);
                     if (v != null)
@@ -61,7 +72,12 @@ namespace Zzh.Lib.DB.Repositorys
                     }
                 }
                 if (isNew)
+                {
+                    //查出该菜单下共多少个按钮，最后+1为主键
+                    int count = await GetListCountAsync(menuOper.MenuId) + 1;
+                    sysMenuOper.MenuOperId = Convert.ToInt32(menuOper.MenuId.ToString() + count.ToString().PadLeft(3, '0'));
                     context.Sys_MenuOpers.Add(sysMenuOper);
+                }
                 return await context.SaveChangesAsync() == 1;
             }
             catch (Exception)

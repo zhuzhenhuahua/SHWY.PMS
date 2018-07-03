@@ -63,10 +63,11 @@
 
     $(function () {
         $("#tt").tree({
-            data: data,
+             data: data,
             checkbox: true,
             cascadeCheck: false,
             onCheck: function (node, paraChecked) {
+                debugger;
                 if (check_switch) {
                     //父节点勾选或取消，其子节点全部勾选或取消
                     SetChildChecked(node.target, paraChecked);

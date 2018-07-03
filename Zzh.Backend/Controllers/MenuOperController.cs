@@ -22,6 +22,7 @@ namespace Zzh.Backend.Controllers
             var tuple = await menuOperRepo.GetListPager(page, rows, menuId);
             return Json(new { total = tuple.Item1, rows = tuple.Item2 });
         }
+        #region 增删改
         public async Task<ActionResult> EditMeunOper(int menuOperId)
         {
             Sys_MenuOper model = new Sys_MenuOper();
@@ -45,5 +46,6 @@ namespace Zzh.Backend.Controllers
             var result = await menuOperRepo.DelMenuOper(menuOperID);
             return Json(new { isOk = result });
         }
+        #endregion
     }
 }

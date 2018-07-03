@@ -24,12 +24,14 @@
             singleSelect: true,
             toolbar: [{
                 iconCls: 'icon-add',
+                id:'btnAdd',
                 text: '新增',
                 handler: function () {
                     EditUser(0);
                 }
             }, {
                 iconCls: 'icon-edit',
+                id: 'btnEdit',
                 text: '修改',
                 handler: function () {
                     var row = $("#tt").datagrid("getSelected");
@@ -41,6 +43,7 @@
                 }
             }, {
                 iconCls: 'icon-clear',
+                id:'btnDelete',
                 text: '删除',
                 handler: function () {
                     var row = $("#tt").datagrid("getSelected");
@@ -54,6 +57,7 @@
                 text:'用户名：<input type="text" id="txtUserNameQ" style="width:120px;" />'
             }, {
                 iconCls: 'icon-search',
+                id:'btnSearch',
                 text: '查询',
                 handler: function () {
                     GridReload("load");

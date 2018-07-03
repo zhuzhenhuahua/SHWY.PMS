@@ -12,7 +12,10 @@ namespace Zzh.Model.DB
     [Table("Sys_MenuOper")]
    public class Sys_MenuOper
     {
-        [Key]
+        /// <summary>
+        /// 主键
+        /// </summary>
+        [Key,DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int MenuOperId { get; set; }
         public int MenuId { get; set; }
         public string MenuOperBtnID { get; set; }
