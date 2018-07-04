@@ -82,34 +82,34 @@
             </li>
         </ul>
     </div>
-        <div title="092项目相关" style="overflow:auto;padding:5px;">
-            <ul style="list-style-type:none">
-                <li onclick="OpenTabs(91, '分单号修改', '/AppAsn/IndexSplitNo')">
-                    <div>
-                        <a href="javascript:void (0);">分单号修改</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div title="XML操作" style="overflow:auto;padding:5px;">
-            <ul style="list-style-type:none">
-                <li onclick="OpenTabs(101, 'XML操作', '/XMLSerializa/Index')">
-                    <div>
-                        <a href="javascript:void (0);">XML操作</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div title="算法学习" style="overflow:auto;padding:5px;">
-            <ul style="list-style-type:none">
-                <li onclick="OpenTabs(201, '打印三角形', '/Algorithm/Triangle')">
-                    <div>
-                        <a href="javascript:void (0);">XML操作</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
+    <div title="092项目相关" style="overflow:auto;padding:5px;">
+        <ul style="list-style-type:none">
+            <li onclick="OpenTabs(91, '分单号修改', '/AppAsn/IndexSplitNo')">
+                <div>
+                    <a href="javascript:void (0);">分单号修改</a>
+                </div>
+            </li>
+        </ul>
     </div>
+    <div title="XML操作" style="overflow:auto;padding:5px;">
+        <ul style="list-style-type:none">
+            <li onclick="OpenTabs(101, 'XML操作', '/XMLSerializa/Index')">
+                <div>
+                    <a href="javascript:void (0);">XML操作</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div title="算法学习" style="overflow:auto;padding:5px;">
+        <ul style="list-style-type:none">
+            <li onclick="OpenTabs(201, '打印三角形', '/Algorithm/Triangle')">
+                <div>
+                    <a href="javascript:void (0);">XML操作</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
 <script>
     $.extend($.fn.tabs.methods, {
         getTabById: function (jq, id) {
@@ -141,12 +141,21 @@
         }
     });
     function OpenTabs(menuID, title, url) {
+        $.post("/Account/GetSessionUser", null, function (data) {
+            if (!data.isExists) {
+                window.top.location = "/Account/Login";
+            } else {
+                Open(menuID, title, url);
+            }
+        });
+    }
+    function Open(menuID, title, url) {
         if ($("#tab_Content").tabs("existsById", menuID)) {
             $("#tab_Content").tabs("selectById", menuID);
         } else {
             var content = '<iframe scrolling="auto" frameborder="0"  src="' + url + '" style="width:100%;height:100%;"></iframe>';
             $("#tab_Content").tabs("add", {
-                id:menuID,
+                id: menuID,
                 title: title,
                 closable: true,
                 content: content

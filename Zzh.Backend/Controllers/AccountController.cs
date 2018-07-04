@@ -8,6 +8,7 @@ using Zzh.Lib.DB.Repositorys;
 
 namespace Zzh.Backend.Controllers
 {
+    //该类作为登录验证，暂不继承BaseController，如果后期需要继承，则在filter中判断
     public class AccountController : Controller
     {
         Sys_UserRepository userRepo = new Sys_UserRepository();
@@ -45,6 +46,11 @@ namespace Zzh.Backend.Controllers
             Session.Timeout = 1;
             return Redirect("/Home/Index"); ; 
 
+        }
+        public JsonResult GetSessionUser()
+        {
+            var json = Json(new { isExists= Session["CurrentUser"] != null });
+            return json;
         }
         public class LoginViewModel
         {

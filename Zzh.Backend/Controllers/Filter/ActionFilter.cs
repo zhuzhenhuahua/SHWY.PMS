@@ -16,10 +16,12 @@ namespace Zzh.Backend.Controllers.Filter
         {
            // base.OnActionExecuting(filterContext);
             var sessionUser= filterContext.HttpContext.Session["CurrentUser"];
-            if (sessionUser == null)
+            if (sessionUser != null||sessionUser==null)
             {
-                //filterContext.Result = new RedirectResult("/Account/Login");
-                filterContext.Result = new JavaScriptResult() { Script = "alert('dfd')" };
+                filterContext.Result = new ContentResult() { Content = "请重新登录" };
+                //filterContext.Result = new JavaScriptResult() { Script = "alert('dfd')" };
+                //var result= new JavaScriptResult() { Script = "window.top.location.href = '/Account/Login'" };
+                //filterContext.Result = result;
             }
             else
             {
