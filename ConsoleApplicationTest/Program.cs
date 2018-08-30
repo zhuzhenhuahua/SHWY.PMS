@@ -9,6 +9,7 @@ namespace ConsoleApplicationTest
     class Program
     {
         //初来匝道
+        //s
         static void Main(string[] args)
         {
             Test t = new Test();
