@@ -22,6 +22,7 @@ namespace Zzh.Lib.DB.Repositorys
                               select j).Skip(from).Take(pageSize).ToListAsync();
             using (Sys_RoleRepository repoRole = new Sys_RoleRepository())
             {
+                //这里后期需要优化
                 foreach (var item in list)
                 {
                     var role = await repoRole.GetRoleAsync(item.RoleId);
