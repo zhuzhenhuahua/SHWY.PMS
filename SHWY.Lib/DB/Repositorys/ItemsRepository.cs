@@ -26,12 +26,12 @@ namespace SHWY.Lib.DB.Repositorys
         {
             try
             {
-                var user = await (from j in context.Items
+                var item = await (from j in context.Items
                                   where j.ItemID == itemId
                                   select j).FirstOrDefaultAsync();
-                if (user == null)
+                if (item == null)
                     return new Items();
-                return user;
+                return item;
             }
             catch (Exception ex)
             {

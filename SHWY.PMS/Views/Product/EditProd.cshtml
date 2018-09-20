@@ -1,0 +1,23 @@
+﻿@model SHWY.Model.DB.Product
+@{
+    ViewBag.Title = "产品管理";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+
+<form id="formProdEidt">
+    <table>
+        <tr>
+            <td>@Html.LabelFor(p => p.ProID)</td>
+            <td>@Html.TextBoxFor(p => p.ProID, new { @class = "easyui-textbox", data_options = "required:true,readonly:" + ViewData["isRealOnly"] + "" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(p => p.NAME)</td>
+            <td>@Html.TextBoxFor(p => p.NAME, new { @class = "easyui-textbox", data_options = "required:true" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(p => p.ALIAS)</td>
+            <td>@Html.TextBoxFor(p => p.ALIAS, new { @class = "easyui-textbox" })</td>
+        </tr>
+    </table>
+</form>
+

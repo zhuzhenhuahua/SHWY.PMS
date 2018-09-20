@@ -1,0 +1,136 @@
+﻿
+@{
+    ViewBag.Title = "产品管理";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+
+<table id="tt"></table>
+<script>
+    $(function () {
+        InitGrid();
+    });
+    function InitGrid() {
+        $("#tt").datagrid({
+            url: '/Product/GetList',
+            columns: [[
+                { field: 'ProID', title: '产品ID', width: 50 },
+                { field: 'NAME', title: '产品名称', width: 180 },
+                { field: 'ALIAS', title: '产品别名', width: 200 }
+            ]],
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            singleSelect: true,
+            toolbar: [{
+                iconCls: 'icon-add',
+                id:'btnAdd',
+                text: '新增',
+                handler: function () {
+                    EditProd(0);
+                }
+            }, {
+                iconCls: 'icon-edit',
+                id: 'btnEdit',
+                text: '修改',
+                handler: function () {
+                    var row = $("#tt").datagrid("getSelected");
+                    if (row == null) {
+                        AlertMsg("请选择一行数据后再操作");
+                        return;
+                    }
+                    EditProd(row.ProID);
+                }
+            }, {
+                iconCls: 'icon-clear',
+                id:'btnDelete',
+                text: '删除',
+                handler: function () {
+                    var row = $("#tt").datagrid("getSelected");
+                    if (row == null) {
+                        AlertMsg("请选择一行数据后再操作");
+                        return;
+                    }
+                    DelProd(row.ProID);
+                }
+            }, {
+                text:'产品名称：<input type="text" id="txtProdNameQ" style="width:120px;" />'
+            }, {
+                iconCls: 'icon-search',
+                id:'btnSearch',
+                text: '查询',
+                handler: function () {
+                    GridReload("load");
+                }
+            }],
+            pagination: true,
+            pageSize: 20,
+            idField: 'ProID',
+            rownumbers: true,
+            fit: true,
+            queryParams: {
+                prodName: ""
+            }
+        });
+    }
+    function GridReload(loaded) {
+        $("#tt").datagrid(loaded, {
+            prodName: $("#txtProdNameQ").val()
+        });
+    }
+    var isAdd = false;
+    function EditProd(prodId) {
+        if (prodId == 0)
+            isAdd = true;
+        else
+            isAdd = false;
+        ShowDialog("产品管理", 500, 400, "/Product/EditProd?prodId=" + prodId, saveProd);
+    }
+    function DelProd(prodId) {
+        $.messager.confirm('提示', "确定要删除吗？", function (r) {
+            if (r) {
+                $.post("/Product/DelProd", { prodId: prodId }, function (result) {
+                    if (result.isOk) {
+                        AlertMsg("删除成功");
+                        GridReload("reload");
+                    }
+                    else {
+                        AlertMsg('删除失败');
+                    }
+                });
+            }
+        });
+    }
+    function saveProd() {
+        var check = $("#formProdEidt").form('enableValidation').form('validate');
+        if (check) {
+            var postData = $("#formProdEidt").serialize();
+            if (isAdd) {
+                $.post("/Product/IsExistsByProId", postData, function (result) {
+                    if (result.isExists) {
+                        AlertMsg("产品编号已存在,请重新输入");
+                    }
+                    else {
+                        SaveData(postData);
+                    }
+                });
+            }
+            else {
+                SaveData(postData);
+            }
+        }
+    }
+    function SaveData(postData) {
+        $.post("/Product/SaveProd", postData, function (result) {
+            if (result.isOk) {
+                $('#PopWindow').dialog('close');
+                $("#PopWindow").remove();
+                GridReload(isAdd ? "load" : "reload");
+            }
+            else {
+                AlertMsg('保存失败');
+            }
+
+        });
+    }
+</script>
+

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -9,14 +10,15 @@ using System.Threading.Tasks;
 namespace SHWY.Model.DB
 {
     [Serializable]
-    [Table("Product")]
+    [Table("Prod")]
    public class Product
     {
         [Key]
-        public string Pid { get; set; }
-        public string PName { get; set; }
-        public string PSize { get; set; }
-        public decimal CostPrice { get; set; }
-        public decimal MarketPrice { get; set; }
+        [DisplayName("产品编号")]
+        public string ProID { get; set; }
+        [DisplayName("产品名称")]
+        public string NAME { get; set; }
+        [DisplayName("产品别名")]
+        public string ALIAS { get; set; }
     }
 }

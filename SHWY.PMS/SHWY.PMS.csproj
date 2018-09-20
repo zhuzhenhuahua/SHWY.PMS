@@ -176,6 +176,7 @@
     <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\MenuOperController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\TreeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -999,6 +1000,8 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Items\Index.cshtml" />
     <Content Include="Views\Items\EditItem.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Product\EditProd.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

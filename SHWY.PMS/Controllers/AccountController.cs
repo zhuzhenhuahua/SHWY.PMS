@@ -43,7 +43,7 @@ namespace SHWY.PMS.Controllers
             currentUser.Sys_RoleMenu = await repo_RoleMeun.GetListAsync(userModel.RoleId);
             currentUser.Sys_RoleOper = await repo_RoleOper.GetListAsync(userModel.RoleId);
             Session["CurrentUser"] = currentUser;
-            Session.Timeout = 1;
+            Session.Timeout = 120;//登录过期时间（分钟）
             return Redirect("/Home/Index"); ; 
 
         }
