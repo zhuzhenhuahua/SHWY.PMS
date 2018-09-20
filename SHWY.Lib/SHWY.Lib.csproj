@@ -7,8 +7,8 @@
     <ProjectGuid>{612E1603-7F6C-4FBC-9ED2-8A1C63D19797}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Zzh.Lib</RootNamespace>
-    <AssemblyName>Zzh.Lib</AssemblyName>
+    <RootNamespace>SHWY.Lib</RootNamespace>
+    <AssemblyName>SHWY.Lib</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

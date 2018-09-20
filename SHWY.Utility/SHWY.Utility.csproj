@@ -7,8 +7,8 @@
     <ProjectGuid>{C6E0CC01-E41C-4989-8160-6E50D36F66EE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Utility</RootNamespace>
-    <AssemblyName>Utility</AssemblyName>
+    <RootNamespace>SHWY.Utility</RootNamespace>
+    <AssemblyName>SHWY.Utility</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

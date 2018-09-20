@@ -7,8 +7,8 @@
     <ProjectGuid>{9DC043EE-7066-45CA-9E4D-5A570D0372A2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Zzh.Model</RootNamespace>
-    <AssemblyName>Zzh.Model</AssemblyName>
+    <RootNamespace>SHWY.Model</RootNamespace>
+    <AssemblyName>SHWY.Model</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
