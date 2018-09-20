@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHWY.Model", "Zzh.Model\SHW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHWY.PMS", "Zzh.Backend\SHWY.PMS.csproj", "{D70585DF-8DE2-4E8C-8717-2EE8C97E886C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHWY.Utility", "Utility\SHWY.Utility.csproj", "{C6E0CC01-E41C-4989-8160-6E50D36F66EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHWY.Utility", "SHWY.Utility\SHWY.Utility.csproj", "{C6E0CC01-E41C-4989-8160-6E50D36F66EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
