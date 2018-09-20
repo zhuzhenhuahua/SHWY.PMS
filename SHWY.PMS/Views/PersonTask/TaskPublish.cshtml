@@ -1,0 +1,140 @@
+﻿
+@{
+    ViewBag.Title = "任务发布";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+<table id="tt"></table>
+<script>
+    $(function () {
+        InitGrid();
+    });
+    function InitGrid() {
+        $("#tt").datagrid({
+            url: '/PersonTask/GetList',
+            columns: [[
+                { field: 'ID', title: 'ID', width: 50, hidden: true },
+                { field: 'JIRID', title: 'JIRID', width: 80, hidden: true },
+                { field: 'ItemName', title: '项目名称', width: 100 },
+                { field: 'ProdName', title: '产品名称', width: 150 },
+                { field: 'TaskType', title: '任务类型', width: 100 },
+                {
+                    field: 'detail', title: '任务描述', width: 100, formatter: function (value, row, index) {
+                        var content = '<a title="' + value + '" class="easyui-tooltip">' + value + '</a>';
+                        return content;
+                    }
+                },
+                { field: 'publishTime', title: '发布时间', width: 100 },
+                { field: 'predDeadTime', title: '预期完成时间', width: 100 },
+                { field: 'taskStatus', title: '当前任务状态', width: 100 },
+                { field: 'remark', title: '备注', width: 100 },
+                { field: 'publisherID', title: '发布人', width: 100 },
+                { field: 'handlerID', title: '处理人', width: 100 },
+                { field: 'followerID', title: '跟踪人', width: 100 },
+                { field: 'complTime', title: '完成时间', width: 100 },
+                { field: 'taskComplDegree', title: '任务完成程度', width: 100 },
+                { field: 'serviceAttri', title: '服务态度', width: 100 },
+                { field: 'complSpeed', title: '完成速度', width: 100 },
+                { field: 'taskDiffLevel', title: '任务困难程度', width: 100 },
+                { field: 'evaDesc', title: '评价描述', width: 100 },
+            ]],
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            singleSelect: true,
+            toolbar: [{
+                iconCls: 'icon-add',
+                id: 'btnAdd',
+                text: '新增',
+                handler: function () {
+                    EditPersonTask(0);
+                }
+            }, {
+                iconCls: 'icon-edit',
+                id: 'btnEdit',
+                text: '修改',
+                handler: function () {
+                    var row = $("#tt").datagrid("getSelected");
+                    if (row == null) {
+                        AlertMsg("请选择一行数据后再操作");
+                        return;
+                    }
+                    EditPersonTask(row.ID);
+                }
+            }, {
+                iconCls: 'icon-clear',
+                id: 'btnDelete',
+                text: '删除',
+                handler: function () {
+                    var row = $("#tt").datagrid("getSelected");
+                    if (row == null) {
+                        AlertMsg("请选择一行数据后再操作");
+                        return;
+                    }
+                    DelTask(row.ID);
+                }
+            }, {
+                text: '处理人：<input type="text" id="txtHandlerIdQ" style="width:120px;" />'
+            }, {
+                iconCls: 'icon-search',
+                id: 'btnSearch',
+                text: '查询',
+                handler: function () {
+                    GridReload("load");
+                }
+            }],
+            pagination: true,
+            pageSize: 20,
+            idField: 'ID',
+            rownumbers: true,
+            fit: true,
+            queryParams: {
+                handlerId: 0
+            }
+        });
+    }
+    function GridReload(loaded) {
+        $("#tt").datagrid(loaded, {
+            handlerId: $("#txtHandlerIdQ").val()
+        });
+    }
+    var isAdd = false;
+    function EditPersonTask(id) {
+        if (id == 0)
+            isAdd = true;
+        else
+            isAdd = false;
+        ShowDialog("任务发布", 500, 400, "/PersonTask/EditTask?id=" + id, saveTask);
+    }
+    function DelTask(id) {
+        $.messager.confirm('提示', "确定要删除吗？", function (r) {
+            if (r) {
+                $.post("/PersonTask/DelTask", { id: id }, function (result) {
+                    if (result.isOk) {
+                        AlertMsg("删除成功");
+                        GridReload("reload");
+                    }
+                    else {
+                        AlertMsg('删除失败');
+                    }
+                });
+            }
+        });
+    }
+    function saveTask() {
+        var check = $("#formTaskEidt").form('enableValidation').form('validate');
+        if (check) {
+            var postData = $("#formTaskEidt").serialize();
+            $.post("/PersonTask/SaveTask", postData, function (result) {
+                if (result.isOk) {
+                    $('#PopWindow').dialog('close');
+                    $("#PopWindow").remove();
+                    GridReload(isAdd ? "load" : "reload");
+                }
+                else {
+                    alert('保存失败');
+                }
+
+            });
+        }
+    }
+</script>

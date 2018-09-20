@@ -176,6 +176,7 @@
     <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\MenuOperController.cs" />
+    <Compile Include="Controllers\PersonTaskController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\TreeController.cs" />
@@ -1002,6 +1003,7 @@
     <Content Include="Views\Items\EditItem.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\Product\EditProd.cshtml" />
+    <Content Include="Views\PersonTask\TaskPublish.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
