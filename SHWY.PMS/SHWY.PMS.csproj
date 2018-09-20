@@ -1012,11 +1012,11 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Zzh.Lib\SHWY.Lib.csproj">
+    <ProjectReference Include="..\SHWY.Lib\SHWY.Lib.csproj">
       <Project>{612e1603-7f6c-4fbc-9ed2-8a1c63d19797}</Project>
       <Name>SHWY.Lib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Zzh.Model\SHWY.Model.csproj">
+    <ProjectReference Include="..\SHWY.Model\SHWY.Model.csproj">
       <Project>{9dc043ee-7066-45ca-9e4d-5a570d0372a2}</Project>
       <Name>SHWY.Model</Name>
     </ProjectReference>
