@@ -8,7 +8,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-namespace Zzh.Lib.Util
+namespace SHWY.Lib.Util
 {
     public static class XMLHelper
     {

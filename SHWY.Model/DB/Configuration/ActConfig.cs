@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Zzh.Model.DB.Configuration.Att;
+using SHWY.Model.DB.Configuration.Att;
 
-namespace Zzh.Model.DB.Configuration
+namespace SHWY.Model.DB.Configuration
 {
     [MDConfig("ElasticSearch", "Act_usertreasure")]
   public  class ActConfig

@@ -4,9 +4,9 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Zzh.Model.DB;
+using SHWY.Model.DB;
 
-namespace Zzh.Lib.DB.Repositorys
+namespace SHWY.Lib.DB.Repositorys
 {
     public class Sys_MenuRepository : BaseRepository
     {

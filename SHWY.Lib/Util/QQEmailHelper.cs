@@ -6,7 +6,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Zzh.Lib.Util
+namespace SHWY.Lib.Util
 {
    public static class QQEmailHelper
     {

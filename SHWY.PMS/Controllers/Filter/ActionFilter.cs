@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Zzh.Backend.Controllers.Filter
+namespace SHWY.PMS.Controllers.Filter
 {
     public class ActionFilter : ActionFilterAttribute
     {

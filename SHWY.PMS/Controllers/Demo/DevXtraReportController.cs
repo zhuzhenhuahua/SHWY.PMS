@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Zzh.Lib.DB.Repositorys;
+using SHWY.Lib.DB.Repositorys;
 
-namespace Zzh.Backend.Controllers.Demo
+namespace SHWY.PMS.Controllers.Demo
 {
     public class DevXtraReportController : Controller
     {

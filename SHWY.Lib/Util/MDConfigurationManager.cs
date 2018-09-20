@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Zzh.Lib.DB.Context;
-using Zzh.Model.DB;
-using Zzh.Model.DB.Configuration;
-using Zzh.Model.DB.Configuration.Att;
+using SHWY.Lib.DB.Context;
+using SHWY.Model.DB;
+using SHWY.Model.DB.Configuration;
+using SHWY.Model.DB.Configuration.Att;
 
-namespace Zzh.Lib.Util
+namespace SHWY.Lib.Util
 {
     public static class MDConfigurationManager
     {

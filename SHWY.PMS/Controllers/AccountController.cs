@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Zzh.Lib.DB.Repositorys;
+using SHWY.Lib.DB.Repositorys;
 
-namespace Zzh.Backend.Controllers
+namespace SHWY.PMS.Controllers
 {
     //该类作为登录验证，暂不继承BaseController，如果后期需要继承，则在filter中判断
     public class AccountController : Controller

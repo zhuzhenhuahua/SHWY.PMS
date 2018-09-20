@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Zzh.Lib.DB.Context;
+using SHWY.Lib.DB.Context;
 
-namespace Zzh.Lib.DB.Repositorys
+namespace SHWY.Lib.DB.Repositorys
 {
     public class BaseRepository : IDisposable
     {

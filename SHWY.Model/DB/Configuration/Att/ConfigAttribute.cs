@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Zzh.Model.DB.Configuration.Att
+namespace SHWY.Model.DB.Configuration.Att
 {
    public class MDConfigAttribute:Attribute
     {

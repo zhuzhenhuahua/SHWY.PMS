@@ -1,0 +1,35 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SHWY.Model.DB
+{
+    /// <summary>
+    /// 甲方项目名称
+    /// </summary>
+    [Serializable]
+    [Table("Item")]
+    public class Items
+    {
+        /// <summary>
+        /// 自增长主键ID
+        /// </summary>
+        [Key]
+        public int ItemID { get; set; }
+        /// <summary>
+        /// 项目名称
+        /// </summary>
+        [DisplayName("项目名称")]
+        public string NAME { get; set; }
+        /// <summary>
+        /// 项目别名
+        /// </summary>
+        [DisplayName("项目别名")]
+        public string ALIAS { get; set; }
+    }
+}

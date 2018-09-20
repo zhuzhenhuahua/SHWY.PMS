@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace Zzh.Backend
+namespace SHWY.PMS
 {
     public class BundleConfig
     {

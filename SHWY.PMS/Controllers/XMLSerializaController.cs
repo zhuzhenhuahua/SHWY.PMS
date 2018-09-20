@@ -5,12 +5,12 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml.Serialization;
-using Zzh.Model.XML;
+using SHWY.Model.XML;
 using System.IO;
 using System.Xml;
-using Zzh.Lib.Util;
+using SHWY.Lib.Util;
 
-namespace Zzh.Backend.Controllers
+namespace SHWY.PMS.Controllers
 {
     public class XMLSerializaController : Controller
     {

@@ -166,7 +166,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AlgorithmController.cs" />
-    <Compile Include="Controllers\AppAsnController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DataGridController.cs" />
     <Compile Include="Controllers\Demo\DevXtraReportController.cs" />
@@ -174,6 +173,7 @@
     <Compile Include="Controllers\Filter\ActionFilter.cs" />
     <Compile Include="Controllers\Filter\ExceptionFilter.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\MenuOperController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
@@ -997,6 +997,8 @@
     <Content Include="Views\MenuOper\Index.cshtml" />
     <Content Include="Views\MenuOper\EditMeunOper.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Items\Index.cshtml" />
+    <Content Include="Views\Items\EditItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

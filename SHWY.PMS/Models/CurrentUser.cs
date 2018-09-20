@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Zzh.Model.DB;
+using SHWY.Model.DB;
 
-namespace Zzh.Backend
+namespace SHWY.PMS
 {
     public class CurrentUser
     {

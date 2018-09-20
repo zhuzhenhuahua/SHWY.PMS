@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Zzh.Model.DB
+namespace SHWY.Model.DB
 {
     [Serializable]
     [Table("Sys_Configuration")]

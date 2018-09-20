@@ -4,10 +4,10 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Zzh.Model.DB;
-using Zzh.Model.DB.Configuration;
+using SHWY.Model.DB;
+using SHWY.Model.DB.Configuration;
 
-namespace Zzh.Lib.DB.Context
+namespace SHWY.Lib.DB.Context
 {
     public class ProContext : DbContext
     {
@@ -36,8 +36,6 @@ namespace Zzh.Lib.DB.Context
             }
         }
         public DbSet<Sys_Configuration> SysConfigurations { get; set; }
-        public DbSet<EntAppAsnHead> EntAppAsnHeads { get; set; }
-        public DbSet<EntApp_SJ_Head> EndAppSjHeads { get; set; }
         public DbSet<Sys_User> Sys_Users { get; set; }
         public DbSet<Sys_Role> Sys_Roles { get; set; }
         public DbSet<Sys_Menu> Sys_Menus { get; set; }
@@ -45,5 +43,6 @@ namespace Zzh.Lib.DB.Context
         public DbSet<Sys_RoleMenu> Sys_RoleMenus { get; set; }
         public DbSet<Sys_RoleOper> Sys_RoleOpers { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Items> Items { get; set; }
     }
 }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Zzh.Backend.Controllers.Filter;
+using SHWY.PMS.Controllers.Filter;
 
-namespace Zzh.Backend.Controllers
+namespace SHWY.PMS.Controllers
 {
     [ActionFilter]
     [ExceptionFilter]

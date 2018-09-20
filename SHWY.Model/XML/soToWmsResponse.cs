@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace Zzh.Model.XML
+namespace SHWY.Model.XML
 {
     /// <summary>
     /// 客户推送出库单至仓库返回结果
