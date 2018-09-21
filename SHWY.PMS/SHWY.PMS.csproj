@@ -1003,7 +1003,8 @@
     <Content Include="Views\Items\EditItem.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\Product\EditProd.cshtml" />
-    <Content Include="Views\PersonTask\TaskPublish.cshtml" />
+    <Content Include="Views\PersonTask\TaskPublishList.cshtml" />
+    <Content Include="Views\PersonTask\TaskPublishEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

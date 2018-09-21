@@ -25,10 +25,17 @@ namespace SHWY.PMS.Controllers
             var result = await repo.GetListAsync(page, rows, userName);
             return Json(new { total = result.Item1, rows = result.Item2 });
         }
+        public async Task<JsonResult> GetAllUsers(int isAddAll)
+        {
+            var result = await repo.GetUserListAsync();
+            if (isAddAll == 1)
+                result.Insert(0, new Sys_User() { Uid = 0, Name = "全部" });
+            return Json(result);
+        }
         public async Task<JsonResult> GetListTest()
         {
             var result = await repo.GetListAsync(1, 10, "");
-            var json= Json(result.Item2);
+            var json = Json(result.Item2);
             return json;
         }
         #region 增删改
@@ -42,7 +49,7 @@ namespace SHWY.PMS.Controllers
         public async Task<JsonResult> SaveUser(Sys_User user)
         {
             var result = await repo.AddOrUpdateAsync(user);
-            return Json(new { isOk = result});
+            return Json(new { isOk = result });
         }
         public async Task<JsonResult> BatchSave(List<Sys_User> userList)
         {

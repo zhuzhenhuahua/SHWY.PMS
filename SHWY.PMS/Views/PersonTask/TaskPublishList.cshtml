@@ -3,11 +3,38 @@
     ViewBag.Title = "任务发布";
     Layout = "~/Views/Shared/_BaseContent.cshtml";
 }
+<div id="tb">
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditPersonTask(0)">新增</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditPersonTask(1)">修改</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelTask()">删除</a>
+    <span class="l-btn-text">项目：</span><input class="easyui-textbox" id="txtItemQ" style="width:120px;" />
+    <span class="l-btn-text">处理人：</span><input class="easyui-textbox" id="txtHandlerIDQ" style="width:100px;" />
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
+</div>
 <table id="tt"></table>
 <script>
     $(function () {
+        InitCombobox();
         InitGrid();
     });
+    function InitCombobox() {
+        $("#txtHandlerIDQ").combobox({
+            url: '/User/GetAllUsers?isAddAll=1',
+            valueField: 'Uid',
+            textField: 'Name',
+            onLoadSuccess: function () {
+                $("#txtHandlerIDQ").combobox("select", 0);
+            }
+        });
+        $("#txtItemQ").combobox({
+            url: '/Items/GetAllItems?isAddAll=1',
+            valueField: 'ItemID',
+            textField: 'NAME',
+            onLoadSuccess: function () {
+                $("#txtItemQ").combobox("select", 0);
+            }
+        });
+    }
     function InitGrid() {
         $("#tt").datagrid({
             url: '/PersonTask/GetList',
@@ -41,74 +68,48 @@
             striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
             nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
             singleSelect: true,
-            toolbar: [{
-                iconCls: 'icon-add',
-                id: 'btnAdd',
-                text: '新增',
-                handler: function () {
-                    EditPersonTask(0);
-                }
-            }, {
-                iconCls: 'icon-edit',
-                id: 'btnEdit',
-                text: '修改',
-                handler: function () {
-                    var row = $("#tt").datagrid("getSelected");
-                    if (row == null) {
-                        AlertMsg("请选择一行数据后再操作");
-                        return;
-                    }
-                    EditPersonTask(row.ID);
-                }
-            }, {
-                iconCls: 'icon-clear',
-                id: 'btnDelete',
-                text: '删除',
-                handler: function () {
-                    var row = $("#tt").datagrid("getSelected");
-                    if (row == null) {
-                        AlertMsg("请选择一行数据后再操作");
-                        return;
-                    }
-                    DelTask(row.ID);
-                }
-            }, {
-                text: '处理人：<input type="text" id="txtHandlerIdQ" style="width:120px;" />'
-            }, {
-                iconCls: 'icon-search',
-                id: 'btnSearch',
-                text: '查询',
-                handler: function () {
-                    GridReload("load");
-                }
-            }],
+            toolbar: 'tb',
             pagination: true,
             pageSize: 20,
             idField: 'ID',
             rownumbers: true,
             fit: true,
             queryParams: {
-                handlerId: 0
+                handlerId: 0,
+                itemId:0
             }
         });
     }
     function GridReload(loaded) {
         $("#tt").datagrid(loaded, {
-            handlerId: $("#txtHandlerIdQ").val()
+            handlerId: $("#txtHandlerIDQ").combobox('getValue'),
+            itemId: $("#txtItemQ").combobox('getValue')
         });
     }
     var isAdd = false;
     function EditPersonTask(id) {
         if (id == 0)
             isAdd = true;
-        else
+        else {
+            var row = $("#tt").datagrid("getSelected");
+            if (row == null) {
+                AlertMsg("请选择一行数据后再操作");
+                return;
+            }
+            id = row.ID;
             isAdd = false;
-        ShowDialog("任务发布", 500, 400, "/PersonTask/EditTask?id=" + id, saveTask);
+        }
+        ShowDialog("任务发布", 500, 400, "/PersonTask/TaskPublishEdit?id=" + id, saveTask);
     }
-    function DelTask(id) {
+    function DelTask() {
+        var row = $("#tt").datagrid("getSelected");
+        if (row == null) {
+            AlertMsg("请选择一行数据后再操作");
+            return;
+        }
         $.messager.confirm('提示', "确定要删除吗？", function (r) {
             if (r) {
-                $.post("/PersonTask/DelTask", { id: id }, function (result) {
+                $.post("/PersonTask/DelTask", { id: row.ID }, function (result) {
                     if (result.isOk) {
                         AlertMsg("删除成功");
                         GridReload("reload");

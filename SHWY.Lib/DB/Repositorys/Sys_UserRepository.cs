@@ -49,6 +49,13 @@ namespace SHWY.Lib.DB.Repositorys
                 throw ex;
             }
         }
+        public async Task<List<Sys_User>> GetUserListAsync()
+        {
+            var list = await (from j in context.Sys_Users
+                              orderby j.Uid
+                              select j).ToListAsync();
+            return list;
+        }
         public async Task<Sys_User> GetUserAsync(string loginName, string pwd)
         {
             var user = await (from j in context.Sys_Users

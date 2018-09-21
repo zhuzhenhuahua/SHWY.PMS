@@ -13,16 +13,16 @@ namespace SHWY.PMS.Controllers
     {
         PersonTaskRepository pTaskRepo = new PersonTaskRepository();
         // GET: PersonTask
-        public ActionResult TaskPublish()
+        public ActionResult TaskPublishList()
         {
             return View();
         }
-        public async Task<JsonResult> GetList(int page, int rows, int handlerId)
+        public async Task<JsonResult> GetList(int page, int rows, int handlerId,int itemId)
         {
-            var result = await pTaskRepo.GetListAsync(page, rows, handlerId);
+            var result = await pTaskRepo.GetListAsync(page, rows, handlerId,itemId);
             return Json(new { total = result.Item1, rows = result.Item2 });
         }
-        public async Task<ActionResult> EditTask(string id)
+        public async Task<ActionResult> TaskPublishEdit(string id)
         {
             PersonTask task = await pTaskRepo.GetTaskAsync(id);
             return View(task);

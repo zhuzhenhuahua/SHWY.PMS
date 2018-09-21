@@ -10,7 +10,7 @@ namespace SHWY.Lib.DB.Repositorys
 {
     public class PersonTaskRepository : BaseRepository
     {
-        public async Task<Tuple<int, object>> GetListAsync(int pageIndex, int pageSize, int handlerId)
+        public async Task<Tuple<int, object>> GetListAsync(int pageIndex, int pageSize, int handlerId, int itemId)
         {
             int from = (pageIndex - 1) * pageSize;
             int total = await (from j in context.PersonTasks
@@ -21,7 +21,8 @@ namespace SHWY.Lib.DB.Repositorys
                               from ITEMS in tempItems.DefaultIfEmpty()//关联项目表
                               join prod in context.Products on j.prodId equals prod.ProID into tempProd
                               from PROD in tempProd.DefaultIfEmpty()//关联产品表
-                              where handlerId == 0 ? 1 == 1 : j.handlerID == handlerId
+                              where (handlerId == 0 ? 1 == 1 : j.handlerID == handlerId)
+                              && (itemId == 0 ? 1 == 1 : j.itemID == itemId)
                               orderby j.publishTime descending
                               select new
                               {
@@ -44,8 +45,8 @@ namespace SHWY.Lib.DB.Repositorys
                                   j.complSpeed,
                                   j.taskDiffLevel,
                                   j.evaDesc,
-                                  ItemName=ITEMS==null?"":ITEMS.NAME,
-                                  ProdName= PROD==null?"":PROD.NAME
+                                  ItemName = ITEMS == null ? "" : ITEMS.NAME,
+                                  ProdName = PROD == null ? "" : PROD.NAME
                               }).Skip(from).Take(pageSize).ToListAsync();
             return new Tuple<int, object>(total, list);
         }

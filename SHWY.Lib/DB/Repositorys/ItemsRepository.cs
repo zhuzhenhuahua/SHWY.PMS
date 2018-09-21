@@ -22,6 +22,12 @@ namespace SHWY.Lib.DB.Repositorys
                               select j).Skip(from).Take(pageSize).ToListAsync();
             return Tuple.Create(total, list);
         }
+        public async Task<List<Items>> GetListItemsAsync()
+        {
+            var list = await (from j in context.Items
+                              select j).ToListAsync();
+            return list;
+        }
         public async Task<Items> GetItemAsync(int itemId)
         {
             try

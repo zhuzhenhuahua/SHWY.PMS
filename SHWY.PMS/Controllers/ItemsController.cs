@@ -22,11 +22,19 @@ namespace SHWY.PMS.Controllers
             var result = await repoItems.GetListAsync(page, rows, itemName);
             return Json(new { total = result.Item1, rows = result.Item2 });
         }
+        public async Task<JsonResult> GetAllItems(int isAddAll)
+        {
+            var result = await repoItems.GetListItemsAsync();
+            if (isAddAll == 1)
+                result.Insert(0, new Items() { ItemID = 0, NAME = "全部" });
+            return Json(result);
+        }
         public async Task<ActionResult> EditItem(int itemId)
         {
             Items item = await repoItems.GetItemAsync(itemId);
             return View(item);
         }
+        #region 增删改
         public async Task<JsonResult> SaveItem(Items item)
         {
             var result = await repoItems.AddOrUpdateAsync(item);
@@ -37,5 +45,6 @@ namespace SHWY.PMS.Controllers
             var result = await repoItems.DeleteItem(itemId);
             return Json(new { isOk = result });
         }
+        #endregion
     }
 }
