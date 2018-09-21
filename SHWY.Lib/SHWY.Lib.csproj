@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="DB\Context\ProContext.cs" />
     <Compile Include="DB\Repositorys\BaseRepository.cs" />
+    <Compile Include="DB\Repositorys\CodeRepository.cs" />
     <Compile Include="DB\Repositorys\ItemsRepository.cs" />
     <Compile Include="DB\Repositorys\PersonTaskRepository.cs" />
     <Compile Include="DB\Repositorys\ProductRepository.cs" />

@@ -5,11 +5,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SHWY.Model.DB;
+using System.Collections.Concurrent;
 
 namespace SHWY.Lib.DB.Repositorys
 {
-   public class ItemsRepository:BaseRepository
+    public class ItemsRepository : BaseRepository
     {
+        private static ItemsRepository _itemsRepository;
+        private static readonly object locker = new object();
+        private ItemsRepository()
+        {
+
+        }
+        public static ItemsRepository CreateInstance()
+        {
+            if (_itemsRepository == null)
+            {
+                lock (locker)
+                {
+                    if (_itemsRepository == null)
+                        _itemsRepository = new ItemsRepository();
+                }
+            }
+            return _itemsRepository;
+        }
         public async Task<Tuple<int, List<Items>>> GetListAsync(int pageIndex, int pageSize, string itemName)
         {
             int from = (pageIndex - 1) * pageSize;
@@ -28,16 +47,30 @@ namespace SHWY.Lib.DB.Repositorys
                               select j).ToListAsync();
             return list;
         }
+        public static ConcurrentDictionary<int, Items> _dicItem = new ConcurrentDictionary<int, Items>();
         public async Task<Items> GetItemAsync(int itemId)
+        {
+            var item = await (from j in context.Items
+                              where j.ItemID == itemId
+                              select j).FirstOrDefaultAsync();
+            return item;
+
+        }
+        public async Task<Items> GetItemDicAsync(int itemId)
         {
             try
             {
-                var item = await (from j in context.Items
-                                  where j.ItemID == itemId
-                                  select j).FirstOrDefaultAsync();
-                if (item == null)
-                    return new Items();
-                return item;
+                if (!_dicItem.ContainsKey(itemId))
+                {
+                    var item = await (from j in context.Items
+                                      where j.ItemID == itemId
+                                      select j).FirstOrDefaultAsync();
+                    if (item != null)
+                        _dicItem[itemId] = item;
+                    else
+                        return null;
+                }
+                return _dicItem[itemId];
             }
             catch (Exception ex)
             {
@@ -52,9 +85,10 @@ namespace SHWY.Lib.DB.Repositorys
                 var itemNew = await GetItemAsync(item.ItemID);
                 bool isNew = false;
 
-                if (itemNew==null|| itemNew.ItemID.Equals(0))
+                if (itemNew == null || itemNew.ItemID.Equals(0))
                 {
                     isNew = true;
+                    itemNew = new Items();
                 }
                 foreach (var p in itemNew.GetType().GetProperties())
                 {
@@ -70,7 +104,7 @@ namespace SHWY.Lib.DB.Repositorys
                     context.Items.Add(item);
                 return await context.SaveChangesAsync() == 1;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }

@@ -10,45 +10,38 @@ namespace SHWY.Lib.DB.Repositorys
 {
     public class PersonTaskRepository : BaseRepository
     {
-        public async Task<Tuple<int, object>> GetListAsync(int pageIndex, int pageSize, int handlerId, int itemId)
+        private static PersonTaskRepository _personTaskRepository;
+        private static readonly object locker = new object();
+        private PersonTaskRepository()
+        {
+
+        }
+        public static PersonTaskRepository CreateInstance()
+        {
+            if (_personTaskRepository == null)
+            {
+                lock (locker)
+                {
+                    if (_personTaskRepository == null)
+                        _personTaskRepository = new PersonTaskRepository();
+                }
+            }
+            return _personTaskRepository;
+        }
+
+        public async Task<Tuple<int,List<V_PersonTask>>> GetListAsync(int pageIndex, int pageSize, int handlerId, int itemId)
         {
             int from = (pageIndex - 1) * pageSize;
-            int total = await (from j in context.PersonTasks
-                               where handlerId == 0 ? 1 == 1 : j.handlerID == handlerId
+            int total = await (from j in context.VPersonTask
+                               where (handlerId == 0 ? 1 == 1 : j.handlerID == handlerId)
+                             && (itemId == 0 ? 1 == 1 : j.itemID == itemId)
                                select j).CountAsync();
-            var list = await (from j in context.PersonTasks
-                              join items in context.Items on j.itemID equals items.ItemID into tempItems
-                              from ITEMS in tempItems.DefaultIfEmpty()//关联项目表
-                              join prod in context.Products on j.prodId equals prod.ProID into tempProd
-                              from PROD in tempProd.DefaultIfEmpty()//关联产品表
+            var list = await (from j in context.VPersonTask
                               where (handlerId == 0 ? 1 == 1 : j.handlerID == handlerId)
                               && (itemId == 0 ? 1 == 1 : j.itemID == itemId)
                               orderby j.publishTime descending
-                              select new
-                              {
-                                  ID = j.ID,
-                                  j.JIRID,
-                                  j.itemID,
-                                  j.prodId,
-                                  j.TaskType,
-                                  j.detail,
-                                  j.publishTime,
-                                  j.predDeadTime,
-                                  j.taskStatus,
-                                  j.remark,
-                                  j.publisherID,
-                                  j.handlerID,
-                                  j.followerID,
-                                  j.complTime,
-                                  j.taskComplDegree,
-                                  j.serviceAttri,
-                                  j.complSpeed,
-                                  j.taskDiffLevel,
-                                  j.evaDesc,
-                                  ItemName = ITEMS == null ? "" : ITEMS.NAME,
-                                  ProdName = PROD == null ? "" : PROD.NAME
-                              }).Skip(from).Take(pageSize).ToListAsync();
-            return new Tuple<int, object>(total, list);
+                              select j).Skip(from).Take(pageSize).ToListAsync();
+            return Tuple.Create<int, List<V_PersonTask>>(total, list);
         }
         public async Task<PersonTask> GetTaskAsync(string id)
         {

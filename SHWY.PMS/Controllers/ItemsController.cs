@@ -11,7 +11,7 @@ namespace SHWY.PMS.Controllers
 {
     public class ItemsController : BaseController
     {
-        ItemsRepository repoItems = new ItemsRepository();
+        ItemsRepository repoItems = ItemsRepository.CreateInstance();
         // GET: Items
         public ActionResult Index()
         {
@@ -32,6 +32,8 @@ namespace SHWY.PMS.Controllers
         public async Task<ActionResult> EditItem(int itemId)
         {
             Items item = await repoItems.GetItemAsync(itemId);
+            if (item == null)
+                item = new Items();
             return View(item);
         }
         #region 增删改

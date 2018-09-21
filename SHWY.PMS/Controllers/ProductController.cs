@@ -12,7 +12,7 @@ namespace SHWY.PMS.Controllers
 {
     public class ProductController : BaseController
     {
-        ProductRepository prodRepo = new ProductRepository();
+        ProductRepository prodRepo = ProductRepository.CreateInstance();
         // GET: Product
         public ActionResult Index()
         {
