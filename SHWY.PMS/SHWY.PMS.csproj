@@ -1005,6 +1005,7 @@
     <Content Include="Views\Product\EditProd.cshtml" />
     <Content Include="Views\PersonTask\TaskPublishList.cshtml" />
     <Content Include="Views\PersonTask\TaskPublishEdit.cshtml" />
+    <Content Include="Views\PersonTask\TaskProcessEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

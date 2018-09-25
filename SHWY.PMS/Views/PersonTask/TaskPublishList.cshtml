@@ -6,9 +6,10 @@
 
 <table id="tt"></table>
 <div id="tb">
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditPersonTask(0)">新增</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditPersonTask(0)">发布</a>
     <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditPersonTask(1)">修改</a>
     <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelTask()">删除</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="TaskProcess()">任务过程</a>
     <span class="l-btn-text">项目：</span><input class="easyui-textbox" id="txtItemQ" style="width:120px;" />
     <span class="l-btn-text">处理人：</span><input class="easyui-textbox" id="txtHandlerIDQ" style="width:100px;" />
     <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
@@ -44,7 +45,8 @@
                 { field: 'JIRID', title: 'JIRID', width: 80, hidden: true },
                 { field: 'ItemName', title: '项目名称', width: 100 },
                 { field: 'ProdName', title: '产品名称', width: 150 },
-                { field: 'taskTypeName', title: '任务类型', width: 80,align:'center' },
+                { field: 'taskTypeName', title: '任务类型', width: 80, align: 'center' },
+                { field: 'taskStatusName', title: '当前任务状态', width: 100, align: 'center' },
                 {
                     field: 'detail', title: '任务描述', width: 300, formatter: function (value, row, index) {
                         var content = '<a title="' + value + '" class="easyui-tooltip">' + value + '</a>';
@@ -53,15 +55,14 @@
                 },
                 { field: 'publishTime', title: '发布时间', width: 110 },
                 { field: 'predDeadTime', title: '预期完成时间', width: 110 },
-                { field: 'taskStatusName', title: '当前任务状态', width: 100 },
                 { field: 'publisherName', title: '发布人', width: 100 },
                 { field: 'handlerName', title: '处理人', width: 100 },
                 { field: 'followerName', title: '跟踪人', width: 100 },
                 { field: 'complTime', title: '完成时间', width: 110 },
-                { field: 'taskComplDegree', title: '任务完成程度', width: 100 },
-                { field: 'serviceAttri', title: '服务态度', width: 100 },
-                { field: 'complSpeed', title: '完成速度', width: 100 },
-                { field: 'taskDiffLevel', title: '任务困难程度', width: 100 },
+                { field: 'taskComplDegreeName', title: '任务完成程度', width: 100 },
+                { field: 'serviceAttriName', title: '服务态度', width: 100 },
+                { field: 'complSpeedName', title: '完成速度', width: 100 },
+                { field: 'taskDiffLevelName', title: '任务困难程度', width: 100 },
                 { field: 'evaDesc', title: '评价描述', width: 100 },
                           { field: 'remark', title: '备注', width: 100 },
             ]],
@@ -133,10 +134,18 @@
                     GridReload(isAdd ? "load" : "reload");
                 }
                 else {
-                    alert('保存失败');
+                    AlertMsg('保存失败');
                 }
 
             });
         }
+    }
+    function TaskProcess() {
+        var row = $("#tt").datagrid("getSelected");
+        if (row == null) {
+            AlertMsg("请选择一行数据后再操作");
+            return;
+        }
+        ShowDialogNoSaveCancel("任务过程", 800, 550, "/PersonTask/TaskProcessEdit");
     }
 </script>

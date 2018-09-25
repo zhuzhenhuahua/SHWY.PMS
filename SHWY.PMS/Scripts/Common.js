@@ -70,6 +70,25 @@ function ShowDialog(title, width, height, url, btnSaveFun) {
         }
     }).dialog("open");
 }
+function ShowDialogNoSaveCancel(title, width, height, url) {
+    var div = $("#PopWindow");
+    if (div.length <= 0) {
+        div = "<div id=\"PopWindow\" style=\"margin: 0; padding-top: 5px; border: 0\"></div>";
+        $("body").append(div);
+    }
+    $("#PopWindow").dialog({
+        title: title,
+        width: width,
+        height: height,
+        closed: true,
+        cache: true,
+        href: url
+    }).dialog({
+        onClose: function () {
+            $("#PopWindow").remove();
+        }
+    }).dialog("open");
+}
 function AlertMsg(msg) {
     $.messager.show({
         title: '提示',

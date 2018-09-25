@@ -5,29 +5,30 @@ using System.Text;
 using System.Threading.Tasks;
 using SHWY.Model.DB;
 using System.Data.Entity;
+using System.Data.SqlClient;
 
 namespace SHWY.Lib.DB.Repositorys
 {
     public class PersonTaskRepository : BaseRepository
     {
-        private static PersonTaskRepository _personTaskRepository;
-        private static readonly object locker = new object();
-        private PersonTaskRepository()
-        {
+        //private static PersonTaskRepository _personTaskRepository;
+        //private static readonly object locker = new object();
+        //private PersonTaskRepository()
+        //{
 
-        }
-        public static PersonTaskRepository CreateInstance()
-        {
-            if (_personTaskRepository == null)
-            {
-                lock (locker)
-                {
-                    if (_personTaskRepository == null)
-                        _personTaskRepository = new PersonTaskRepository();
-                }
-            }
-            return _personTaskRepository;
-        }
+        //}
+        //public static PersonTaskRepository CreateInstance()
+        //{
+        //    if (_personTaskRepository == null)
+        //    {
+        //        lock (locker)
+        //        {
+        //            if (_personTaskRepository == null)
+        //                _personTaskRepository = new PersonTaskRepository();
+        //        }
+        //    }
+        //    return _personTaskRepository;
+        //}
 
         public async Task<Tuple<int,List<V_PersonTask>>> GetListAsync(int pageIndex, int pageSize, int handlerId, int itemId)
         {
@@ -37,10 +38,18 @@ namespace SHWY.Lib.DB.Repositorys
                              && (itemId == 0 ? 1 == 1 : j.itemID == itemId)
                                select j).CountAsync();
             var list = await (from j in context.VPersonTask
+                                  //join item in context.Items on j.itemID equals item.ItemID
+                                  //join prod in context.Products on j.prodId equals prod.ProID
+                                  //join taskType in context.TaskTypes on j.TaskType equals taskType.ID
+                                  //join taskStatus in context.TaskStatus on j.taskStatus equals taskStatus.id
+                                  //join pUser in context.Sys_Users on j.publisherID equals pUser.Uid
+                                  //join hUser in context.Sys_Users on j.handlerID equals hUser.Uid
+                                  //join fUser in context.Sys_Users on j.followerID equals fUser.Uid
                               where (handlerId == 0 ? 1 == 1 : j.handlerID == handlerId)
                               && (itemId == 0 ? 1 == 1 : j.itemID == itemId)
                               orderby j.publishTime descending
                               select j).Skip(from).Take(pageSize).ToListAsync();
+            // var list =await context.VPersonTask.SqlQuery("select * from V_PersonTask order by publishTime desc").ToListAsync();
             return Tuple.Create<int, List<V_PersonTask>>(total, list);
         }
         public async Task<PersonTask> GetTaskAsync(string id)
@@ -85,7 +94,7 @@ namespace SHWY.Lib.DB.Repositorys
                     context.PersonTasks.Add(ptask);
                 return await context.SaveChangesAsync() == 1;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }

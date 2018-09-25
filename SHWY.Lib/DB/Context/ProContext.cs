@@ -48,5 +48,7 @@ namespace SHWY.Lib.DB.Context
         public DbSet<V_PersonTask> VPersonTask { get; set; }
         public DbSet<CodeTaskStatus> TaskStatus { get; set; }
         public DbSet<CodeTaskType> TaskTypes { get; set; }
+        public DbSet<Codes> Codes { get; set; }
+        public DbSet<PersonTaskProcess> PersonTaskProcess { get; set; }
     }
 }

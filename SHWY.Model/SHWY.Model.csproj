@@ -48,12 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DB\Codes.cs" />
     <Compile Include="DB\Configuration\ActConfig.cs" />
     <Compile Include="DB\Configuration\Att\ConfigAttribute.cs" />
     <Compile Include="DB\EntApp_SJ_Head.cs" />
     <Compile Include="DB\EntAppAsnHead.cs" />
     <Compile Include="DB\Items.cs" />
     <Compile Include="DB\PersonTask.cs" />
+    <Compile Include="DB\PersonTaskProcess.cs" />
     <Compile Include="DB\Product.cs" />
     <Compile Include="DB\Sys_Configuration.cs" />
     <Compile Include="DB\Sys_Menu.cs" />

@@ -38,11 +38,10 @@ namespace SHWY.PMS.Controllers
                 ViewData["errorMsg"] = "账号或密码输入错误";
                 return View("Login", viewModel);
             }
-            CurrentUser currentUser = new CurrentUser();
-            currentUser.Sys_User = userModel;
-            currentUser.Sys_RoleMenu = await repo_RoleMeun.GetListAsync(userModel.RoleId);
-            currentUser.Sys_RoleOper = await repo_RoleOper.GetListAsync(userModel.RoleId);
-            Session["CurrentUser"] = currentUser;
+            CurrentUser.Sys_User = userModel;
+            CurrentUser.Sys_RoleMenu = await repo_RoleMeun.GetListAsync(userModel.RoleId);
+            CurrentUser.Sys_RoleOper = await repo_RoleOper.GetListAsync(userModel.RoleId);
+            Session["CurrentUser"] = CurrentUser.Sys_User;
             Session.Timeout = 120;//登录过期时间（分钟）
             return Redirect("/Home/Index"); ; 
 

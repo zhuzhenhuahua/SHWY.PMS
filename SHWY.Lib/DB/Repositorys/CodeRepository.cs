@@ -68,13 +68,28 @@ namespace SHWY.Lib.DB.Repositorys
             if (!_dicTaskStatus.ContainsKey(id))
             {
                 var taskStatus = await (from j in context.TaskStatus.Where(p => p.id == id)
-                                      select j).FirstOrDefaultAsync();
+                                        select j).FirstOrDefaultAsync();
                 if (taskStatus != null)
                     _dicTaskStatus[id] = taskStatus.name;
                 else
-                   return string.Empty;
+                    return string.Empty;
             }
             return _dicTaskStatus[id];
+        }
+        #endregion
+        #region Codes
+        public async Task<List<Codes>> GetCodesListAsync()
+        {
+            var list = await (from j in context.Codes
+                              select j).ToListAsync();
+            return list;
+        }
+        public async Task<List<Codes>> GetCodesListAsync(int typeId)
+        {
+            var list = await (from j in context.Codes
+                              where j.TypeId == typeId
+                              select j).ToListAsync();
+            return list;
         }
         #endregion
     }

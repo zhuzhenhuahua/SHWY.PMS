@@ -1,0 +1,123 @@
+﻿
+@{
+    ViewBag.Title = "TaskProcessEdit";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+<table id="ttProcess"></table>
+<script>
+    $(function () {
+        var selectRow = $('#tt').datagrid('getSelected');
+        $("#ttProcess").datagrid({
+            url: '/PersonTask/GetProcessListAsync',
+            columns: [[
+                { field: 'Id', title: 'Id', hidden: true },
+                { field: 'TaskId', title: 'TaskId', hidden: true },
+                { field: 'WorkStartTime', title: '开始时间', width: 130, editor: { type: 'datetimebox', options: { required: true } } },
+                { field: 'WorkEndTime', title: '结束时间', width: 130, editor: { type: 'datetimebox', options: { required: true } } },
+                { field: 'Details', title: '任务描述', width: 380, editor: { type: 'textbox', options: { required: true } } },
+                {
+                    field: 'action', title: '操作', width: 100, align: 'center', formatter: function (value, row, index) {
+                        if (row.editing) {
+                            var s = '<a href="#" onclick="saverow(this)">Save</a> ';
+                            var c = '<a href="#" onclick="cancelrow(this)">Cancel</a>';
+                            return s + c;
+                        } else {
+                            var e = '<a href="#" onclick="editrow(this)">Edit</a> ';
+                            var d = '<a href="#" onclick="deleterow(this)">Delete</a>';
+                            return e + d;
+                        }
+                    }
+                }
+            ]],
+            onBeforeEdit: function (index, row) {
+                row.editing = true;
+                updateActions(index, row.editing);
+            },
+            onAfterEdit: function (index, row) {
+                row.editing = false;
+                updateActions(index, row.editing);
+                SaveData(row);
+            },
+            onCancelEdit: function (index, row) {
+                row.editing = false;
+                updateActions(index, row.editing);
+            },
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            singleSelect: true,
+            toolbar: [{
+                iconCls: 'icon-add',
+                text: '新增',
+                handler: insert
+            }],
+            pagination: true,
+            pageSize: 20,
+            idField: 'Id',
+            rownumbers: true,
+            fit: true,
+            queryParams: {
+                taskId: selectRow.ID
+            }
+        });
+    });
+    function editrow(target) {
+        $("#ttProcess").datagrid('beginEdit', getRowIndex(target));
+    }
+    function saverow(target) {
+        $("#ttProcess").datagrid('endEdit', getRowIndex(target));
+    }
+    function deleterow(target) {
+        $.messager.confirm('提示', '确定要删除吗？', function (r) {
+            if (r) {
+                $("#ttProcess").datagrid('deleteRow', getRowIndex(target));
+                DeleteProcess();
+            }
+        });
+    }
+    function cancelrow(target) {
+        $('#ttProcess').datagrid('cancelEdit', getRowIndex(target));
+    }
+    function getRowIndex(target) {
+        var tr = $(target).closest('tr.datagrid-row');
+        return parseInt(tr.attr('datagrid-row-index'));
+    }
+    function insert() {
+        var row = $('#ttProcess').datagrid('getSelected');
+        if (row) {
+            var index = $('#ttProcess').datagrid('getRowIndex', row);
+        } else {
+            index = 0;
+        }
+        $('#ttProcess').datagrid('insertRow', {
+            index: index,
+            row: {}
+        });
+        $('#ttProcess').datagrid('selectRow', index);
+        $('#ttProcess').datagrid('beginEdit', index);
+    }
+    function updateActions(index, editing) {
+        $('#ttProcess').datagrid('updateRow', {
+            index: index,
+            row: { action: editing }//此处不知是版本原因还是其他，必须要传editing才会重新渲染，示例上是不用的(示例直接row：{}，没有editing参数)
+        });
+    }
+    //单行提交
+    function SaveData(row) {
+        var selectRow = $('#tt').datagrid('getSelected');
+        if (selectRow != null) {
+            row.TaskId = selectRow.ID;
+            $.post("/PersonTask/SavePersonProcess", row, function (result) {
+                if (result.isOk) {
+                    AlertMsg('保存成功');
+                    $("#ttProcess").datagrid('acceptChanges');
+                } else {
+                    AlertMsg('保存失败');
+                }
+            });
+        }
+    }
+    function DeleteProcess() {
+        var rows = $("#ttProcess").datagrid('getChanges', 'deleted'); //获取删除的数据
+        alert("条数：" + rows.length + "值：" + rows[0].Id);
+        $("#ttProcess").datagrid('acceptChanges');
+    }
+</script>

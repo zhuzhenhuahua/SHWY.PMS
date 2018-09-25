@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace SHWY.Model.DB
     [Table("V_PersonTask")]
    public class V_PersonTask
     {
+        [Key]
         public string ID { get; set; }
         /// <summary>
         /// JIRID
@@ -77,19 +79,23 @@ namespace SHWY.Model.DB
         /// <summary>
         /// 任务完成度
         /// </summary>
-        public int taskComplDegree { get; set; }
+        public string taskComplDegree { get; set; }
+        public string taskComplDegreeName { get; set; }
         /// <summary>
         /// 服务态度
         /// </summary>
-        public int serviceAttri { get; set; }
+        public string serviceAttri { get; set; }
+        public string serviceAttriName { get; set; }
         /// <summary>
         /// 完成速度
         /// </summary>
-        public int complSpeed { get; set; }
+        public string complSpeed { get; set; }
+        public string complSpeedName { get; set; }
         /// <summary>
         /// 任务困难程度
         /// </summary>
-        public int taskDiffLevel { get; set; }
+        public string taskDiffLevel { get; set; }
+        public string taskDiffLevelName { get; set; }
         /// <summary>
         /// 评价描述
         /// </summary>

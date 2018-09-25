@@ -88,22 +88,22 @@ namespace SHWY.Model.DB
         /// 任务完成度
         /// </summary>
         [DisplayName("任务完成度")]
-        public int taskComplDegree { get; set; }
+        public string taskComplDegree { get; set; }
         /// <summary>
         /// 服务态度
         /// </summary>
         [DisplayName("服务态度")]
-        public int serviceAttri { get; set; }
+        public string serviceAttri { get; set; }
         /// <summary>
         /// 完成速度
         /// </summary>
         [DisplayName("完成速度")]
-        public int complSpeed { get; set; }
+        public string complSpeed { get; set; }
         /// <summary>
         /// 任务困难程度
         /// </summary>
         [DisplayName("任务困难程度")]
-        public int taskDiffLevel { get; set; }
+        public string taskDiffLevel { get; set; }
         /// <summary>
         /// 评价描述
         /// </summary>

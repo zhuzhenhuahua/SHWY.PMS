@@ -3,10 +3,9 @@
     ViewBag.Title = "TaskPublishEdit";
     Layout = "~/Views/Shared/_BaseContent.cshtml";
 }
-
 <form id="formTaskPublishEidt">
     <table>
-        <tr>
+        <tr style="height:30px;">
             <td style="padding-left:20px;">JIRID:</td>
             <td>@Html.TextBoxFor(p => p.JIRID, new { @class = "easyui-textbox", data_options = "required:true" })</td>
             <td style="padding-left:20px;">项目:</td>
@@ -14,7 +13,7 @@
             <td style="padding-left:20px;">产品:</td>
             <td>@Html.DropDownListFor(p => p.prodId, ViewBag.ProdList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
         </tr>
-        <tr>
+        <tr style="height:30px;">
             <td style="padding-left:20px;">任务类型:</td>
             <td>@Html.DropDownListFor(p => p.TaskType, ViewBag.TaskTypeList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
             <td style="padding-left:20px;">当前状态:</td>
@@ -24,10 +23,39 @@
         </tr>
         <tr>
             <td style="padding-left:20px;">任务描述:</td>
-            <td colspan="5">@Html.TextBoxFor(p=>p.detail,new { @class= "easyui-textbox", data_options = "multiline:true,required:true", style="width:100%;height:50px;" })</td>
+            <td colspan="5">@Html.TextBoxFor(p => p.detail, new { @class = "easyui-textbox", data_options = "multiline:true,required:true", style = "width:100%;height:50px;" })</td>
+        </tr>
+        <tr style="height:30px;">
+            <td style="padding-left:20px;">发布人:</td>
+            <td>@Html.DropDownListFor(p => p.publisherID, ViewBag.UserList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+            <td style="padding-left:20px;">处理人:</td>
+            <td>@Html.DropDownListFor(p => p.handlerID, ViewBag.UserList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+            <td style="padding-left:20px;">跟踪人:</td>
+            <td>@Html.DropDownListFor(p => p.followerID, ViewBag.UserList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+        </tr>
+        <tr style="height:30px;">
+            <td style="padding-left:20px;">完成时间:</td>
+            <td>@Html.TextBoxFor(p => p.complTime, new { @class = "easyui-datetimebox" })</td>
+            <td style="padding-left:20px;">完成程度:</td>
+            <td>@Html.DropDownListFor(p => p.taskComplDegree, ViewBag.TaskComplDegree as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+            <td style="padding-left:20px;">服务态度:</td>
+            <td>@Html.DropDownListFor(p => p.serviceAttri, ViewBag.ServiceAttri as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+        </tr>
+        <tr style="height:30px;">
+            <td style="padding-left:20px;">完成速度:</td>
+            <td>@Html.DropDownListFor(p => p.complSpeed, ViewBag.ComplSpeed as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+            <td style="padding-left:20px;">困难程度:</td>
+            <td colspan="3">@Html.DropDownListFor(p => p.taskDiffLevel, ViewBag.TaskDiffLevel as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+        </tr>
+        <tr>
+            <td style="padding-left:20px;">评价描述:</td>
+            <td colspan="5">@Html.TextBoxFor(p => p.evaDesc, new { @class = "easyui-textbox", data_options = "multiline:true", style = "width:100%;height:50px;" })</td>
+        </tr>
+        <tr>
+            <td style="padding-left:20px;">备注:</td>
+            <td colspan="5">@Html.TextBoxFor(p => p.remark, new { @class = "easyui-textbox", data_options = "multiline:true", style = "width:100%;height:50px;" })</td>
         </tr>
     </table>
-    <input type="hidden" name="MenuId" value="@Model.ID" />
+    @Html.HiddenFor(p => p.ID)
+    @Html.HiddenFor(p => p.publishTime);
 </form>
-
-
