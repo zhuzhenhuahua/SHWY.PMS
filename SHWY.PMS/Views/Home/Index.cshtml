@@ -2,7 +2,11 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<script type="text/javascript">
+    function showDetails(that) {
+        alert($(that).attr("taskId"));
+    }
+</script>
 
 <div>
     @foreach (var myTask in Model.personTaskList)
@@ -13,7 +17,7 @@
             <span> 任务类型：@myTask.taskTypeName</span><br />
             <span> 任务状态：@myTask.taskStatusName</span><br />
             <span>描述：@myTask.detail</span><br />
-            <span><a href="#">查看详细</a></span>
+            <span><a href="javascript:void(0)" onclick="showDetails(this)" taskId="@myTask.ID">查看详细</a></span>
         </div>
     }
 </div>

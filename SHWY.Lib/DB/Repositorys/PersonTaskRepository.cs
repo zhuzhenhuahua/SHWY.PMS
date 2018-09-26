@@ -35,14 +35,13 @@ namespace SHWY.Lib.DB.Repositorys
             int from = (pageIndex - 1) * pageSize;
             int total = await (from j in context.VPersonTask
                                where (handlerId == 0 ? 1 == 1 : j.handlerID == handlerId)
-                             && (itemId == "0" ? 1 == 1 : j.itemID == itemId)
+                             && (itemId == "" ? 1 == 1 : j.itemID == itemId)
                                select j).CountAsync();
             var list = await (from j in context.VPersonTask
                               where (handlerId == 0 ? 1 == 1 : j.handlerID == handlerId)
-                              && (itemId == "0" ? 1 == 1 : j.itemID == itemId)
+                              && (itemId == "" ? 1 == 1 : j.itemID == itemId)
                               orderby j.publishTime descending
                               select j).Skip(from).Take(pageSize).ToListAsync();
-            // var list =await context.VPersonTask.SqlQuery("select * from V_PersonTask order by publishTime desc").ToListAsync();
             return Tuple.Create<int, List<V_PersonTask>>(total, list);
         }
         public async Task<PersonTask> GetTaskAsync(string id)

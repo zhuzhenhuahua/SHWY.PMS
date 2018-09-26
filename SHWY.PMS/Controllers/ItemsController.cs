@@ -26,7 +26,7 @@ namespace SHWY.PMS.Controllers
         {
             var result = await repoItems.GetListItemsAsync();
             if (isAddAll == 1)
-                result.Insert(0, new Items() { ItemID = "0", NAME = "全部" });
+                result.Insert(0, new Items() { ItemID = "", NAME = "全部" });
             return Json(result);
         }
         public async Task<ActionResult> EditItem(string strItemId)

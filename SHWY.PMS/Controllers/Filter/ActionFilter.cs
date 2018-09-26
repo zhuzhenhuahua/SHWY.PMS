@@ -16,13 +16,13 @@ namespace SHWY.PMS.Controllers.Filter
         {
            // base.OnActionExecuting(filterContext);
             var sessionUser= filterContext.HttpContext.Session["CurrentUser"];
-            //if (sessionUser != null||sessionUser==null)
-            //{
-            //    filterContext.Result = new ContentResult() { Content = "请重新登录" };
-            //    //filterContext.Result = new JavaScriptResult() { Script = "alert('dfd')" };
-            //    //var result= new JavaScriptResult() { Script = "window.top.location.href = '/Account/Login'" };
-            //    //filterContext.Result = result;
-            //}
+            if ( sessionUser == null)
+            {
+                filterContext.Result = new ContentResult() { Content = "请重新登录" };
+                //filterContext.Result = new JavaScriptResult() { Script = "alert('dfd')" };
+                //var result= new JavaScriptResult() { Script = "window.top.location.href = '/Account/Login'" };
+                //filterContext.Result = result;
+            }
             //else
             //{
 

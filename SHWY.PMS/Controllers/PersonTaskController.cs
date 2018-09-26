@@ -19,13 +19,15 @@ namespace SHWY.PMS.Controllers
         CodeRepository codeRepo = CodeRepository.CreateInstance();
         Sys_UserRepository userRepo = new Sys_UserRepository();
         // GET: PersonTask
+        #region PersonTask任务
         public ActionResult TaskPublishList()
         {
             return View();
         }
         public async Task<JsonResult> GetList(int page, int rows, int handlerId, string itemId)
         {
-
+            if (itemId == "0")
+                itemId = "";
             var result = await pTaskRepo.GetListAsync(page, rows, handlerId, itemId);
             return Json(new { total = result.Item1, rows = result.Item2 });
         }
@@ -102,6 +104,90 @@ namespace SHWY.PMS.Controllers
             }
             return View(task);
         }
+        public ActionResult MyTaskList()
+        {
+            return View();
+        }
+        public async Task<JsonResult> GetMyTaskList(int page, int rows, string itemId)
+        {
+            if (itemId == "0")
+                itemId = "";
+            int uid = CurrentUser.Sys_User.Uid;
+            var result = await pTaskRepo.GetListAsync(page, rows, uid, itemId);
+            return Json(new { total = result.Item1, rows = result.Item2 });
+        }
+        public async Task<ActionResult> MyTaskPublishEdit(string taskId)
+        {
+            PersonTask task = await pTaskRepo.GetTaskAsync(taskId);
+            //产品
+            var ItemList = new List<SelectListItem>();
+            var items = await itemsRepo.GetListItemsAsync();
+            var items2 = new SelectList(items, "ItemID", "NAME");
+            ItemList.AddRange(items2);
+            ViewBag.ItemList = ItemList;
+            //项目
+            var ProdList = new List<SelectListItem>();
+            var prods = await prodRepo.GetListAsync();
+            var prods2 = new SelectList(prods, "ProID", "NAME");
+            ProdList.AddRange(prods2);
+            ViewBag.ProdList = ProdList;
+            //任务类型
+            var TaskTypeList = new List<SelectListItem>();
+            var tasktypes = await codeRepo.GetTaskTypeListAsync();
+            var tasktypes2 = new SelectList(tasktypes, "ID", "NAME");
+            TaskTypeList.AddRange(tasktypes2);
+            ViewBag.TaskTypeList = TaskTypeList;
+            //任务状态
+            var TaskStatusList = new List<SelectListItem>();
+            var taskstatus = await codeRepo.GetTaskStatusListAsync();
+            var taskstatus2 = new SelectList(taskstatus, "id", "name");
+            TaskStatusList.AddRange(taskstatus2);
+            ViewBag.TaskStatusList = TaskStatusList;
+            //人员
+            var UserList = new List<SelectListItem>();
+            var userlist = await userRepo.GetUserListAsync();
+            var userlist2 = new SelectList(userlist, "Uid", "Name");
+            UserList.AddRange(userlist2);
+            ViewBag.UserList = UserList;
+
+            var codes = await codeRepo.GetCodesListAsync();
+            //完成程度
+            var TaskComplDegree = new List<SelectListItem>();
+            var taskDegree = codes.Where(p => p.TypeId == (int)ECodesTypeId.taskComplDegree).ToList();
+            var taskDegree2 = new SelectList(taskDegree, "Code", "Text");
+            TaskComplDegree.AddRange(taskDegree2);
+            ViewBag.TaskComplDegreeV = TaskComplDegree;
+            //服务态度
+            var ServiceAttri = new List<SelectListItem>();
+            var serAttri = codes.Where(p => p.TypeId == (int)ECodesTypeId.serviceAttri).ToList();
+            var serAttri2 = new SelectList(serAttri, "Code", "Text");
+            ServiceAttri.AddRange(serAttri2);
+            ViewBag.ServiceAttriV = ServiceAttri;
+            //完成速度
+            var ComplSpeed = new List<SelectListItem>();
+            var speed = codes.Where(p => p.TypeId == (int)ECodesTypeId.complSpeed).ToList();
+            var speed2 = new SelectList(speed, "Code", "Text");
+            ComplSpeed.AddRange(speed2);
+            ViewBag.ComplSpeedV = ComplSpeed;
+            //困难程度
+            var TaskDiffLevel = new List<SelectListItem>();
+            var diffLevel = codes.Where(p => p.TypeId == (int)ECodesTypeId.taskDiffLevel).ToList();
+            var diffLevel2 = new SelectList(diffLevel, "Code", "Text");
+            TaskDiffLevel.AddRange(diffLevel2);
+            ViewBag.TaskDiffLevelV = TaskDiffLevel;
+            if ( string.IsNullOrEmpty(taskId))
+            {
+                task.publisherID = task.handlerID = task.followerID = CurrentUser.Sys_User.Uid;
+            }
+            else
+            {
+                if (task.complTime == null || task.complTime.Value.Year <= 1900)
+                    task.complTime = null;
+            }
+            return View(task);
+        }
+        #endregion
+        #region PersonTaskProcess任务过程
         public ActionResult TaskProcessEdit()
         {
             return View();
@@ -122,6 +208,8 @@ namespace SHWY.PMS.Controllers
             }
             return Json(new { total = tuple.Item1, rows = objList });
         }
+        #endregion
+        #region 任务过程增删改
         public async Task<JsonResult> SavePersonProcess(PersonTaskProcess process)
         {
             if (process.Id == 0)
@@ -134,6 +222,8 @@ namespace SHWY.PMS.Controllers
             var result = await pTaskProcessRepo.DelPersonProcessAsync(id);
             return Json(new { isOk = result });
         }
+        #endregion
+        #region 任务增删改
         public async Task<JsonResult> SaveTask(PersonTask task)
         {
             if (task.ID == "0" || string.IsNullOrEmpty(task.ID))
@@ -151,5 +241,6 @@ namespace SHWY.PMS.Controllers
             var result = await pTaskRepo.DeletePersonTask(id);
             return Json(new { isOk = result });
         }
+        #endregion 
     }
 }
