@@ -13,7 +13,7 @@
         $("#tt").datagrid({
             url: '/Items/GetList',
             columns: [[
-                { field: 'ItemID', title: 'ItemID', width: 50,hidden:true },
+                { field: 'ItemID', title: '项目ID', width: 50 },
                 { field: 'NAME', title: '项目名称', width: 180 },
                 { field: 'ALIAS', title: '别名', width: 200 }
             ]],
@@ -23,7 +23,7 @@
             singleSelect: true,
             toolbar: [{
                 iconCls: 'icon-add',
-                id:'btnAdd',
+                id: 'btnAdd',
                 text: '新增',
                 handler: function () {
                     EditItem(0);
@@ -42,7 +42,7 @@
                 }
             }, {
                 iconCls: 'icon-clear',
-                id:'btnDelete',
+                id: 'btnDelete',
                 text: '删除',
                 handler: function () {
                     var row = $("#tt").datagrid("getSelected");
@@ -53,10 +53,10 @@
                     DelUser(row.ItemID);
                 }
             }, {
-                text:'项目名称：<input type="text" id="txtItemNameQ" style="width:120px;" />'
+                text: '项目名称：<input type="text" id="txtItemNameQ" style="width:120px;" />'
             }, {
                 iconCls: 'icon-search',
-                id:'btnSearch',
+                id: 'btnSearch',
                 text: '查询',
                 handler: function () {
                     GridReload("load");
@@ -83,7 +83,7 @@
             isAdd = true;
         else
             isAdd = false;
-        ShowDialog("项目管理", 500, 400, "/Items/EditItem?itemId=" + itemId, saveItem);
+        ShowDialog("项目管理", 500, 400, "/Items/EditItem?strItemId=" + itemId, saveItem);
     }
     function DelUser(itemId) {
         $.messager.confirm('提示', "确定要删除吗？", function (r) {
@@ -104,18 +104,32 @@
         var check = $("#formItemEidt").form('enableValidation').form('validate');
         if (check) {
             var postData = $("#formItemEidt").serialize();
-            $.post("/Items/SaveItem", postData, function (result) {
-                if (result.isOk) {
-                    $('#PopWindow').dialog('close');
-                    $("#PopWindow").remove();
-                    GridReload(isAdd ? "load" : "reload");
-                }
-                else {
-                    alert('保存失败');
-                }
-
-            });
+            if (isAdd) {
+                $.post("/Items/IsExistsByItemId", postData, function (result) {
+                    if (result.isExists) {
+                        AlertMsg("项目编号已存在,请重新输入");
+                    }
+                    else {
+                        SaveData(postData);
+                    }
+                });
+            }
+            else {
+                SaveData(postData);
+            }
         }
+    }
+    function SaveData(postData) {
+        $.post("/Items/SaveItem", postData, function (result) {
+            if (result.isOk) {
+                $('#PopWindow').dialog('close');
+                $("#PopWindow").remove();
+                GridReload(isAdd ? "load" : "reload");
+            }
+            else {
+                alert('保存失败');
+            }
+        });
     }
 </script>
 

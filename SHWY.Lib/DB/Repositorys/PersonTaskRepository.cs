@@ -30,23 +30,16 @@ namespace SHWY.Lib.DB.Repositorys
         //    return _personTaskRepository;
         //}
 
-        public async Task<Tuple<int,List<V_PersonTask>>> GetListAsync(int pageIndex, int pageSize, int handlerId, int itemId)
+        public async Task<Tuple<int, List<V_PersonTask>>> GetListAsync(int pageIndex, int pageSize, int handlerId, string itemId)
         {
             int from = (pageIndex - 1) * pageSize;
             int total = await (from j in context.VPersonTask
                                where (handlerId == 0 ? 1 == 1 : j.handlerID == handlerId)
-                             && (itemId == 0 ? 1 == 1 : j.itemID == itemId)
+                             && (itemId == "0" ? 1 == 1 : j.itemID == itemId)
                                select j).CountAsync();
             var list = await (from j in context.VPersonTask
-                                  //join item in context.Items on j.itemID equals item.ItemID
-                                  //join prod in context.Products on j.prodId equals prod.ProID
-                                  //join taskType in context.TaskTypes on j.TaskType equals taskType.ID
-                                  //join taskStatus in context.TaskStatus on j.taskStatus equals taskStatus.id
-                                  //join pUser in context.Sys_Users on j.publisherID equals pUser.Uid
-                                  //join hUser in context.Sys_Users on j.handlerID equals hUser.Uid
-                                  //join fUser in context.Sys_Users on j.followerID equals fUser.Uid
                               where (handlerId == 0 ? 1 == 1 : j.handlerID == handlerId)
-                              && (itemId == 0 ? 1 == 1 : j.itemID == itemId)
+                              && (itemId == "0" ? 1 == 1 : j.itemID == itemId)
                               orderby j.publishTime descending
                               select j).Skip(from).Take(pageSize).ToListAsync();
             // var list =await context.VPersonTask.SqlQuery("select * from V_PersonTask order by publishTime desc").ToListAsync();
@@ -62,6 +55,20 @@ namespace SHWY.Lib.DB.Repositorys
                 if (task == null)
                     return new PersonTask();
                 return task;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public async Task<List<V_PersonTask>> GetTaskListAsync(int handlerId)
+        {
+            try
+            {
+                var taskList = await (from j in context.VPersonTask
+                                      where j.handlerID == handlerId && j.taskStatus != 2
+                                      select j).ToListAsync();
+                return taskList;
             }
             catch (Exception ex)
             {
@@ -105,8 +112,14 @@ namespace SHWY.Lib.DB.Repositorys
             var task = await context.PersonTasks.Where(p => p.ID == id).FirstOrDefaultAsync();
             if (task != null)
             {
+                //删除任务前必须先删除任务过程记录
+                var processList = await context.PersonTaskProcess.Where(p => p.TaskId == task.ID).ToListAsync();
+                if (processList != null && processList.Count > 0)
+                {
+                    context.PersonTaskProcess.RemoveRange(processList);
+                }
                 context.PersonTasks.Remove(task);
-                return await context.SaveChangesAsync() == 1;
+                return await context.SaveChangesAsync() > 0;
             }
             return false;
         }

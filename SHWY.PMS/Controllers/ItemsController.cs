@@ -26,15 +26,21 @@ namespace SHWY.PMS.Controllers
         {
             var result = await repoItems.GetListItemsAsync();
             if (isAddAll == 1)
-                result.Insert(0, new Items() { ItemID = 0, NAME = "全部" });
+                result.Insert(0, new Items() { ItemID = "0", NAME = "全部" });
             return Json(result);
         }
-        public async Task<ActionResult> EditItem(int itemId)
+        public async Task<ActionResult> EditItem(string strItemId)
         {
-            Items item = await repoItems.GetItemAsync(itemId);
+            Items item = await repoItems.GetItemAsync(strItemId);
+            ViewData["isRealOnly"] = (item!=null).ToString().ToLower();//ItemID不为空时前台控件只读
             if (item == null)
                 item = new Items();
             return View(item);
+        }
+        public async Task<JsonResult> IsExistsByItemId(Items item)
+        {
+            Items i = await repoItems.GetItemAsync(item.ItemID);
+            return Json(new { isExists = i != null });
         }
         #region 增删改
         public async Task<JsonResult> SaveItem(Items item)
@@ -42,7 +48,7 @@ namespace SHWY.PMS.Controllers
             var result = await repoItems.AddOrUpdateAsync(item);
             return Json(new { isOk = result });
         }
-        public async Task<JsonResult> DelItem(int itemId)
+        public async Task<JsonResult> DelItem(string itemId)
         {
             var result = await repoItems.DeleteItem(itemId);
             return Json(new { isOk = result });

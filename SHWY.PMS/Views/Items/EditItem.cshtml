@@ -7,6 +7,10 @@
 <form id="formItemEidt">
     <table>
         <tr>
+            <td>@Html.LabelFor(p => p.ItemID)</td>
+            <td>@Html.TextBoxFor(p => p.ItemID, new { @class = "easyui-textbox", data_options = "required:true,readonly:" + ViewData["isRealOnly"] + "" })</td>
+        </tr>
+        <tr>
             <td>@Html.LabelFor(p => p.NAME)</td>
             <td>@Html.TextBoxFor(p => p.NAME, new { @class = "easyui-textbox", data_options = "required:true" })</td>
         </tr>
@@ -15,6 +19,5 @@
             <td>@Html.TextBoxFor(p => p.ALIAS, new { @class = "easyui-textbox" })</td>
         </tr>
     </table>
-    @Html.HiddenFor(p=>p.ItemID)
 </form>
 

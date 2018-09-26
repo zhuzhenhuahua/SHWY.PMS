@@ -24,7 +24,7 @@ namespace SHWY.Model.DB
         /// <summary>
         /// 项目ID
         /// </summary>
-        public int itemID { get; set; }
+        public string itemID { get; set; }
         public string ItemName { get; set; }
         /// <summary>
         /// 产品ID

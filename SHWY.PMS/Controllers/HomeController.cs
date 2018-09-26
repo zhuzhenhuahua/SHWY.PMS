@@ -1,16 +1,26 @@
-﻿using System;
+﻿using SHWY.Lib.DB.Repositorys;
+using SHWY.Model.DB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
 namespace SHWY.PMS.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        public ActionResult Index()
+        PersonTaskRepository personTaskRepo = new PersonTaskRepository();
+        public async Task<ActionResult> Index()
         {
-            return View();
+            MyPersonTaskList list = new MyPersonTaskList();
+            list.personTaskList = await personTaskRepo.GetTaskListAsync(CurrentUser.Sys_User.Uid);
+            return View(list);
         }
+    }
+    public class MyPersonTaskList
+    {
+        public List<V_PersonTask> personTaskList { get; set; }
     }
 }

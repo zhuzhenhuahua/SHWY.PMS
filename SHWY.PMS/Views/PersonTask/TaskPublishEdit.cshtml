@@ -37,15 +37,15 @@
             <td style="padding-left:20px;">完成时间:</td>
             <td>@Html.TextBoxFor(p => p.complTime, new { @class = "easyui-datetimebox" })</td>
             <td style="padding-left:20px;">完成程度:</td>
-            <td>@Html.DropDownListFor(p => p.taskComplDegree, ViewBag.TaskComplDegree as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+            <td>@Html.DropDownListFor(p => p.taskComplDegree, ViewBag.TaskComplDegreeV as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
             <td style="padding-left:20px;">服务态度:</td>
-            <td>@Html.DropDownListFor(p => p.serviceAttri, ViewBag.ServiceAttri as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+            <td>@Html.DropDownListFor(p => p.serviceAttri, ViewBag.ServiceAttriV as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
         </tr>
         <tr style="height:30px;">
             <td style="padding-left:20px;">完成速度:</td>
-            <td>@Html.DropDownListFor(p => p.complSpeed, ViewBag.ComplSpeed as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+            <td>@Html.DropDownListFor(p => p.complSpeed, ViewBag.ComplSpeedV as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
             <td style="padding-left:20px;">困难程度:</td>
-            <td colspan="3">@Html.DropDownListFor(p => p.taskDiffLevel, ViewBag.TaskDiffLevel as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+            <td colspan="3">@Html.DropDownListFor(p => p.taskDiffLevel, ViewBag.TaskDiffLevelV as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
         </tr>
         <tr>
             <td style="padding-left:20px;">评价描述:</td>

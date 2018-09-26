@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using SHWY.Model.DB;
+using SHWY.Utility;
 
 namespace SHWY.PMS.Controllers
 {
@@ -22,7 +23,7 @@ namespace SHWY.PMS.Controllers
         {
             return View();
         }
-        public async Task<JsonResult> GetList(int page, int rows, int handlerId, int itemId)
+        public async Task<JsonResult> GetList(int page, int rows, int handlerId, string itemId)
         {
 
             var result = await pTaskRepo.GetListAsync(page, rows, handlerId, itemId);
@@ -65,28 +66,28 @@ namespace SHWY.PMS.Controllers
             var codes = await codeRepo.GetCodesListAsync();
             //完成程度
             var TaskComplDegree = new List<SelectListItem>();
-            var taskDegree = await codeRepo.GetCodesListAsync((int)ECodesTypeId.taskComplDegree);//codes.Where(p => p.TypeId == (int)ECodesTypeId.taskComplDegree).ToList();
+            var taskDegree = codes.Where(p => p.TypeId == (int)ECodesTypeId.taskComplDegree).ToList();
             var taskDegree2 = new SelectList(taskDegree, "Code", "Text");
             TaskComplDegree.AddRange(taskDegree2);
-            ViewBag.TaskComplDegree = TaskComplDegree;
+            ViewBag.TaskComplDegreeV = TaskComplDegree;
             //服务态度
             var ServiceAttri = new List<SelectListItem>();
             var serAttri = codes.Where(p => p.TypeId == (int)ECodesTypeId.serviceAttri).ToList();
             var serAttri2 = new SelectList(serAttri, "Code", "Text");
             ServiceAttri.AddRange(serAttri2);
-            ViewBag.ServiceAttri = ServiceAttri;
+            ViewBag.ServiceAttriV = ServiceAttri;
             //完成速度
             var ComplSpeed = new List<SelectListItem>();
             var speed = codes.Where(p => p.TypeId == (int)ECodesTypeId.complSpeed).ToList();
             var speed2 = new SelectList(speed, "Code", "Text");
             ComplSpeed.AddRange(speed2);
-            ViewBag.ComplSpeed = ComplSpeed;
+            ViewBag.ComplSpeedV = ComplSpeed;
             //困难程度
             var TaskDiffLevel = new List<SelectListItem>();
             var diffLevel = codes.Where(p => p.TypeId == (int)ECodesTypeId.taskDiffLevel).ToList();
             var diffLevel2 = new SelectList(diffLevel, "Code", "Text");
             TaskDiffLevel.AddRange(diffLevel2);
-            ViewBag.TaskDiffLevel = TaskDiffLevel;
+            ViewBag.TaskDiffLevelV = TaskDiffLevel;
 
 
 
@@ -105,11 +106,11 @@ namespace SHWY.PMS.Controllers
         {
             return View();
         }
-        public async Task<JsonResult> GetProcessListAsync(string taskId)
+        public async Task<JsonResult> GetProcessListAsync(int page, int rows, string taskId)
         {
-            var list = await pTaskProcessRepo.GetListAsync(taskId);
+            var tuple = await pTaskProcessRepo.GetListAsync(page, rows, taskId);
             List<object> objList = new List<object>();
-            foreach (var p in list)
+            foreach (var p in tuple.Item2)
             {
                 objList.Add(new
                 {
@@ -119,7 +120,7 @@ namespace SHWY.PMS.Controllers
                     Details = p.Details
                 });
             }
-            return Json(objList);
+            return Json(new { total = tuple.Item1, rows = objList });
         }
         public async Task<JsonResult> SavePersonProcess(PersonTaskProcess process)
         {
@@ -128,11 +129,16 @@ namespace SHWY.PMS.Controllers
             var result = await pTaskProcessRepo.AddOrUpdateAsync(process);
             return Json(new { isOk = result });
         }
+        public async Task<JsonResult> DelTaskProcess(int id)
+        {
+            var result = await pTaskProcessRepo.DelPersonProcessAsync(id);
+            return Json(new { isOk = result });
+        }
         public async Task<JsonResult> SaveTask(PersonTask task)
         {
             if (task.ID == "0" || string.IsNullOrEmpty(task.ID))
             {
-                task.ID = "TK" + DateTime.Now.ToString("yyyyMMddHHmmss");
+                task.ID = CommonHelper.GetRandomString("TK");
                 task.publishTime = DateTime.Now;
             }
             if (task.complTime == null || task.complTime.Value.Year == 1)

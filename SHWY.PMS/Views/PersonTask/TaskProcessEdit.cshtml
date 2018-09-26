@@ -50,7 +50,7 @@
                 handler: insert
             }],
             pagination: true,
-            pageSize: 20,
+            pageSize: 10,
             idField: 'Id',
             rownumbers: true,
             fit: true,
@@ -117,7 +117,16 @@
     }
     function DeleteProcess() {
         var rows = $("#ttProcess").datagrid('getChanges', 'deleted'); //获取删除的数据
-        alert("条数：" + rows.length + "值：" + rows[0].Id);
-        $("#ttProcess").datagrid('acceptChanges');
+        if (rows) {
+            $.post("/PersonTask/DelTaskProcess", { id: rows[0].Id }, function (result) {
+                if (result.isOk) {
+                    AlertMsg("删除成功");
+                }
+                else {
+                    AlertMsg('删除失败');
+                }
+            });
+            $("#ttProcess").datagrid('acceptChanges');
+        }
     }
 </script>

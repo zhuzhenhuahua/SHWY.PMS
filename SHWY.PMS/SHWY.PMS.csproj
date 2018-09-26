@@ -951,6 +951,7 @@
     <Content Include="Content\jquery-easyui-1.5.3\demo\tree\tree_data1.json" />
     <Content Include="Content\jquery-easyui-1.5.3\demo\tree\tree_data2.json" />
     <Content Include="Content\jquery-easyui-1.5.3\themes\material\images\Thumbs.db" />
+    <None Include="Properties\PublishProfiles\PMSWeb.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Common.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -1028,6 +1029,10 @@
     <ProjectReference Include="..\SHWY.Model\SHWY.Model.csproj">
       <Project>{9dc043ee-7066-45ca-9e4d-5a570d0372a2}</Project>
       <Name>SHWY.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SHWY.Utility\SHWY.Utility.csproj">
+      <Project>{c6e0cc01-e41c-4989-8160-6e50d36f66ee}</Project>
+      <Name>SHWY.Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

@@ -47,8 +47,8 @@ namespace SHWY.Lib.DB.Repositorys
                               select j).ToListAsync();
             return list;
         }
-        public static ConcurrentDictionary<int, Items> _dicItem = new ConcurrentDictionary<int, Items>();
-        public async Task<Items> GetItemAsync(int itemId)
+        public static ConcurrentDictionary<string, Items> _dicItem = new ConcurrentDictionary<string, Items>();
+        public async Task<Items> GetItemAsync(string itemId)
         {
             var item = await (from j in context.Items
                               where j.ItemID == itemId
@@ -56,7 +56,7 @@ namespace SHWY.Lib.DB.Repositorys
             return item;
 
         }
-        public async Task<Items> GetItemDicAsync(int itemId)
+        public async Task<Items> GetItemDicAsync(string itemId)
         {
             try
             {
@@ -110,7 +110,7 @@ namespace SHWY.Lib.DB.Repositorys
             }
         }
 
-        public async Task<bool> DeleteItem(int itemId)
+        public async Task<bool> DeleteItem(string itemId)
         {
             var item = await context.Items.Where(p => p.ItemID == itemId).FirstOrDefaultAsync();
             if (item != null)

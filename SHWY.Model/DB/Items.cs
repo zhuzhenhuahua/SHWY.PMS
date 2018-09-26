@@ -17,10 +17,11 @@ namespace SHWY.Model.DB
     public class Items
     {
         /// <summary>
-        /// 自增长主键ID
+        /// 主键ID
         /// </summary>
         [Key]
-        public int ItemID { get; set; }
+        [DisplayName("项目ID")]
+        public string ItemID { get; set; }
         /// <summary>
         /// 项目名称
         /// </summary>

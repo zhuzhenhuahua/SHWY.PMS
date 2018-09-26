@@ -3,7 +3,7 @@
         <ul style="list-style-type:none">
             <li onclick="OpenTabs(31, '任务发布', '/PersonTask/TaskPublishList')">
                 <div>
-                    <a href="javascript:void (0);">任务发布</a>
+                    <a href="javascript:void (0);">任务发布管理</a>
                 </div>
             </li>
         </ul>
@@ -18,6 +18,11 @@
             <li onclick="OpenTabs(22, '产品管理', '/Product/Index')">
                 <div>
                     <a href="javascript:void (0);">产品管理</a>
+                </div>
+            </li>
+            <li onclick="OpenTabs(23, '字典维护', '/Codes/Index')">
+                <div>
+                    <a href="javascript:void (0);">字典维护</a>
                 </div>
             </li>
         </ul>
@@ -39,14 +44,14 @@
                     <a href="javascript:void (0);">菜单管理</a>
                 </div>
             </li>
-            <li onclick="OpenTabs(14,'菜单操作管理','/MenuOper/Index')">
+            @*<li onclick="OpenTabs(14,'菜单操作管理','/MenuOper/Index')">
                 <div>
                     <a href="javascript:void (0);">菜单操作管理</a>
                 </div>
-            </li>
+            </li>*@
         </ul>
     </div>
-        <div title="Tabs操作" style="overflow:auto;padding:5px;">
+        @*<div title="Tabs操作" style="overflow:auto;padding:5px;">
                 <ul style="list-style-type:none">
                     <li onclick="OpenTabs(21,'基础选项卡','/Menu/Index')">
                         <div>
@@ -131,7 +136,7 @@
                         </div>
                     </li>
                 </ul>
-            </div>
+            </div>*@
     </div>
 <script>
     $.extend($.fn.tabs.methods, {
