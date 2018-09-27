@@ -20,15 +20,32 @@ namespace SHWY.PMS.Controllers
         Sys_UserRepository userRepo = new Sys_UserRepository();
         // GET: PersonTask
         #region PersonTask任务
+            //任务发布管理
         public ActionResult TaskPublishList()
         {
             return View();
         }
-        public async Task<JsonResult> GetList(int page, int rows, int handlerId, string itemId)
+        //个人任务
+        public ActionResult MyTaskList()
         {
-            if (itemId == "0")
-                itemId = "";
-            var result = await pTaskRepo.GetListAsync(page, rows, handlerId, itemId);
+            return View();
+        }
+        //任务查询
+        public ActionResult TaskQueryList()
+        {
+            return View();
+        }
+        //任务发布管理/任务查询列表
+        public async Task<JsonResult> GetList(PersonTaskPara para)
+        {
+            var result = await pTaskRepo.GetListAsync(para.page, para.rows, para.handlerId, para.itemId,para.prodId, para.taskStatus);
+            return Json(new { total = result.Item1, rows = result.Item2 });
+        }
+        //个人任务列表
+        public async Task<JsonResult> GetMyTaskList(PersonTaskPara para)
+        {
+            int uid = CurrentUser.Sys_User.Uid;
+            var result = await pTaskRepo.GetListAsync(para.page, para.rows, uid, para.itemId,para.prodId, para.taskStatus);
             return Json(new { total = result.Item1, rows = result.Item2 });
         }
         public async Task<ActionResult> TaskPublishEdit(string id)
@@ -104,18 +121,6 @@ namespace SHWY.PMS.Controllers
             }
             return View(task);
         }
-        public ActionResult MyTaskList()
-        {
-            return View();
-        }
-        public async Task<JsonResult> GetMyTaskList(int page, int rows, string itemId)
-        {
-            if (itemId == "0")
-                itemId = "";
-            int uid = CurrentUser.Sys_User.Uid;
-            var result = await pTaskRepo.GetListAsync(page, rows, uid, itemId);
-            return Json(new { total = result.Item1, rows = result.Item2 });
-        }
         public async Task<ActionResult> MyTaskPublishEdit(string taskId)
         {
             PersonTask task = await pTaskRepo.GetTaskAsync(taskId);
@@ -185,6 +190,15 @@ namespace SHWY.PMS.Controllers
                     task.complTime = null;
             }
             return View(task);
+        }
+        #endregion
+        #region TaskStatus
+        public async Task<JsonResult> GetAllTaskStatus(int isAddAll)
+        {
+            var result = await codeRepo.GetTaskStatusListAsync();
+            if (isAddAll == 1)
+                result.Insert(0, new CodeTaskStatus() { id = 0, name = "全部" });
+            return Json(result);
         }
         #endregion
         #region PersonTaskProcess任务过程

@@ -1,0 +1,80 @@
+﻿@model SHWY.PMS.Controllers.MyPersonTaskList
+@using SHWY.Utility;
+<style type="text/css">
+    .products {
+        list-style: none;
+        padding: 0px;
+    }
+
+        .products li {
+            display: inline;
+            float: left;
+            margin: 10px;
+            width: 280px;
+            height: 200px;
+            background-color: sandybrown;
+        }
+
+    .item {
+        display: block;
+        text-decoration: none;
+    }
+
+        .item p {
+            margin: 0;
+            padding-top: 10px;
+            padding-left: 10px;
+            font-weight: bold;
+            text-align: left;
+        }
+</style>
+<script type="text/javascript">
+    function showDetails(that) {
+        var taskId = $(that).attr("taskId");
+        if (taskId=="") {
+            AlertMsg("未找到当前任务，请刷新重试");
+            return;
+        }
+        ShowDialog("个人任务发布", 800, 550, "/PersonTask/MyTaskPublishEdit?taskId=" + taskId, saveTask);
+    }
+    function saveTask() {
+        var check = $("#formMyTaskPublishEidt").form('enableValidation').form('validate');
+        if (check) {
+            var postData = $("#formMyTaskPublishEidt").serialize();
+            $.post("/PersonTask/SaveTask", postData, function (result) {
+                if (result.isOk) {
+                    $('#PopWindow').dialog('close');
+                    $("#PopWindow").remove();
+                    refresh();
+                }
+                else {
+                    AlertMsg('保存失败');
+                }
+
+            });
+        }
+    }
+    function refresh() {
+        $("#mytaskLitPartial").load('@Url.Action("myTaskType_Partial")');
+    }
+</script>
+
+<div id="mytaskLitPartial">
+    @foreach (var myTask in Model.personTaskList)
+    {
+        <ul class="products">
+            <li>
+                <div class="item">
+                    <p>项目：@myTask.ItemName</p>
+                    <p>产品：@myTask.ProdName</p>
+                    <p>任务类型：@myTask.taskTypeName</p>
+                    <p>任务状态：@myTask.taskStatusName</p>
+                    <p title="@myTask.detail" style="height:50px;">
+                        描述：@myTask.detail.SubStr(70)
+                    </p>
+                    <p style="text-align:right;margin-right:15px;"><a href="javascript:void(0)" onclick="showDetails(this)" taskId="@myTask.ID">查看</a></p>
+                </div>
+            </li>
+        </ul>
+    }
+</div>

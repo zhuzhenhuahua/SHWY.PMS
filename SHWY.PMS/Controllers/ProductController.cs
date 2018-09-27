@@ -23,11 +23,19 @@ namespace SHWY.PMS.Controllers
             var result = await prodRepo.GetListAsync(page, rows, prodName);
             return Json(new { total = result.Item1, rows = result.Item2 });
         }
+        public async Task<JsonResult> GetAllProds(int isAddAll)
+        {
+            var result = await prodRepo.GetListAsync();
+            if (isAddAll == 1)
+                result.Insert(0, new Product() {  ProID = "", NAME = "全部" });
+            return Json(result);
+        }
         public async Task<JsonResult> IsExistsByProId(Product prod)
         {
             Product p = await prodRepo.GetProductAsync(prod.ProID);
             return Json(new { isExists = !string.IsNullOrEmpty(p.ProID) });
         }
+        #region 增删改
         public async Task<ActionResult> EditProd(string prodId)
         {
             Product prod = await prodRepo.GetProductAsync(prodId);
@@ -44,5 +52,6 @@ namespace SHWY.PMS.Controllers
             var result = await prodRepo.DeleteProd(prodId);
             return Json(new { isOk = result });
         }
+        #endregion
     }
 }

@@ -1,30 +1,49 @@
 ﻿
 @{
-    ViewBag.Title = "个人任务列表";
+    ViewBag.Title = "任务查询";
     Layout = "~/Views/Shared/_BaseContent.cshtml";
 }
+
 <table id="tt"></table>
 <div id="tb">
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditPersonTask(0)">发布</a>
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditPersonTask(1)">修改</a>
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelTask()">删除</a>
+    @*<a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditPersonTask(0)">发布</a>*@
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditPersonTask(1)">详情</a>
+    @*<a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelTask()">删除</a>*@
     <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="TaskProcess()">任务过程</a>
     <span class="l-btn-text">项目：</span><input class="easyui-textbox" id="txtItemQ" style="width:120px;" />
-    <span class="l-btn-text">状态：</span><input class="easyui-textbox" id="txtStatusQ" style="width:120px;" />
+    <span class="l-btn-text">产品：</span><input class="easyui-textbox" id="txtProdQ" style="width:140px;" />
+    <span class="l-btn-text">状态：</span><input class="easyui-textbox" id="txtStatusQ" style="width:100px;" />
+    <span class="l-btn-text">处理人：</span><input class="easyui-textbox" id="txtHandlerIDQ" style="width:80px;" />
     <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
 </div>
-<script>
+<script type="text/javascript">
     $(function () {
         InitCombobox();
         InitGrid();
     });
     function InitCombobox() {
+        $("#txtHandlerIDQ").combobox({
+            url: '/User/GetAllUsers?isAddAll=1',
+            valueField: 'Uid',
+            textField: 'Name',
+            onLoadSuccess: function () {
+                $("#txtHandlerIDQ").combobox("select", 0);
+            }
+        });
         $("#txtItemQ").combobox({
             url: '/Items/GetAllItems?isAddAll=1',
             valueField: 'ItemID',
             textField: 'NAME',
             onLoadSuccess: function () {
                 $("#txtItemQ").combobox("select", "");
+            }
+        });
+        $("#txtProdQ").combobox({
+            url: '/Product/GetAllProds?isAddAll=1',
+            valueField: 'ProID',
+            textField: 'NAME',
+            onLoadSuccess: function () {
+                $("#txtProdQ").combobox("select", "");
             }
         });
         $("#txtStatusQ").combobox({
@@ -38,7 +57,7 @@
     }
     function InitGrid() {
         $("#tt").datagrid({
-            url: '/PersonTask/GetMyTaskList',
+            url: '/PersonTask/GetList',
             columns: [[
                 { field: 'ID', title: 'ID', width: 50, hidden: true },
                 { field: 'JIRID', title: 'JIRID', width: 80, hidden: true },
@@ -63,7 +82,7 @@
                 { field: 'complSpeedName', title: '完成速度', width: 100 },
                 { field: 'taskDiffLevelName', title: '任务困难程度', width: 100 },
                 { field: 'evaDesc', title: '评价描述', width: 100 },
-                { field: 'remark', title: '备注', width: 100 },
+                          { field: 'remark', title: '备注', width: 100 },
             ]],
             autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
             striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
@@ -76,14 +95,18 @@
             rownumbers: true,
             fit: true,
             queryParams: {
+                handlerId: 0,
                 itemId: "",
-                taskStatus:0
+                prodId: "",
+                taskStatus: "",
             }
         });
     }
     function GridReload(loaded) {
         $("#tt").datagrid(loaded, {
+            handlerId: $("#txtHandlerIDQ").combobox('getValue'),
             itemId: $("#txtItemQ").combobox('getValue'),
+            prodId: $("#txtProdQ").combobox('getValue'),
             taskStatus: $("#txtStatusQ").combobox('getValue'),
         });
     }
@@ -100,7 +123,7 @@
             id = row.ID;
             isAdd = false;
         }
-        ShowDialog("个人任务发布", 800, 550, "/PersonTask/MyTaskPublishEdit?taskId=" + id, saveTask);
+        ShowDialog("任务发布", 800, 550, "/PersonTask/TaskPublishEdit?id=" + id, saveTask);
     }
     function DelTask() {
         var row = $("#tt").datagrid("getSelected");
@@ -123,9 +146,9 @@
         });
     }
     function saveTask() {
-        var check = $("#formMyTaskPublishEidt").form('enableValidation').form('validate');
+        var check = $("#formTaskPublishEidt").form('enableValidation').form('validate');
         if (check) {
-            var postData = $("#formMyTaskPublishEidt").serialize();
+            var postData = $("#formTaskPublishEidt").serialize();
             $.post("/PersonTask/SaveTask", postData, function (result) {
                 if (result.isOk) {
                     $('#PopWindow').dialog('close');

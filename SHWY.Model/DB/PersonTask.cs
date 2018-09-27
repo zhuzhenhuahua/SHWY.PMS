@@ -110,4 +110,13 @@ namespace SHWY.Model.DB
         [DisplayName("评价描述")]
         public string evaDesc { get; set; }
     }
+
+    public enum ETaskStatus
+    {
+        未开始 = 1,
+        解决中 = 2,
+        已完成 = 3,
+        完成但是存在问题 = 4,
+        放弃 = 5
+    }
 }

@@ -30,16 +30,21 @@ namespace SHWY.Lib.DB.Repositorys
         //    return _personTaskRepository;
         //}
 
-        public async Task<Tuple<int, List<V_PersonTask>>> GetListAsync(int pageIndex, int pageSize, int handlerId, string itemId)
+        public async Task<Tuple<int, List<V_PersonTask>>> GetListAsync(int pageIndex, int pageSize,
+            int handlerId, string itemId, string prodId, int taskStatus)
         {
             int from = (pageIndex - 1) * pageSize;
             int total = await (from j in context.VPersonTask
                                where (handlerId == 0 ? 1 == 1 : j.handlerID == handlerId)
-                             && (itemId == "" ? 1 == 1 : j.itemID == itemId)
+                             && (string.IsNullOrEmpty(itemId) ? 1 == 1 : j.itemID == itemId)
+                              && (string.IsNullOrEmpty(prodId) ? 1 == 1 : j.prodId == prodId)
+                             && (taskStatus == 0 ? 1 == 1 : j.taskStatus == taskStatus)
                                select j).CountAsync();
             var list = await (from j in context.VPersonTask
                               where (handlerId == 0 ? 1 == 1 : j.handlerID == handlerId)
-                              && (itemId == "" ? 1 == 1 : j.itemID == itemId)
+                            && (string.IsNullOrEmpty(itemId) ? 1 == 1 : j.itemID == itemId)
+                            && (string.IsNullOrEmpty(prodId) ? 1 == 1 : j.prodId == prodId)
+                            && (taskStatus == 0 ? 1 == 1 : j.taskStatus == taskStatus)
                               orderby j.publishTime descending
                               select j).Skip(from).Take(pageSize).ToListAsync();
             return Tuple.Create<int, List<V_PersonTask>>(total, list);
@@ -65,7 +70,7 @@ namespace SHWY.Lib.DB.Repositorys
             try
             {
                 var taskList = await (from j in context.VPersonTask
-                                      where j.handlerID == handlerId && j.taskStatus != 2
+                                      where j.handlerID == handlerId && j.taskStatus != (int)ETaskStatus.已完成
                                       select j).ToListAsync();
                 return taskList;
             }

@@ -12,11 +12,15 @@ namespace SHWY.PMS.Controllers
     public class HomeController : BaseController
     {
         PersonTaskRepository personTaskRepo = new PersonTaskRepository();
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            MyPersonTaskList list = new MyPersonTaskList();
-            list.personTaskList = await personTaskRepo.GetTaskListAsync(CurrentUser.Sys_User.Uid);
-            return View(list);
+            return View();
+        }
+
+        public async Task<PartialViewResult> myTaskType_Partial()
+        {
+            var list = await personTaskRepo.GetTaskListAsync(CurrentUser.Sys_User.Uid);
+            return PartialView( new MyPersonTaskList() { personTaskList = list });
         }
     }
     public class MyPersonTaskList

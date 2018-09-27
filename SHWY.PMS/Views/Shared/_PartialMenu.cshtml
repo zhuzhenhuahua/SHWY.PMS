@@ -1,14 +1,19 @@
 ﻿<div class="easyui-accordion" data-options="fit:true,border:false" style="width:100%">
     <div title="任务管理" style="overflow:auto;padding:5px;">
         <ul style="list-style-type:none">
-            <li onclick="OpenTabs(31, '任务发布管理', '/PersonTask/TaskPublishList')">
+            <li onclick="OpenTabs(31, '个人任务', '/PersonTask/MyTaskList')">
+                <div>
+                    <a href="javascript:void (0);">个人任务</a>
+                </div>
+            </li>
+            <li onclick="OpenTabs(32, '任务发布管理', '/PersonTask/TaskPublishList')">
                 <div>
                     <a href="javascript:void (0);">任务发布管理</a>
                 </div>
             </li>
-            <li onclick="OpenTabs(32, '个人任务', '/PersonTask/MyTaskList')">
+            <li onclick="OpenTabs(33, '任务查询', '/PersonTask/TaskQueryList')">
                 <div>
-                    <a href="javascript:void (0);">个人任务</a>
+                    <a href="javascript:void (0);">任务查询</a>
                 </div>
             </li>
         </ul>

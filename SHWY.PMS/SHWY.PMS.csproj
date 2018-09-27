@@ -176,6 +176,7 @@
     <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\MenuOperController.cs" />
+    <Compile Include="Controllers\Parameters\PersonTaskPara.cs" />
     <Compile Include="Controllers\PersonTaskController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
@@ -1009,6 +1010,8 @@
     <Content Include="Views\PersonTask\TaskProcessEdit.cshtml" />
     <Content Include="Views\PersonTask\MyTaskList.cshtml" />
     <Content Include="Views\PersonTask\MyTaskPublishEdit.cshtml" />
+    <Content Include="Views\Home\myTaskType_Partial.cshtml" />
+    <Content Include="Views\PersonTask\TaskQueryList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
