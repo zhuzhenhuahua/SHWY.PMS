@@ -69,6 +69,7 @@
     <Compile Include="DB\Repositorys\PersonTaskProcessRepository.cs" />
     <Compile Include="DB\Repositorys\PersonTaskRepository.cs" />
     <Compile Include="DB\Repositorys\ProductRepository.cs" />
+    <Compile Include="DB\Repositorys\ServerRepository.cs" />
     <Compile Include="DB\Repositorys\Sys_MenuOperRepository.cs" />
     <Compile Include="DB\Repositorys\Sys_MenuRepository.cs" />
     <Compile Include="DB\Repositorys\Sys_RoleMenuRepository.cs" />

@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewBag.Title = "服务器管理";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+<table id="tt"></table>
+<div id="tb">
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditServer(0)">新增</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditServer(1)">修改</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelTask()">删除</a>
+    <span class="l-btn-text">服务器名称：</span><input class="easyui-textbox" id="txtServerNameQ" style="width:80px;" />
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
+</div>
+<script type="text/javascript">
+    $(function () {
+        InitGrid();
+    });
+    function InitGrid() {
+        $("#tt").datagrid({
+            url: '/Server/GetList',
+            columns: [[
+                { field: 'sid', title: '服务器ID', width: 80},
+                { field: 'name', title: '服务器名称', width: 100 },
+                { field: 'itemName', title: '项目名称', width: 150 },
+                { field: 'remark', title: '备注说明', width: 600 },
+                { field: 'loginName', title: '登录名', width: 100 },
+                { field: 'password', title: '密码', width: 100 },
+            ]],
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            singleSelect: true,
+            toolbar: '#tb',
+            pagination: true,
+            pageSize: 20,
+            idField: 'sid',
+            rownumbers: true,
+            fit: true,
+            queryParams: {
+                name: ""
+            }
+        });
+    }
+    function GridReload(loaded) {
+        $("#tt").datagrid(loaded, {
+            name: ""
+        });
+    }
+    var isAdd = false;
+    function EditServer(sid) {
+        if (sid == 0)
+            isAdd = true;
+        else {
+            var row = $("#tt").datagrid("getSelected");
+            if (row == null) {
+                AlertMsg("请选择一行数据后再操作");
+                return;
+            }
+            sid = row.sid;
+            isAdd = false;
+        }
+        ShowDialog("服务器管理", 800, 550, "/Server/ServerEdit?sid=" + sid, saveTask);
+    }
+    function DelTask() {
+        var row = $("#tt").datagrid("getSelected");
+        if (row == null) {
+            AlertMsg("请选择一行数据后再操作");
+            return;
+        }
+        $.messager.confirm('提示', "确定要删除吗？", function (r) {
+            if (r) {
+                $.post("/Server/DelServer", { sid: row.sid }, function (result) {
+                    if (result.isOk) {
+                        AlertMsg("删除成功");
+                        GridReload("reload");
+                    }
+                    else {
+                        AlertMsg('删除失败');
+                    }
+                });
+            }
+        });
+    }
+    function saveTask() {
+        var check = $("#formServerEidt").form('enableValidation').form('validate');
+        if (check) {
+            var postData = $("#formServerEidt").serialize();
+            if (isAdd) {
+                $.post("/Server/IsExists", postData.sid, function (result) {
+                    if (result.IsExists) {
+                        AlertMsg("服务器ID已存在，请重新输入");
+                        return;
+                    }
+                });
+            }
+            SaveData(postData);
+        }
+    }
+    function SaveData(postData) {
+        $.post("/Server/SaveServer", postData, function (result) {
+            if (result.isOk) {
+                $('#PopWindow').dialog('close');
+                $("#PopWindow").remove();
+                GridReload(isAdd ? "load" : "reload");
+            }
+            else {
+                AlertMsg('保存失败');
+            }
+        });
+    }
+</script>
+
+
+
+

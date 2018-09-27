@@ -50,5 +50,6 @@ namespace SHWY.Lib.DB.Context
         public DbSet<CodeTaskType> TaskTypes { get; set; }
         public DbSet<Codes> Codes { get; set; }
         public DbSet<PersonTaskProcess> PersonTaskProcess { get; set; }
+        public DbSet<Servers> Servers { get; set; }
     }
 }

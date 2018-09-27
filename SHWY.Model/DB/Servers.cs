@@ -1,0 +1,33 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SHWY.Model.DB
+{
+    [Serializable]
+    [Table("Server")]
+   public class Servers
+    {
+        [Key,DatabaseGenerated( DatabaseGeneratedOption.None)]
+        [DisplayName("服务器ID")]
+        public int sid { get; set; }
+        [DisplayName("服务器名称")]
+        public string name { get; set; }
+        [DisplayName("项目")]
+        public string itemid { get; set; }
+        [DisplayName("备注")]
+        public string remark { get; set; }
+        [DisplayName("登录名")]
+        public string loginName { get; set; }
+        [DisplayName("密码")]
+        public string password { get; set; }
+
+        [NotMapped]
+        public string itemName { get; set; }
+    }
+}

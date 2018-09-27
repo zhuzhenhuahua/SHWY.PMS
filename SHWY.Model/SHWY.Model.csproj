@@ -57,6 +57,7 @@
     <Compile Include="DB\PersonTask.cs" />
     <Compile Include="DB\PersonTaskProcess.cs" />
     <Compile Include="DB\Product.cs" />
+    <Compile Include="DB\Servers.cs" />
     <Compile Include="DB\Sys_Configuration.cs" />
     <Compile Include="DB\Sys_Menu.cs" />
     <Compile Include="DB\Sys_MenuOper.cs" />

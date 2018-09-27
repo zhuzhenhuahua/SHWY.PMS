@@ -1,6 +1,14 @@
-﻿<div class="easyui-accordion" data-options="fit:true,border:false" style="width:100%">
-    <div title="任务管理" style="overflow:auto;padding:5px;">
-        <ul style="list-style-type:none">
+﻿<style type="text/css">
+    .ulnone {
+         list-style:none;
+    }
+        .ulnone li {
+            margin:10px;
+        }
+</style>
+<div class="easyui-accordion" data-options="fit:true,border:false" style="width:100%">
+    <div title="任务管理">
+        <ul class="ulnone">
             <li onclick="OpenTabs(31, '个人任务', '/PersonTask/MyTaskList')">
                 <div>
                     <a href="javascript:void (0);">个人任务</a>
@@ -18,8 +26,8 @@
             </li>
         </ul>
     </div>
-    <div title="项目产品管理" style="overflow:auto;padding:5px;">
-        <ul style="list-style-type:none">
+    <div title="项目产品管理" >
+        <ul class="ulnone">
             <li onclick="OpenTabs(21, '项目管理', '/Items/Index')">
                 <div>
                     <a href="javascript:void (0);">项目管理</a>
@@ -30,15 +38,20 @@
                     <a href="javascript:void (0);">产品管理</a>
                 </div>
             </li>
-            <li onclick="OpenTabs(23, '字典维护', '/Codes/Index')">
+            <li onclick="OpenTabs(23, '数据字典维护', '/Codes/Index')">
                 <div>
                     <a href="javascript:void (0);">字典维护</a>
                 </div>
             </li>
+            <li onclick="OpenTabs(24, '服务器管理', '/Server/Index')">
+                <div>
+                    <a href="javascript:void (0);">服务器管理</a>
+                </div>
+            </li>
         </ul>
     </div>
-    <div title="系统管理" style="overflow:auto;padding:5px;">
-        <ul style="list-style-type:none">
+    <div title="系统管理" >
+        <ul class="ulnone">
             <li onclick="OpenTabs(11,'用户管理', '/User/Index')">
                 <div>
                     <a href="javascript:void (0);">用户管理</a>
@@ -61,8 +74,8 @@
             </li>*@
         </ul>
     </div>
-        @*<div title="Tabs操作" style="overflow:auto;padding:5px;">
-                <ul style="list-style-type:none">
+        @*<div title="Tabs操作" >
+                <ul class="ulnone">
                     <li onclick="OpenTabs(21,'基础选项卡','/Menu/Index')">
                         <div>
                             <a href="javascript:void (0);">基础选项卡</a>
@@ -70,22 +83,22 @@
                     </li>
                 </ul>
             </div>
-            <div title="数据表格DataGrid" style="overflow:auto;padding:5px;">
-                <ul style="list-style-type:none">
+            <div title="数据表格DataGrid" >
+                <ul class="ulnone">
                     <li onclick="OpenTabs(31,'基础数据表格','/DataGrid/BasicGrid')">
                         <div>
                             <a href="javascript:void (0);">基础数据表格</a>
                         </div>
                     </li>
                 </ul>
-                <ul style="list-style-type:none">
+                <ul class="ulnone">
                     <li onclick="OpenTabs(32,'在线编辑器','/DataGrid/Editor')">
                         <div>
                             <a href="javascript:void (0);">在线编辑器</a>
                         </div>
                     </li>
                 </ul>
-                <ul style="list-style-type:none">
+                <ul class="ulnone">
                     <li onclick="OpenTabs(33,'单元格合并','/DataGrid/MergeCells')">
                         <div>
                             <a href="javascript:void (0);">单元格合并</a>
@@ -93,8 +106,8 @@
                     </li>
                 </ul>
             </div>
-            <div title="Tree" style="overflow:auto;padding:5px;">
-                <ul style="list-style-type:none">
+            <div title="Tree" >
+                <ul class="ulnone">
                     <li onclick="OpenTabs(41,'自定义选中样式','/Tree/checker')">
                         <div>
                             <a href="javascript:void (0);">自定义选中样式</a>
@@ -102,8 +115,8 @@
                     </li>
                 </ul>
             </div>
-            <div title="文件操作" style="overflow:auto;padding:5px;">
-                <ul style="list-style-type:none">
+            <div title="文件操作" >
+                <ul class="ulnone">
                     <li onclick="OpenTabs(51, '上传下载', '/OperFile/UpDownload')">
                         <div>
                             <a href="javascript:void (0);">上传下载</a>
@@ -111,8 +124,8 @@
                     </li>
                 </ul>
             </div>
-            <div title="DEV控件学习" style="overflow:auto;padding:5px;">
-                <ul style="list-style-type:none">
+            <div title="DEV控件学习" >
+                <ul class="ulnone">
                     <li onclick="OpenTabs(61, 'XtraReport', '/DevXtraReport/Index')">
                         <div>
                             <a href="javascript:void (0);">XtraReport</a>
@@ -120,8 +133,8 @@
                     </li>
                 </ul>
             </div>
-            <div title="092项目相关" style="overflow:auto;padding:5px;">
-                <ul style="list-style-type:none">
+            <div title="092项目相关" >
+                <ul class="ulnone">
                     <li onclick="OpenTabs(91, '分单号修改', '/AppAsn/IndexSplitNo')">
                         <div>
                             <a href="javascript:void (0);">分单号修改</a>
@@ -129,8 +142,8 @@
                     </li>
                 </ul>
             </div>
-            <div title="XML操作" style="overflow:auto;padding:5px;">
-                <ul style="list-style-type:none">
+            <div title="XML操作" >
+                <ul class="ulnone">
                     <li onclick="OpenTabs(101, 'XML操作', '/XMLSerializa/Index')">
                         <div>
                             <a href="javascript:void (0);">XML操作</a>
@@ -138,8 +151,8 @@
                     </li>
                 </ul>
             </div>
-            <div title="算法学习" style="overflow:auto;padding:5px;">
-                <ul style="list-style-type:none">
+            <div title="算法学习" >
+                <ul class="ulnone">
                     <li onclick="OpenTabs(201, '打印三角形', '/Algorithm/Triangle')">
                         <div>
                             <a href="javascript:void (0);">XML操作</a>

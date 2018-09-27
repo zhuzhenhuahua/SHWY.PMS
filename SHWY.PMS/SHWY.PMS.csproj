@@ -180,6 +180,7 @@
     <Compile Include="Controllers\PersonTaskController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\ServerController.cs" />
     <Compile Include="Controllers\TreeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\XMLSerializaController.cs" />
@@ -1012,6 +1013,8 @@
     <Content Include="Views\PersonTask\MyTaskPublishEdit.cshtml" />
     <Content Include="Views\Home\myTaskType_Partial.cshtml" />
     <Content Include="Views\PersonTask\TaskQueryList.cshtml" />
+    <Content Include="Views\Server\Index.cshtml" />
+    <Content Include="Views\Server\ServerEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
