@@ -11,13 +11,13 @@
     <span>
         父菜单:
     </span>
-    <input id="cmbParentMenu" name="cmbParentMenu">
+    <input class="easyui-textbox" id="cmbParentMenu">
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">搜索</a>
 </div>
 <script>
     $(function () {
-        InitGrid();
         bindGrid();
+        InitGrid();
     });
     function bindGrid() {
         $("#cmbParentMenu").combobox({
@@ -25,6 +25,7 @@
             valueField: 'MenuId',
             textField: 'MenuName'
         });
+        $("#cmbParentMenu").combobox("select", 0);
     }
     function InitGrid() {
         $("#tt").datagrid({
@@ -32,7 +33,7 @@
             columns: [[
                 { field: 'MenuId', title: '菜单ID', width: 70 },
                 { field: 'MenuName', title: '菜单名称', width: 120 },
-                { field: 'MenuUrl', title: '链接地址', width: 150 },
+                { field: 'MenuUrl', title: '链接地址', width: 200 },
                 { field: 'MenuSortID', title: '排序', width: 70 }
             ]],
             autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
@@ -47,7 +48,7 @@
             fit: true,
             queryParams: {
                 menuName: "",
-                parentId: -1
+                parentId: 0
             }
         });
     }
@@ -74,7 +75,7 @@
             isAdd = true;
         else
             isAdd = false;
-        ShowDialog("角色管理", 500, 400, "/Menu/EditMenu?mid=" + Mid, saveMenu);
+        ShowDialog("菜单管理", 500, 400, "/Menu/EditMenu?mid=" + Mid, saveMenu);
     }
     function DelMenu(mid) {
         $.messager.confirm('提示', "确定要删除吗？", function (r) {

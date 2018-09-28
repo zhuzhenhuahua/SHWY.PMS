@@ -21,10 +21,10 @@ namespace SHWY.Lib.DB.Repositorys
         {
             int from = (page - 1) * rows;
             var total = await (from j in context.Sys_Menus
-                               where j.MenuName.Contains(menuName) && parentId > 0 ? j.ParentId == parentId : 1 == 1
+                               where (j.MenuName.Contains(menuName)) && (parentId > 0 ? j.ParentId == parentId : 1 == 1)
                                select j).CountAsync();
             var list = await (from j in context.Sys_Menus
-                              where j.MenuName.Contains(menuName) && parentId > 0 ? j.ParentId == parentId : 1 == 1
+                              where (j.MenuName.Contains(menuName)) && (parentId > 0 ? j.ParentId == parentId : 1 == 1)
                               orderby j.MenuId, j.MenuSortID
                               select j).Skip(from).Take(rows).ToListAsync();
             return Tuple.Create(total, list);
@@ -76,7 +76,7 @@ namespace SHWY.Lib.DB.Repositorys
         }
         public async Task<List<Sys_Menu>> GetListByParentIdAsync(int parentId)
         {
-            return await context.Sys_Menus.Where(p => p.ParentId == parentId).ToListAsync();
+            return await context.Sys_Menus.Where(p => p.ParentId == parentId).OrderBy(p=>p.MenuSortID).ToListAsync();
         }
         public async Task<List<Sys_Menu>> GetAllChildMeunList()
         {

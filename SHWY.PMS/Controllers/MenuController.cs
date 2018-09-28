@@ -8,7 +8,7 @@ using SHWY.Model.DB;
 
 namespace SHWY.PMS.Controllers
 {
-    public class MenuController : Controller
+    public class MenuController : BaseController
     {
         // GET: Menu
         public ActionResult Index()
@@ -16,7 +16,7 @@ namespace SHWY.PMS.Controllers
             return View();
         }
         //获取列表分页数据
-        public async Task<JsonResult> GetList(int rows, int page, string menuName, int parentId)
+        public async Task<JsonResult> GetList(int page, int rows,  string menuName, int parentId)
         {
             using (Sys_MenuRepository rep = new Sys_MenuRepository())
             {
