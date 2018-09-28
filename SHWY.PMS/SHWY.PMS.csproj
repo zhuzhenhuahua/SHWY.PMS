@@ -1015,6 +1015,10 @@
     <Content Include="Views\PersonTask\TaskQueryList.cshtml" />
     <Content Include="Views\Server\Index.cshtml" />
     <Content Include="Views\Server\ServerEdit.cshtml" />
+    <Content Include="Views\Server\IpAddressIndex.cshtml" />
+    <Content Include="Views\Server\IpAddressEdit.cshtml" />
+    <Content Include="Views\Server\ServerIpIndex.cshtml" />
+    <Content Include="Views\Server\ServerIpEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

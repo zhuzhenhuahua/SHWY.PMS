@@ -3,12 +3,11 @@
     ViewBag.Title = "ServerEdit";
     Layout = "~/Views/Shared/_BaseContent.cshtml";
 }
-
 <form id="formServerEidt">
     <table>
         <tr>
             <td>@Html.LabelFor(p => p.sid)</td>
-            <td>@Html.TextBoxFor(p => p.sid, new { @class = "easyui-textbox", data_options = "required:true,readonly:" + ViewData["isRealOnly"] + "" })</td>
+            <td>@Html.TextBoxFor(p => p.sid, new { @class = "easyui-numberbox", data_options = "required:true,readonly:" + ViewData["isRealOnly"] + "" })</td>
         </tr>
         <tr>
             <td>@Html.LabelFor(p => p.name)</td>
@@ -20,7 +19,7 @@
         </tr>
         <tr>
             <td>@Html.LabelFor(p => p.remark)</td>
-            <td>@Html.TextBoxFor(p => p.remark, new { @class = "easyui-textbox",data_options="multiline:true",style="width:600px;height:50px;" })</td>
+            <td>@Html.TextBoxFor(p => p.remark, new { @class = "easyui-textbox",data_options="multiline:true",style="width:450px;height:50px;" })</td>
         </tr>
         <tr>
             <td>@Html.LabelFor(p => p.loginName)</td>

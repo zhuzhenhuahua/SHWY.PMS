@@ -82,28 +82,27 @@ namespace SHWY.PMS.Controllers
             UserList.AddRange(userlist2);
             ViewBag.UserList = UserList;
 
-            var codes = await codeRepo.GetCodesListAsync();
             //完成程度
             var TaskComplDegree = new List<SelectListItem>();
-            var taskDegree = codes.Where(p => p.TypeId == (int)ECodesTypeId.taskComplDegree).ToList();
+            var taskDegree =await codeRepo.GetCodesListAsync( ECodesTypeId.taskComplDegree);
             var taskDegree2 = new SelectList(taskDegree, "Code", "Text");
             TaskComplDegree.AddRange(taskDegree2);
             ViewBag.TaskComplDegreeV = TaskComplDegree;
             //服务态度
             var ServiceAttri = new List<SelectListItem>();
-            var serAttri = codes.Where(p => p.TypeId == (int)ECodesTypeId.serviceAttri).ToList();
+            var serAttri = await codeRepo.GetCodesListAsync(ECodesTypeId.serviceAttri);
             var serAttri2 = new SelectList(serAttri, "Code", "Text");
             ServiceAttri.AddRange(serAttri2);
             ViewBag.ServiceAttriV = ServiceAttri;
             //完成速度
             var ComplSpeed = new List<SelectListItem>();
-            var speed = codes.Where(p => p.TypeId == (int)ECodesTypeId.complSpeed).ToList();
+            var speed = await codeRepo.GetCodesListAsync(ECodesTypeId.complSpeed);
             var speed2 = new SelectList(speed, "Code", "Text");
             ComplSpeed.AddRange(speed2);
             ViewBag.ComplSpeedV = ComplSpeed;
             //困难程度
             var TaskDiffLevel = new List<SelectListItem>();
-            var diffLevel = codes.Where(p => p.TypeId == (int)ECodesTypeId.taskDiffLevel).ToList();
+            var diffLevel = await codeRepo.GetCodesListAsync(ECodesTypeId.taskDiffLevel);
             var diffLevel2 = new SelectList(diffLevel, "Code", "Text");
             TaskDiffLevel.AddRange(diffLevel2);
             ViewBag.TaskDiffLevelV = TaskDiffLevel;
@@ -155,28 +154,27 @@ namespace SHWY.PMS.Controllers
             UserList.AddRange(userlist2);
             ViewBag.UserList = UserList;
 
-            var codes = await codeRepo.GetCodesListAsync();
             //完成程度
             var TaskComplDegree = new List<SelectListItem>();
-            var taskDegree = codes.Where(p => p.TypeId == (int)ECodesTypeId.taskComplDegree).ToList();
+            var taskDegree = await codeRepo.GetCodesListAsync(ECodesTypeId.taskComplDegree);
             var taskDegree2 = new SelectList(taskDegree, "Code", "Text");
             TaskComplDegree.AddRange(taskDegree2);
             ViewBag.TaskComplDegreeV = TaskComplDegree;
             //服务态度
             var ServiceAttri = new List<SelectListItem>();
-            var serAttri = codes.Where(p => p.TypeId == (int)ECodesTypeId.serviceAttri).ToList();
+            var serAttri = await codeRepo.GetCodesListAsync(ECodesTypeId.serviceAttri);
             var serAttri2 = new SelectList(serAttri, "Code", "Text");
             ServiceAttri.AddRange(serAttri2);
             ViewBag.ServiceAttriV = ServiceAttri;
             //完成速度
             var ComplSpeed = new List<SelectListItem>();
-            var speed = codes.Where(p => p.TypeId == (int)ECodesTypeId.complSpeed).ToList();
+            var speed = await codeRepo.GetCodesListAsync(ECodesTypeId.complSpeed);
             var speed2 = new SelectList(speed, "Code", "Text");
             ComplSpeed.AddRange(speed2);
             ViewBag.ComplSpeedV = ComplSpeed;
             //困难程度
             var TaskDiffLevel = new List<SelectListItem>();
-            var diffLevel = codes.Where(p => p.TypeId == (int)ECodesTypeId.taskDiffLevel).ToList();
+            var diffLevel = await codeRepo.GetCodesListAsync(ECodesTypeId.taskDiffLevel);
             var diffLevel2 = new SelectList(diffLevel, "Code", "Text");
             TaskDiffLevel.AddRange(diffLevel2);
             ViewBag.TaskDiffLevelV = TaskDiffLevel;

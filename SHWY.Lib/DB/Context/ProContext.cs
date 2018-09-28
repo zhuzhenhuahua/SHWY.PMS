@@ -51,5 +51,7 @@ namespace SHWY.Lib.DB.Context
         public DbSet<Codes> Codes { get; set; }
         public DbSet<PersonTaskProcess> PersonTaskProcess { get; set; }
         public DbSet<Servers> Servers { get; set; }
+        public DbSet<IpAddress> IpAddress { get; set; }
+        public DbSet<ServerIp> ServerIps { get; set; }
     }
 }

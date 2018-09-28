@@ -12,7 +12,7 @@ namespace SHWY.Model.DB
     /// </summary>
     [Serializable]
     [Table("Codes")]
-   public class Codes
+    public class Codes
     {
         public int Id { get; set; }
         public string Code { get; set; }
@@ -26,18 +26,22 @@ namespace SHWY.Model.DB
         /// <summary>
         /// 服务态度
         /// </summary>
-        serviceAttri=1,
+        serviceAttri = 1,
         /// <summary>
         /// 完成速度
         /// </summary>
-        complSpeed=2,
+        complSpeed = 2,
         /// <summary>
         /// 任务困难程度
         /// </summary>
-        taskDiffLevel=3,
+        taskDiffLevel = 3,
         /// <summary>
         /// 完成程度
         /// </summary>
-        taskComplDegree=4
+        taskComplDegree = 4,
+        /// <summary>
+        /// IP地址内外网标识
+        /// </summary>
+        IpAddressBeLong = 5
     }
 }

@@ -78,18 +78,20 @@ namespace SHWY.Lib.DB.Repositorys
         }
         #endregion
         #region Codes
-        public async Task<List<Codes>> GetCodesListAsync()
+        static ConcurrentDictionary<int, List<Codes>> _dicCodes = new ConcurrentDictionary<int, List<Codes>>();
+        public async Task<List<Codes>> GetCodesListAsync(ECodesTypeId typeId)
         {
-            var list = await (from j in context.Codes
-                              select j).ToListAsync();
-            return list;
-        }
-        public async Task<List<Codes>> GetCodesListAsync(int typeId)
-        {
-            var list = await (from j in context.Codes
-                              where j.TypeId == typeId
-                              select j).ToListAsync();
-            return list;
+            int typeid = Convert.ToInt32(typeId);
+            if (!_dicCodes.ContainsKey(typeid))
+            {
+                var list = await (from j in context.Codes
+                                  where j.TypeId == typeid && j.Status == 1
+                                  select j).ToListAsync();
+                _dicCodes[typeid] = list;
+                return list;
+            }
+            return _dicCodes[typeid];
+
         }
         #endregion
     }

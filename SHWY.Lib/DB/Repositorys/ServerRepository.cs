@@ -28,6 +28,7 @@ namespace SHWY.Lib.DB.Repositorys
             }
             return serverRepository;
         }
+        #region Server
         public async Task<Tuple<int, object>> GetServerListAsync(int pageIndex, int pageSize, string name)
         {
             int form = (pageIndex - 1) * pageSize;
@@ -51,6 +52,11 @@ namespace SHWY.Lib.DB.Repositorys
                               }
                             ).Skip(form).Take(pageSize).ToListAsync();
             return Tuple.Create<int, object>(total, list);
+        }
+        public async Task<List<Servers>> GetServerListAsync()
+        {
+            var list = await context.Servers.OrderByDescending(p=>p.sid).ToListAsync();
+            return list;
         }
         public async Task<Servers> GetServerAsync(int sid)
         {
@@ -86,5 +92,129 @@ namespace SHWY.Lib.DB.Repositorys
                 context.Servers.Add(serverNew);
             return await context.SaveChangesAsync() == 1;
         }
+        #endregion
+
+        #region IpAddress
+        public async Task<Tuple<int, object>> GetIpAddressListAsync(int pageIndex, int pageSize, string ipAddress)
+        {
+            int form = (pageIndex - 1) * pageSize;
+            var total = await (from j in context.IpAddress
+                               where j.ipv4address.Contains(ipAddress)
+                               select j).CountAsync();
+            var list = await (from j in context.IpAddress
+                              join item in context.Items on j.itemid.ToString() equals item.ItemID
+                              where j.ipv4address.Contains(ipAddress)
+                              orderby j.ipid descending
+                              select new
+                              {
+                                  j.ipid,
+                                  j.ipv4address,
+                                  j.itemid,
+                                  itemName = item.NAME,
+                                  j.ipv6address,
+                                  j.belong
+                              }).Skip(form).Take(pageSize).ToListAsync();
+            return Tuple.Create<int, object>(total, list);
+        }
+        public async Task<List<IpAddress>> GetIpAddressListAsync()
+        {
+            var list = await context.IpAddress.OrderByDescending(p=>p.ipid).ToListAsync();
+            return list;
+        }
+        public async Task<IpAddress> GetIpAddressAsync(int ipid)
+        {
+            var model = await context.IpAddress.Where(p => p.ipid == ipid).FirstOrDefaultAsync();
+            return model;
+        }
+
+        public async Task<bool> AddOrUpdateIpAddress(IpAddress ipPara)
+        {
+            var isAdd = false;
+            var ipNew = await context.IpAddress.Where(p => p.ipid == ipPara.ipid).FirstOrDefaultAsync();
+            if (ipNew == null)
+            {
+                isAdd = true;
+                ipNew = new IpAddress() { ipid = ipPara.ipid };
+            }
+            ipNew.ipv4address = ipPara.ipv4address;
+            ipNew.itemid = ipPara.itemid;
+            ipNew.ipv6address = ipPara.ipv6address;
+            ipNew.belong = ipPara.belong;
+            if (isAdd)
+                context.IpAddress.Add(ipNew);
+            return await context.SaveChangesAsync() == 1;
+        }
+        public async Task<bool> DelIpAddressAsync(int ipid)
+        {
+            var model = await context.IpAddress.Where(p => p.ipid == ipid).FirstOrDefaultAsync();
+            if (model != null)
+            {
+                context.IpAddress.Remove(model);
+                return await context.SaveChangesAsync() == 1;
+            }
+            return false;
+        }
+        #endregion
+
+        #region ServerIp
+        public async Task<Tuple<int, object>> GetServerIpListAsync(int pageIndex, int pageSize,string serverName)
+        {
+            int form = (pageIndex - 1) * pageSize;
+            var total = await (from j in context.ServerIps
+                               join server in context.Servers on j.sid equals server.sid
+                               where server.name.Contains(serverName)
+                               select j).CountAsync();
+            var list = await (from j in context.ServerIps
+                              join item in context.Items on j.itemid.ToString() equals item.ItemID
+                              join server in context.Servers on j.sid equals server.sid
+                              join ipAddress in context.IpAddress on j.ipid equals ipAddress.ipid
+                              where server.name.Contains(serverName)
+                              orderby j.ipid descending
+                              select new
+                              {
+                                  j.ipid,
+                                  ipv4address = ipAddress.ipv4address,
+                                  ipv6address = ipAddress.ipv6address,
+                                  belong = ipAddress.belong,
+                                  j.itemid,
+                                  itemName = item.NAME,
+                                  sid = server.sid,
+                                  sName = server.name,
+                                  server.loginName,
+                                  server.password,
+                                  server.remark
+                              }).Skip(form).Take(pageSize).ToListAsync();
+            return Tuple.Create<int, object>(total, list);
+        }
+        public async Task<ServerIp> GetServerIpAsync(int sid, int ipid)
+        {
+            var model = await context.ServerIps.Where(p => p.sid == sid && p.ipid == ipid).FirstOrDefaultAsync();
+            return model;
+        }
+        public async Task<bool> AddOrUpdateServerIpAsync(ServerIp serverIPPara)
+        {
+            var isAdd = false;
+            var model = await context.ServerIps.Where(p => p.sid == serverIPPara.sid && p.ipid == serverIPPara.ipid).FirstOrDefaultAsync();
+            if (model == null)
+            {
+                isAdd = true;
+                model = new ServerIp() { ipid = serverIPPara.ipid, sid = serverIPPara.sid };
+            }
+            model.itemid = serverIPPara.itemid;
+            if (isAdd)
+                context.ServerIps.Add(model);
+            return await context.SaveChangesAsync() == 1;
+        }
+        public async Task<bool> DelServerIpsAsync(int sid, int ipid)
+        {
+            var model = await context.ServerIps.Where(p => p.sid == sid && p.ipid == ipid).FirstOrDefaultAsync();
+            if (model != null)
+            {
+                context.ServerIps.Remove(model);
+                return await context.SaveChangesAsync() == 1;
+            }
+            return false;
+        }
+        #endregion
     }
 }

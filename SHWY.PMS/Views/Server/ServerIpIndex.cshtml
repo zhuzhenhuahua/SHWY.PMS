@@ -1,13 +1,14 @@
 ﻿
 @{
-    ViewBag.Title = "服务器管理";
+    ViewBag.Title = "服务器IP对应";
     Layout = "~/Views/Shared/_BaseContent.cshtml";
 }
+
 <table id="tt"></table>
 <div id="tb">
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditServer(0)">新增</a>
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditServer(1)">修改</a>
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelTask()">删除</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditServerIp(0, 0)">新增</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditServerIp(1, 1)">修改</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelServerIp()">删除</a>
     <span class="l-btn-text">服务器名称：</span><input class="easyui-textbox" id="txtServerNameQ" style="width:80px;" />
     <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
 </div>
@@ -17,14 +18,22 @@
     });
     function InitGrid() {
         $("#tt").datagrid({
-            url: '/Server/GetList',
+            url: '/Server/GetServerIpList',
             columns: [[
-                { field: 'sid', title: '服务器ID', width: 80},
-                { field: 'name', title: '服务器名称', width: 100 },
+                { field: 'sid', title: '服务器ID', width: 80 },
+                { field: 'sName', title: '服务器名称', width: 100 },
                 { field: 'itemName', title: '项目名称', width: 150 },
-                { field: 'remark', title: '备注说明', width: 600 },
                 { field: 'loginName', title: '登录名', width: 100 },
                 { field: 'password', title: '密码', width: 100 },
+                { field: 'ipid', title: 'ipid', width: 80 },
+                 { field: 'ipv4address', title: 'ip4地址', width: 80 },
+                 { field: 'ipv6address', title: 'ip6地址', width: 80 },
+                  {
+                      field: 'belong', title: '内外网标识', width: 100, formatter: function (value, row, index) {
+                          return value == 1 ? "外网" : "内网"
+                      }
+                  },
+                { field: 'remark', title: '备注说明', width: 600 },
             ]],
             autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
             striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
@@ -33,21 +42,20 @@
             toolbar: '#tb',
             pagination: true,
             pageSize: 20,
-            idField: 'sid',
             rownumbers: true,
             fit: true,
             queryParams: {
-                name: ""
+                serverName: ""
             }
         });
     }
     function GridReload(loaded) {
         $("#tt").datagrid(loaded, {
-            name: $("#txtServerNameQ").val()
+            serverName: $("#txtServerNameQ").val()
         });
     }
     var isAdd = false;
-    function EditServer(sid) {
+    function EditServerIp(sid,ipid) {
         if (sid == 0)
             isAdd = true;
         else {
@@ -57,11 +65,12 @@
                 return;
             }
             sid = row.sid;
+            ipid = row.ipid;
             isAdd = false;
         }
-        ShowDialog("服务器管理", 700, 500, "/Server/ServerEdit?sid=" + sid, saveTask);
+        ShowDialog("服务器IP管理", 700, 500, "/Server/ServerIpEdit?sid=" + sid+"&ipid="+ipid, saveServerIp);
     }
-    function DelTask() {
+    function DelServerIp() {
         var row = $("#tt").datagrid("getSelected");
         if (row == null) {
             AlertMsg("请选择一行数据后再操作");
@@ -69,7 +78,7 @@
         }
         $.messager.confirm('提示', "确定要删除吗？", function (r) {
             if (r) {
-                $.post("/Server/DelServer", { sid: row.sid }, function (result) {
+                $.post("/Server/DelServerIp", { sid: row.sid,ipid:row.ipid }, function (result) {
                     if (result.isOk) {
                         AlertMsg("删除成功");
                         GridReload("reload");
@@ -81,12 +90,12 @@
             }
         });
     }
-    function saveTask() {
-        var check = $("#formServerEidt").form('enableValidation').form('validate');
+    function saveServerIp() {
+        var check = $("#formServerIPEidt").form('enableValidation').form('validate');
         if (check) {
-            var postData = $("#formServerEidt").serialize();
+            var postData = $("#formServerIPEidt").serialize();
             if (isAdd) {
-                $.post("/Server/IsExists", postData, function (result) {
+                $.post("/Server/IsExistsServerIp", postData, function (result) {
                     if (result.IsExists) {
                         AlertMsg("服务器ID已存在，请重新输入");
                     } else {
@@ -99,7 +108,7 @@
         }
     }
     function SaveData(postData) {
-        $.post("/Server/SaveServer", postData, function (result) {
+        $.post("/Server/SaveServerIp", postData, function (result) {
             if (result.isOk) {
                 $('#PopWindow').dialog('close');
                 $("#PopWindow").remove();
@@ -111,7 +120,4 @@
         });
     }
 </script>
-
-
-
 

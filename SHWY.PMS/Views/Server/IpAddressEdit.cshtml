@@ -1,0 +1,31 @@
+﻿@model SHWY.Model.DB.IpAddress
+@{
+    ViewBag.Title = "IpAddressEdit";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+
+<form id="formIpAddressEidt">
+    <table>
+        <tr>
+            <td>@Html.LabelFor(p => p.ipid)</td>
+            <td>@Html.TextBoxFor(p => p.ipid, new { @class = "easyui-numberbox", data_options = "required:true,readonly:" + ViewData["isRealOnly"] + "" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(p => p.ipv4address)</td>
+            <td>@Html.TextBoxFor(p => p.ipv4address, new { @class = "easyui-textbox", data_options = "required:true" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(p => p.itemid)</td>
+            <td>@Html.DropDownListFor(p => p.itemid, ViewBag.ItemList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(p => p.ipv6address)</td>
+            <td>@Html.TextBoxFor(p => p.ipv6address, new { @class = "easyui-textbox" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(p => p.belong)</td>
+            <td>@Html.DropDownListFor(p => p.belong, ViewBag.BeLongList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+        </tr>
+    </table>
+</form>
+
