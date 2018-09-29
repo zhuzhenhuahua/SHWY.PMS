@@ -16,7 +16,7 @@ namespace SHWY.PMS.Controllers
             return View();
         }
         //获取列表分页数据
-        public async Task<JsonResult> GetList(int page, int rows,  string menuName, int parentId)
+        public async Task<JsonResult> GetList(int page, int rows, string menuName, int parentId)
         {
             using (Sys_MenuRepository rep = new Sys_MenuRepository())
             {
@@ -24,6 +24,27 @@ namespace SHWY.PMS.Controllers
                 return Json(new { total = result.Item1, rows = result.Item2 });
             }
 
+        }
+        public PartialViewResult GetMenuListPartialView()
+        {
+            using (Sys_MenuRepository rep = new Sys_MenuRepository())
+            {
+                var list = rep.GetList();//所有菜单
+                return PartialView("_PartialMenu", new MenuListPartial() { list = list });
+            }
+        }
+        public class MenuListPartial
+        {
+            public List<Sys_Menu> list { get; set; }
+        }
+        //根据父ID获取子菜单列表
+        public async Task<JsonResult> GetMeunListByParentID(int parentID)
+        {
+            using (Sys_MenuRepository rep = new Sys_MenuRepository())
+            {
+                var result = await rep.GetListByParentIdAsync(parentID);
+                return Json(result);
+            }
         }
         //获取所有父级菜单
         public async Task<JsonResult> GetParentMenuList(int isAddAll)
@@ -33,15 +54,6 @@ namespace SHWY.PMS.Controllers
                 var result = await rep.GetListByParentIdAsync(0);
                 if (isAddAll == 1)
                     result.Insert(0, new Sys_Menu() { MenuId = 0, MenuName = "全部" });
-                return Json(result);
-            }
-        }
-        //根据父ID获取子菜单列表
-        public async Task<JsonResult> GetMeunListByParentID(int parentID)
-        {
-            using (Sys_MenuRepository rep = new Sys_MenuRepository())
-            {
-                var result = await rep.GetListByParentIdAsync(parentID);
                 return Json(result);
             }
         }
@@ -125,7 +137,7 @@ namespace SHWY.PMS.Controllers
         /// <param name="roleMenuOperIds">角色所拥有的MenuOperID列表</param>
         /// <param name="parentId"></param>
         /// <returns></returns>
-        public List<EasyUiTreeViewModel> ConvertMenuToEasyUiTree(List<Sys_Menu> menuList, List<int> roleMenu, List<Sys_MenuOper> menuOperList,List<int> roleMenuOperIds, int parentId = 0)
+        public List<EasyUiTreeViewModel> ConvertMenuToEasyUiTree(List<Sys_Menu> menuList, List<int> roleMenu, List<Sys_MenuOper> menuOperList, List<int> roleMenuOperIds, int parentId = 0)
         {
             List<EasyUiTreeViewModel> treeModeList = new List<Models.EasyUiTreeViewModel>();
             treeModeList.AddRange(menuList.Where(p => p.ParentId == parentId).OrderBy(p => p.MenuSortID).Select(m => new EasyUiTreeViewModel()

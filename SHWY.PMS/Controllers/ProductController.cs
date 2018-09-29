@@ -13,7 +13,64 @@ namespace SHWY.PMS.Controllers
     public class ProductController : BaseController
     {
         ProductRepository prodRepo = ProductRepository.CreateInstance();
-        // GET: Product
+        ItemsRepository itemsRepo = ItemsRepository.CreateInstance();
+        ServerRepository serverRepo = ServerRepository.CreateInstance();
+        CodeRepository codeRepo = CodeRepository.CreateInstance();
+        #region ProdDeploy产品部署服务器
+        public ActionResult ProdServerIndex()
+        {
+            return View();
+        }
+        public async Task<JsonResult> GetProdServerList(int page, int rows, string prodID, int serverID)
+        {
+            var tuple = await prodRepo.GetProdDeployListAsync(page, rows, prodID, serverID);
+            return Json(new { total = tuple.Item1, rows = tuple.Item2 });
+        }
+        public async Task<ActionResult> ProdServerEdit(int id)
+        {
+            var prodDeply = await prodRepo.GetProdDeployAsync(id);
+
+            //项目
+            var ItemList = new List<SelectListItem>();
+            var items = await itemsRepo.GetListItemsAsync();
+            var items2 = new SelectList(items, "ItemID", "NAME");
+            ItemList.AddRange(items2);
+            ViewBag.ItemList = ItemList;
+            //产品
+            var ProdList = new List<SelectListItem>();
+            var prods = await prodRepo.GetListAsync();
+            var prods2 = new SelectList(prods, "ProID", "NAME");
+            ProdList.AddRange(prods2);
+            ViewBag.ProdList = ProdList;
+            //服务器
+            var ServerList = new List<SelectListItem>();
+            var serlist = await serverRepo.GetServerListAsync();
+            var serlist2 = new SelectList(serlist, "sid", "name");
+            ServerList.AddRange(serlist2);
+            ViewBag.ServerList = ServerList;
+            //通讯协议
+            var ProtTypeList = new List<SelectListItem>();
+            var prots = await codeRepo.GetCodesListAsync(ECodesTypeId.ProtType);
+            var prots2 = new SelectList(prots, "Code", "Text");
+            ProtTypeList.AddRange(prots2);
+            ViewBag.ProtTypeList = ProtTypeList;
+
+
+            return View(prodDeply);
+        }
+        public async Task<JsonResult> SaveProdDeploy(ProdDeploy model)
+        {
+            var result = await prodRepo.AddOrUpdateProdDeployAsync(model);
+            return Json(new { isOk = result });
+        }
+        public async Task<JsonResult> DelProdDdeploy(int id)
+        {
+            var result = await prodRepo.DelProdDeployAsync(id);
+            return Json(new { isOk = result });
+        }
+        #endregion
+
+        #region Product
         public ActionResult Index()
         {
             return View();
@@ -27,7 +84,7 @@ namespace SHWY.PMS.Controllers
         {
             var result = await prodRepo.GetListAsync();
             if (isAddAll == 1)
-                result.Insert(0, new Product() {  ProID = "", NAME = "全部" });
+                result.Insert(0, new Product() { ProID = "", NAME = "全部" });
             return Json(result);
         }
         public async Task<JsonResult> IsExistsByProId(Product prod)
@@ -35,7 +92,8 @@ namespace SHWY.PMS.Controllers
             Product p = await prodRepo.GetProductAsync(prod.ProID);
             return Json(new { isExists = !string.IsNullOrEmpty(p.ProID) });
         }
-        #region 增删改
+        #endregion
+        #region Product增删改
         public async Task<ActionResult> EditProd(string prodId)
         {
             Product prod = await prodRepo.GetProductAsync(prodId);

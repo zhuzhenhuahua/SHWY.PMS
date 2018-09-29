@@ -21,7 +21,8 @@
             @Html.Partial("_PartialHeader")
         </div>
         <div data-options="region:'west',split:true" title='菜单' style="width:200px">
-            @Html.Partial("_PartialMenu")
+            @*@Html.Partial("_PartialMenu")*@
+         @{Html.RenderAction("GetMenuListPartialView", "Menu");}
         </div>
         <div data-options="region:'center',title:'Main Title',iconCls:'icon-ok'">
             <div id="tab_Content" class="easyui-tabs" data-options="fit:true,border:false">

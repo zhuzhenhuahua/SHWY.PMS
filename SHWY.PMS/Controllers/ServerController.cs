@@ -28,6 +28,13 @@ namespace SHWY.PMS.Controllers
             var model = await serverRepo.GetServerAsync(server.sid);
             return Json(new { IsExists = model != null });
         }
+        public async Task<JsonResult> GetAllServers(int isAddAll)
+        {
+            var result = await serverRepo.GetServerListAsync();
+            if (isAddAll == 1)
+                result.Insert(0, new Servers() { sid = 0, name = "全部" });
+            return Json(result);
+        }
         #endregion
 
         #region IpAddress查询
@@ -62,6 +69,9 @@ namespace SHWY.PMS.Controllers
             var model = await serverRepo.GetServerIpAsync(sip.sid, sip.ipid);
             return Json(new { IsExists = model != null });
         }
+        #endregion
+
+        #region databaseDeploy数据库管理
         #endregion
 
         #region 增删改
@@ -157,6 +167,9 @@ namespace SHWY.PMS.Controllers
             var result = await serverRepo.AddOrUpdateServerIpAsync(serIp);
             return Json(new { isOk = result });
         }
+        #endregion
+
+        #region databaseDeploy数据库管理操作
         #endregion
 
         #endregion

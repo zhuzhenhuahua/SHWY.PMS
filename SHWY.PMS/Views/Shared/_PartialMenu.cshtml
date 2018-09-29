@@ -1,227 +1,168 @@
-﻿<style type="text/css">
-    .ulnone {
-         list-style:none;
-    }
-        .ulnone li {
-            margin:10px;
+﻿@model SHWY.PMS.Controllers.MenuController.MenuListPartial
+    <style type="text/css">
+        .ulnone {
+            list-style: none;
         }
-</style>
-<div class="easyui-accordion" data-options="fit:true,border:false" style="width:100%">
-    <div title="项目产品管理">
-        <ul class="ulnone">
-            <li onclick="OpenTabs(21, '项目管理', '/Items/Index')">
-                <div>
-                    <a href="javascript:void (0);">项目管理</a>
-                </div>
-            </li>
-            <li onclick="OpenTabs(22, '产品管理', '/Product/Index')">
-                <div>
-                    <a href="javascript:void (0);">产品管理</a>
-                </div>
-            </li>
-            <li onclick="OpenTabs(23, '数据字典维护', '/Codes/Index')">
-                <div>
-                    <a href="javascript:void (0);">数据字典维护</a>
-                </div>
-            </li>
-            <li onclick="OpenTabs(24, '服务器管理', '/Server/Index')">
-                <div>
-                    <a href="javascript:void (0);">服务器管理</a>
-                </div>
-            </li>
-            <li onclick="OpenTabs(25, 'IP地址管理', '/Server/IpAddressIndex')">
-                <div>
-                    <a href="javascript:void (0);">IP地址管理</a>
-                </div>
-            </li>
-            <li onclick="OpenTabs(26, '服务器IP对应', '/Server/ServerIpIndex')">
-                <div>
-                    <a href="javascript:void (0);">服务器IP对应</a>
-                </div>
-            </li>
-        </ul>
-    </div>
-    <div title="任务管理">
-        <ul class="ulnone">
-            <li onclick="OpenTabs(31, '个人任务', '/PersonTask/MyTaskList')">
-                <div>
-                    <a href="javascript:void (0);">个人任务</a>
-                </div>
-            </li>
-            <li onclick="OpenTabs(32, '任务发布管理', '/PersonTask/TaskPublishList')">
-                <div>
-                    <a href="javascript:void (0);">任务发布管理</a>
-                </div>
-            </li>
-            <li onclick="OpenTabs(33, '任务查询', '/PersonTask/TaskQueryList')">
-                <div>
-                    <a href="javascript:void (0);">任务查询</a>
-                </div>
-            </li>
-        </ul>
-    </div>
-    
-    <div title="系统管理" >
-        <ul class="ulnone">
-            <li onclick="OpenTabs(11,'用户管理', '/User/Index')">
-                <div>
-                    <a href="javascript:void (0);">用户管理</a>
-                </div>
-            </li>
-            <li onclick="OpenTabs(12,'角色管理', '/Role/Index')">
-                <div>
-                    <a href="javascript:void (0);">角色管理</a>
-                </div>
-            </li>
-            <li onclick="OpenTabs(13,'菜单管理','/Menu/Index')">
-                <div>
-                    <a href="javascript:void (0);">菜单管理</a>
-                </div>
-            </li>
-            @*<li onclick="OpenTabs(14,'菜单操作管理','/MenuOper/Index')">
-                <div>
-                    <a href="javascript:void (0);">菜单操作管理</a>
-                </div>
-            </li>*@
-        </ul>
-    </div>
-        @*<div title="Tabs操作" >
-                <ul class="ulnone">
-                    <li onclick="OpenTabs(21,'基础选项卡','/Menu/Index')">
-                        <div>
-                            <a href="javascript:void (0);">基础选项卡</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div title="数据表格DataGrid" >
-                <ul class="ulnone">
-                    <li onclick="OpenTabs(31,'基础数据表格','/DataGrid/BasicGrid')">
-                        <div>
-                            <a href="javascript:void (0);">基础数据表格</a>
-                        </div>
-                    </li>
-                </ul>
-                <ul class="ulnone">
-                    <li onclick="OpenTabs(32,'在线编辑器','/DataGrid/Editor')">
-                        <div>
-                            <a href="javascript:void (0);">在线编辑器</a>
-                        </div>
-                    </li>
-                </ul>
-                <ul class="ulnone">
-                    <li onclick="OpenTabs(33,'单元格合并','/DataGrid/MergeCells')">
-                        <div>
-                            <a href="javascript:void (0);">单元格合并</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div title="Tree" >
-                <ul class="ulnone">
-                    <li onclick="OpenTabs(41,'自定义选中样式','/Tree/checker')">
-                        <div>
-                            <a href="javascript:void (0);">自定义选中样式</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div title="文件操作" >
-                <ul class="ulnone">
-                    <li onclick="OpenTabs(51, '上传下载', '/OperFile/UpDownload')">
-                        <div>
-                            <a href="javascript:void (0);">上传下载</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div title="DEV控件学习" >
-                <ul class="ulnone">
-                    <li onclick="OpenTabs(61, 'XtraReport', '/DevXtraReport/Index')">
-                        <div>
-                            <a href="javascript:void (0);">XtraReport</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div title="092项目相关" >
-                <ul class="ulnone">
-                    <li onclick="OpenTabs(91, '分单号修改', '/AppAsn/IndexSplitNo')">
-                        <div>
-                            <a href="javascript:void (0);">分单号修改</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div title="XML操作" >
-                <ul class="ulnone">
-                    <li onclick="OpenTabs(101, 'XML操作', '/XMLSerializa/Index')">
-                        <div>
-                            <a href="javascript:void (0);">XML操作</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div title="算法学习" >
-                <ul class="ulnone">
-                    <li onclick="OpenTabs(201, '打印三角形', '/Algorithm/Triangle')">
-                        <div>
-                            <a href="javascript:void (0);">XML操作</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>*@
-    </div>
-<script>
-    $.extend($.fn.tabs.methods, {
-        getTabById: function (jq, id) {
-            var tabs = $.data(jq[0], 'tabs').tabs;
-            for (var i = 0; i < tabs.length; i++) {
-                var tab = tabs[i];
-                if (tab.panel('options').id == id) {
-                    return tab;
-                }
+
+            .ulnone li {
+                margin: 10px;
             }
-            return null;
-        },
-        selectById: function (jq, id) {
-            var tab;
-            var tabs = $.data(jq[0], 'tabs').tabs;
-            for (var i = 0; i < tabs.length; i++) {
-                tab = tabs[i];
-                if (tab.panel('options').id == id) {
-                    break;
-                }
-            }
-            if (tab != undefined) {
-                var curTabIndex = $("#tab_Content").tabs("getTabIndex", tab);
-                $('#tab_Content').tabs('select', curTabIndex);
-            }
-        },
-        existsById: function (jq, id) {
-            return jq.tabs('getTabById', id) != null;
+    </style>
+    <div class="easyui-accordion" data-options="fit:true,border:false" style="width:100%">
+        @foreach (var parentMenu in Model.list.Where(p => p.ParentId == 0))
+        {
+            <div title="@parentMenu.MenuName">
+                <ul class="ulnone">
+                    @foreach (var child in Model.list.Where(p => p.ParentId == parentMenu.MenuId))
+                    {
+                        <li onclick="OpenTabs(@child.MenuId, '@child.MenuName', '@child.MenuUrl')">
+                            <div>
+                                <a href="javascript:void (0);">@child.MenuName</a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
         }
-    });
-    function OpenTabs(menuID, title, url) {
-        $.post("/Account/GetSessionUser", null, function (data) {
-            if (!data.isExists) {
-                window.top.location = "/Account/Login";
-            } else {
-                Open(menuID, title, url);
+        <div>
+            @*<div title="Tabs操作" >
+                    <ul class="ulnone">
+                        <li onclick="OpenTabs(21,'基础选项卡','/Menu/Index')">
+                            <div>
+                                <a href="javascript:void (0);">基础选项卡</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div title="数据表格DataGrid" >
+                    <ul class="ulnone">
+                        <li onclick="OpenTabs(31,'基础数据表格','/DataGrid/BasicGrid')">
+                            <div>
+                                <a href="javascript:void (0);">基础数据表格</a>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="ulnone">
+                        <li onclick="OpenTabs(32,'在线编辑器','/DataGrid/Editor')">
+                            <div>
+                                <a href="javascript:void (0);">在线编辑器</a>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="ulnone">
+                        <li onclick="OpenTabs(33,'单元格合并','/DataGrid/MergeCells')">
+                            <div>
+                                <a href="javascript:void (0);">单元格合并</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div title="Tree" >
+                    <ul class="ulnone">
+                        <li onclick="OpenTabs(41,'自定义选中样式','/Tree/checker')">
+                            <div>
+                                <a href="javascript:void (0);">自定义选中样式</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div title="文件操作" >
+                    <ul class="ulnone">
+                        <li onclick="OpenTabs(51, '上传下载', '/OperFile/UpDownload')">
+                            <div>
+                                <a href="javascript:void (0);">上传下载</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div title="DEV控件学习" >
+                    <ul class="ulnone">
+                        <li onclick="OpenTabs(61, 'XtraReport', '/DevXtraReport/Index')">
+                            <div>
+                                <a href="javascript:void (0);">XtraReport</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div title="092项目相关" >
+                    <ul class="ulnone">
+                        <li onclick="OpenTabs(91, '分单号修改', '/AppAsn/IndexSplitNo')">
+                            <div>
+                                <a href="javascript:void (0);">分单号修改</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div title="XML操作" >
+                    <ul class="ulnone">
+                        <li onclick="OpenTabs(101, 'XML操作', '/XMLSerializa/Index')">
+                            <div>
+                                <a href="javascript:void (0);">XML操作</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div title="算法学习" >
+                    <ul class="ulnone">
+                        <li onclick="OpenTabs(201, '打印三角形', '/Algorithm/Triangle')">
+                            <div>
+                                <a href="javascript:void (0);">XML操作</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>*@
+        </div>
+    </div>
+    <script>
+        $.extend($.fn.tabs.methods, {
+            getTabById: function (jq, id) {
+                var tabs = $.data(jq[0], 'tabs').tabs;
+                for (var i = 0; i < tabs.length; i++) {
+                    var tab = tabs[i];
+                    if (tab.panel('options').id == id) {
+                        return tab;
+                    }
+                }
+                return null;
+            },
+            selectById: function (jq, id) {
+                var tab;
+                var tabs = $.data(jq[0], 'tabs').tabs;
+                for (var i = 0; i < tabs.length; i++) {
+                    tab = tabs[i];
+                    if (tab.panel('options').id == id) {
+                        break;
+                    }
+                }
+                if (tab != undefined) {
+                    var curTabIndex = $("#tab_Content").tabs("getTabIndex", tab);
+                    $('#tab_Content').tabs('select', curTabIndex);
+                }
+            },
+            existsById: function (jq, id) {
+                return jq.tabs('getTabById', id) != null;
             }
         });
-    }
-    function Open(menuID, title, url) {
-        if ($("#tab_Content").tabs("existsById", menuID)) {
-            $("#tab_Content").tabs("selectById", menuID);
-        } else {
-            var content = '<iframe scrolling="auto" frameborder="0"  src="' + url + '" style="width:100%;height:100%;"></iframe>';
-            $("#tab_Content").tabs("add", {
-                id: menuID,
-                title: title,
-                closable: true,
-                content: content
+        function OpenTabs(menuID, title, url) {
+            $.post("/Account/GetSessionUser", null, function (data) {
+                if (!data.isExists) {
+                    window.top.location = "/Account/Login";
+                } else {
+                    Open(menuID, title, url);
+                }
             });
         }
-    }
-</script>
+        function Open(menuID, title, url) {
+            if ($("#tab_Content").tabs("existsById", menuID)) {
+                $("#tab_Content").tabs("selectById", menuID);
+            } else {
+                var content = '<iframe scrolling="auto" frameborder="0"  src="' + url + '" style="width:100%;height:100%;"></iframe>';
+                $("#tab_Content").tabs("add", {
+                    id: menuID,
+                    title: title,
+                    closable: true,
+                    content: content
+                });
+            }
+        }
+    </script>

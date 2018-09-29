@@ -29,6 +29,79 @@ namespace SHWY.Lib.DB.Repositorys
             }
             return _productRepository;
         }
+
+
+        #region ProdServer（ProdDeploy）查询
+        public async Task<Tuple<int, object>> GetProdDeployListAsync(int pageIndex, int pageSize, string prodID, int serverID)
+        {
+            int form = (pageIndex - 1) * pageSize;
+            var total = await (from j in context.ProdDeploys
+                               where (string.IsNullOrEmpty(prodID) ? 1 == 1 : j.prodid == prodID)
+                               && (serverID == 0 ? 1 == 1 : j.serverid == serverID)
+                               select j).CountAsync();
+            var list = await (from j in context.ProdDeploys
+                              join item in context.Items on j.itemid.ToString() equals item.ItemID
+                              join prod in context.Products on j.prodid equals prod.ProID
+                              join server in context.Servers on j.serverid equals server.sid
+                              join codes in context.Codes.Where(p => p.TypeId == 6) on j.porttype.ToString() equals codes.Code
+                              where (string.IsNullOrEmpty(prodID) ? 1 == 1 : j.prodid == prodID)
+                                   && (serverID == 0 ? 1 == 1 : j.serverid == serverID)
+                              orderby j.id descending
+                              select new
+                              {
+                                  j.id,
+                                  j.itemid,
+                                  itemName = item.NAME,
+                                  j.prodid,
+                                  prodName = prod.NAME,
+                                  j.serverid,
+                                  serverName = server.name,
+                                  j.port,
+                                  portTypeName = codes.Text,
+                                  j.remark
+                              }).Skip(form).Take(pageSize).ToListAsync();
+            return Tuple.Create<int, object>(total, list);
+        }
+        public async Task<ProdDeploy> GetProdDeployAsync(int id)
+        {
+            var model = await context.ProdDeploys.Where(p => p.id == id).FirstOrDefaultAsync();
+            return model;
+        }
+        #endregion
+
+        #region ProdServer（ProdDeploy）增删改
+        public async Task<bool> AddOrUpdateProdDeployAsync(ProdDeploy pDeployPara)
+        {
+            var isAdd = false;
+            var model = await context.ProdDeploys.Where(p => p.id == pDeployPara.id).FirstOrDefaultAsync();
+            if (model == null)
+            {
+                isAdd = true;
+                model = new ProdDeploy();
+            }
+            model.itemid = pDeployPara.itemid;
+            model.prodid = pDeployPara.prodid;
+            model.serverid = pDeployPara.serverid;
+            model.port = pDeployPara.port;
+            model.porttype = pDeployPara.porttype;
+            model.remark = pDeployPara.remark;
+            if (isAdd)
+                context.ProdDeploys.Add(model);
+            return await context.SaveChangesAsync() == 1;
+        }
+        public async Task<bool> DelProdDeployAsync(int id)
+        {
+            var model = await context.ProdDeploys.Where(p => p.id == id).FirstOrDefaultAsync();
+            if (model != null)
+            {
+                context.ProdDeploys.Remove(model);
+                return await context.SaveChangesAsync() == 1;
+            }
+            return false;
+        }
+        #endregion
+
+        #region Prod查询
         public async Task<Tuple<int, List<Product>>> GetListAsync(int rows, int page, string prodName)
         {
             int form = (rows - 1) * page;
@@ -85,7 +158,9 @@ namespace SHWY.Lib.DB.Repositorys
                 throw ex;
             }
         }
-        #region 增删改
+        #endregion
+
+        #region Prod增删改
         public async Task<bool> AddOrUpdateAsync(Product prod)
         {
             try
@@ -93,7 +168,7 @@ namespace SHWY.Lib.DB.Repositorys
                 var prodNew = await GetProductAsync(prod.ProID);
                 bool isNew = false;
 
-                if (prodNew == null ||string.IsNullOrEmpty(prodNew.ProID))
+                if (prodNew == null || string.IsNullOrEmpty(prodNew.ProID))
                 {
                     isNew = true;
                 }

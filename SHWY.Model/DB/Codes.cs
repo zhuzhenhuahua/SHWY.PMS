@@ -42,6 +42,18 @@ namespace SHWY.Model.DB
         /// <summary>
         /// IP地址内外网标识
         /// </summary>
-        IpAddressBeLong = 5
+        IpAddressBeLong = 5,
+        /// <summary>
+        /// 通讯协议类型(TCP/UDP)
+        /// </summary>
+        ProtType = 6,
+        /// <summary>
+        /// 数据库架构
+        /// </summary>
+        databaseSchema=7,
+        /// <summary>
+        /// 数据库类型（sql/oracle）
+        /// </summary>
+        databaseType=8,
     }
 }

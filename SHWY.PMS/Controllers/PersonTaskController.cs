@@ -51,13 +51,13 @@ namespace SHWY.PMS.Controllers
         public async Task<ActionResult> TaskPublishEdit(string id)
         {
             PersonTask task = await pTaskRepo.GetTaskAsync(id);
-            //产品
+            //项目
             var ItemList = new List<SelectListItem>();
             var items = await itemsRepo.GetListItemsAsync();
             var items2 = new SelectList(items, "ItemID", "NAME");
             ItemList.AddRange(items2);
             ViewBag.ItemList = ItemList;
-            //项目
+            //产品
             var ProdList = new List<SelectListItem>();
             var prods = await prodRepo.GetListAsync();
             var prods2 = new SelectList(prods, "ProID", "NAME");

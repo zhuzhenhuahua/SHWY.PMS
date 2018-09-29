@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace SHWY.Model.DB
 {
+    /// <summary>
+    /// 产品实体类
+    /// </summary>
     [Serializable]
     [Table("Prod")]
    public class Product

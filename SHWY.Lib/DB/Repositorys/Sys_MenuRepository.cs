@@ -17,6 +17,13 @@ namespace SHWY.Lib.DB.Repositorys
                               select j).ToListAsync();
             return list;
         }
+        public List<Sys_Menu> GetList()
+        {
+            var list = (from j in context.Sys_Menus
+                        orderby j.MenuSortID, j.MenuId
+                        select j).ToList();
+            return list;
+        }
         public async Task<Tuple<int, List<Sys_Menu>>> GetListAsync(int page, int rows, string menuName, int parentId)
         {
             int from = (page - 1) * rows;
@@ -76,7 +83,7 @@ namespace SHWY.Lib.DB.Repositorys
         }
         public async Task<List<Sys_Menu>> GetListByParentIdAsync(int parentId)
         {
-            return await context.Sys_Menus.Where(p => p.ParentId == parentId).OrderBy(p=>p.MenuSortID).ToListAsync();
+            return await context.Sys_Menus.Where(p => p.ParentId == parentId).OrderBy(p => p.MenuSortID).ToListAsync();
         }
         public async Task<List<Sys_Menu>> GetAllChildMeunList()
         {

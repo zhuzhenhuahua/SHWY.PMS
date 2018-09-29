@@ -1019,6 +1019,8 @@
     <Content Include="Views\Server\IpAddressEdit.cshtml" />
     <Content Include="Views\Server\ServerIpIndex.cshtml" />
     <Content Include="Views\Server\ServerIpEdit.cshtml" />
+    <Content Include="Views\Product\ProdServerIndex.cshtml" />
+    <Content Include="Views\Product\ProdServerEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
