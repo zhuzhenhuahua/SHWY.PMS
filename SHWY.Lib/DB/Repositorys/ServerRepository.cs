@@ -28,6 +28,7 @@ namespace SHWY.Lib.DB.Repositorys
             }
             return serverRepository;
         }
+
         #region Server
         public async Task<Tuple<int, object>> GetServerListAsync(int pageIndex, int pageSize, string name)
         {
@@ -55,7 +56,7 @@ namespace SHWY.Lib.DB.Repositorys
         }
         public async Task<List<Servers>> GetServerListAsync()
         {
-            var list = await context.Servers.OrderByDescending(p=>p.sid).ToListAsync();
+            var list = await context.Servers.OrderByDescending(p => p.sid).ToListAsync();
             return list;
         }
         public async Task<Servers> GetServerAsync(int sid)
@@ -118,7 +119,7 @@ namespace SHWY.Lib.DB.Repositorys
         }
         public async Task<List<IpAddress>> GetIpAddressListAsync()
         {
-            var list = await context.IpAddress.OrderByDescending(p=>p.ipid).ToListAsync();
+            var list = await context.IpAddress.OrderByDescending(p => p.ipid).ToListAsync();
             return list;
         }
         public async Task<IpAddress> GetIpAddressAsync(int ipid)
@@ -157,7 +158,7 @@ namespace SHWY.Lib.DB.Repositorys
         #endregion
 
         #region ServerIp
-        public async Task<Tuple<int, object>> GetServerIpListAsync(int pageIndex, int pageSize,string serverName)
+        public async Task<Tuple<int, object>> GetServerIpListAsync(int pageIndex, int pageSize, string serverName)
         {
             int form = (pageIndex - 1) * pageSize;
             var total = await (from j in context.ServerIps
@@ -214,6 +215,40 @@ namespace SHWY.Lib.DB.Repositorys
                 return await context.SaveChangesAsync() == 1;
             }
             return false;
+        }
+        #endregion
+
+        #region DatabaseDepoly
+        public async Task<Tuple<int, object>> GetDatabaseDeployListAsync(int pageIndex, int pageSize, string name)
+        {
+            int form = (pageIndex - 1) * pageSize;
+            int total = await (from j in context.DatabaseDeploys
+                               where j.name.Contains(name)
+                               select j).CountAsync();
+            var obj = await (from j in context.DatabaseDeploys
+                             join item in context.Items on j.itemid.ToString() equals item.ItemID
+                             join server in context.Servers on j.serverid equals server.sid
+                             join schema in context.Codes.Where(p => p.TypeId == (int)ECodesTypeId.databaseSchema) on j.schemaid.ToString() equals schema.Code
+                             join dbType in context.Codes.Where(p => p.TypeId == (int)ECodesTypeId.databaseType) on j.type.ToString() equals dbType.Code
+                             where j.name.Contains(name)
+                             orderby j.id descending
+                             select new
+                             {
+                                 j.id,
+                                 j.name,
+                                 ItemName = item.NAME,
+                                 ServerName = server.name,
+                                 SchemaName = schema.Text,
+                                 dbType = dbType.Text,
+                                 j.remark,
+                                 j.sqlServerCatlog,
+                                 j.mongoAdminDBName,
+                                 j.mongoDBName,
+                                 j.orclServiceName,
+                                 j.username,
+                                 j.password
+                             }).Skip(form).Take(pageSize).ToListAsync();
+            return Tuple.Create<int, object>(total, obj);
         }
         #endregion
     }

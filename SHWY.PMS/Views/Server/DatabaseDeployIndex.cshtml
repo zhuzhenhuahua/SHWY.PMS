@@ -1,0 +1,110 @@
+﻿
+@{
+    ViewBag.Title = "DatabaseDeployIndex";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+
+<table id="tt"></table>
+<div id="tb">
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditProdDeploy(0)">新增</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditProdDeploy(1)">修改</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelProdDeploy()">删除</a>
+    <span class="l-btn-text">数据库：</span><input class="easyui-textbox" id="txtDatabaseDeployQ" style="width:180px;" />
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
+</div>
+<script>
+    $(function () {
+        InitGrid();
+    });
+    function InitGrid() {
+        $("#tt").datagrid({
+            url: '/Server/GetDataBaseDeployList',
+            columns: [[
+                { field: 'id', title: 'id', hidden: true },
+                { field: 'name', title: '数据库中文名', width: 220 },
+                { field: 'ItemName', title: '项目名称', width: 180 },
+                { field: 'ServerName', title: '服务器名称', width: 120 },
+                { field: 'SchemaName', title: '数据库架构', width: 200 },
+                { field: 'dbType', title: '数据库类型', width: 80 },
+                { field: 'sqlServerCatlog', title: 'MSSQL数据库英文名', width: 120 },
+                { field: 'mongoAdminDBName', title: 'mongoAdminDBName', width: 100 },
+                { field: 'mongoDBName', title: 'mongoDBName', width: 100 },
+                { field: 'orclServiceName', title: 'orclServiceName', width: 100 },
+                { field: 'username', title: 'username', width: 80 },
+                { field: 'password', title: 'password', width: 80 },
+                { field: 'remark', title: '备注', width: 80 },
+            ]],
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            singleSelect: true,
+            pagination: true,
+            pageSize: 20,
+            idField: 'id',
+            toolbar: '#tb',
+            rownumbers: true,
+            fit: true,
+            queryParams: {
+                name: ""
+            }
+        });
+    }
+    function GridReload(loaded) {
+        $("#tt").datagrid(loaded, {
+            name: $("#txtDatabaseDeployQ").val()
+        });
+    }
+    var isAdd = false;
+    function EditProdDeploy(id) {
+        if (id == 0)
+            isAdd = true;
+        else {
+            var row = $("#tt").datagrid("getSelected");
+            if (row == null) {
+                AlertMsg("请选择一行数据后再操作");
+                return;
+            }
+            id = row.id;
+            isAdd = false;
+        }
+        ShowDialog("产品部署", 500, 400, "/Product/ProdServerEdit?id=" + id, saveProdDeploy);
+    }
+    function DelProdDeploy() {
+        var row = $("#tt").datagrid("getSelected");
+        if (row == null) {
+            AlertMsg("请选择一行数据后再操作");
+            return;
+        }
+        $.messager.confirm('提示', "确定要删除吗？", function (r) {
+            if (r) {
+                $.post("/Product/DelProdDdeploy", { id: row.id }, function (result) {
+                    if (result.isOk) {
+                        AlertMsg("删除成功");
+                        GridReload("reload");
+                    }
+                    else {
+                        AlertMsg('删除失败');
+                    }
+                });
+            }
+        });
+    }
+    function saveProdDeploy() {
+        var check = $("#formProdServerEidt").form('enableValidation').form('validate');
+        if (check) {
+            var postData = $("#formProdServerEidt").serialize();
+            $.post("/Product/SaveProdDeploy", postData, function (result) {
+                if (result.isOk) {
+                    $('#PopWindow').dialog('close');
+                    $("#PopWindow").remove();
+                    GridReload(isAdd ? "load" : "reload");
+                }
+                else {
+                    AlertMsg('保存失败');
+                }
+
+            });
+        }
+    }
+</script>
+

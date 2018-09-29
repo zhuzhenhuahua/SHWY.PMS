@@ -54,5 +54,6 @@ namespace SHWY.Lib.DB.Context
         public DbSet<Servers> Servers { get; set; }
         public DbSet<IpAddress> IpAddress { get; set; }
         public DbSet<ServerIp> ServerIps { get; set; }
+        public DbSet<DatabaseDeploy> DatabaseDeploys { get; set; }
     }
 }

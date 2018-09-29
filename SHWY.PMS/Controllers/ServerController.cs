@@ -71,7 +71,16 @@ namespace SHWY.PMS.Controllers
         }
         #endregion
 
-        #region databaseDeploy数据库管理
+        #region databaseDeploy数据库查询
+        public ActionResult DatabaseDeployIndex()
+        {
+            return View();
+        }
+        public async Task<JsonResult> GetDataBaseDeployList(int page, int rows, string name)
+        {
+            var tuple = await serverRepo.GetDatabaseDeployListAsync(page, rows, name);
+            return Json(new { total=tuple.Item1,rows=tuple.Item2 });
+        }
         #endregion
 
         #region 增删改
