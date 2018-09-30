@@ -16,19 +16,69 @@ namespace SHWY.PMS.Controllers
         ItemsRepository itemsRepo = ItemsRepository.CreateInstance();
         ServerRepository serverRepo = ServerRepository.CreateInstance();
         CodeRepository codeRepo = CodeRepository.CreateInstance();
-        #region ProdDeploy产品部署服务器
+
+        #region 产品部署数据库
+        public ActionResult ProdDBDeployIndex()
+        {
+            return View();
+        }
+        public async Task<JsonResult> GetProdDBDeployList(int page, int rows, string itemid, string prodid, int dbid)
+        {
+            var tuple = await prodRepo.GetProdDBListAsync(page, rows, itemid, prodid, dbid);
+            return Json(new { total = tuple.Item1, rows =tuple.Item2});
+        }
+        public async Task<ActionResult> ProdDBEdit(int id)
+        {
+            var prodDBDeply = await prodRepo.GetProdDBDeployAsync(id);
+
+            //项目
+            var ItemList = new List<SelectListItem>();
+            var items = await itemsRepo.GetListItemsAsync();
+            var items2 = new SelectList(items, "ItemID", "NAME");
+            ItemList.AddRange(items2);
+            ViewBag.ItemList = ItemList;
+            //产品
+            var ProdList = new List<SelectListItem>();
+            var prods = await prodRepo.GetListAsync();
+            var prods2 = new SelectList(prods, "ProID", "NAME");
+            ProdList.AddRange(prods2);
+            ViewBag.ProdList = ProdList;
+            //数据库
+            var DBList = new List<SelectListItem>();
+            var dblist = await serverRepo.GetDatabaseDeployListAsync();
+            var dblist2 = new SelectList(dblist, "id", "name");
+            DBList.AddRange(dblist2);
+            ViewBag.DBList = DBList;
+
+
+            return View(prodDBDeply);
+        }
+
+        public async Task<JsonResult> SaveProdDBDeploy(ProdDBDeploy model)
+        {
+            var result = await prodRepo.AddOrUpdateProdDBDeployAsync(model);
+            return Json(new { isOk = result });
+        }
+        public async Task<JsonResult> DelProdDBDdeploy(int id)
+        {
+            var result = await prodRepo.DelProdDBDeployAsync(id);
+            return Json(new { isOk = result });
+        }
+        #endregion
+
+        #region ProdServerDeploy产品部署服务器
         public ActionResult ProdServerIndex()
         {
             return View();
         }
         public async Task<JsonResult> GetProdServerList(int page, int rows, string prodID, int serverID)
         {
-            var tuple = await prodRepo.GetProdDeployListAsync(page, rows, prodID, serverID);
+            var tuple = await prodRepo.GetProdServerDeployListAsync(page, rows, prodID, serverID);
             return Json(new { total = tuple.Item1, rows = tuple.Item2 });
         }
         public async Task<ActionResult> ProdServerEdit(int id)
         {
-            var prodDeply = await prodRepo.GetProdDeployAsync(id);
+            var prodDeply = await prodRepo.GetProdServerDeployAsync(id);
 
             //项目
             var ItemList = new List<SelectListItem>();
@@ -60,12 +110,12 @@ namespace SHWY.PMS.Controllers
         }
         public async Task<JsonResult> SaveProdDeploy(ProdServerDeploy model)
         {
-            var result = await prodRepo.AddOrUpdateProdDeployAsync(model);
+            var result = await prodRepo.AddOrUpdateProdServerDeployAsync(model);
             return Json(new { isOk = result });
         }
         public async Task<JsonResult> DelProdDdeploy(int id)
         {
-            var result = await prodRepo.DelProdDeployAsync(id);
+            var result = await prodRepo.DelProdServerDeployAsync(id);
             return Json(new { isOk = result });
         }
         #endregion

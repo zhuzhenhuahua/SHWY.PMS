@@ -250,6 +250,11 @@ namespace SHWY.Lib.DB.Repositorys
                              }).Skip(form).Take(pageSize).ToListAsync();
             return Tuple.Create<int, object>(total, obj);
         }
+        public async Task<List<DatabaseDeploy>> GetDatabaseDeployListAsync()
+        {
+            var list = await context.DatabaseDeploys.ToListAsync();
+            return list;
+        }
         public async Task<DatabaseDeploy> GetDatabaseDeployAsync(int id)
         {
             var model = await context.DatabaseDeploys.Where(p => p.id == id).FirstOrDefaultAsync();

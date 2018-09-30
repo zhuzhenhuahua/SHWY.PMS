@@ -82,6 +82,13 @@ namespace SHWY.PMS.Controllers
             var tuple = await serverRepo.GetDatabaseDeployListAsync(page, rows, name);
             return Json(new { total=tuple.Item1,rows=tuple.Item2 });
         }
+        public async Task<JsonResult> GetAllDatabase(int isAddAll)
+        {
+            var result = await serverRepo.GetDatabaseDeployListAsync();
+            if (isAddAll == 1)
+                result.Insert(0, new  DatabaseDeploy() {  id = 0, name = "全部" });
+            return Json(result);
+        }
         #endregion
 
         #region 增删改

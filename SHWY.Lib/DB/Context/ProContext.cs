@@ -44,6 +44,7 @@ namespace SHWY.Lib.DB.Context
         public DbSet<Sys_RoleOper> Sys_RoleOpers { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProdServerDeploy> ProdServerDeploys { get; set; }
+        public DbSet<ProdDBDeploy> ProdDBDeploys { get; set; }
         public DbSet<Items> Items { get; set; }
         public DbSet<PersonTask> PersonTasks { get; set; }
         public DbSet<V_PersonTask> VPersonTask { get; set; }

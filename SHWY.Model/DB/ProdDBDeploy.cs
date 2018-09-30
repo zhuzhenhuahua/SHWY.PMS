@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace SHWY.Model.DB
 {
+    /// <summary>
+    /// 产品数据库部署
+    /// </summary>
     [Serializable]
     [Table("ProdDBDeploy")]
   public class ProdDBDeploy

@@ -30,9 +30,52 @@ namespace SHWY.Lib.DB.Repositorys
             return _productRepository;
         }
 
+        #region ProdDBDeploy 查询
+        public async Task<Tuple<int, object>> GetProdDBListAsync(int pageIndex, int pageSize, string itemid, string prodid, int dbid)
+        {
+            int form = (pageIndex - 1) * pageSize;
+            var total = await (from j in context.ProdDBDeploys
+                               where (string.IsNullOrEmpty(itemid) ? 1 == 1 : j.itemId.ToString() == itemid)
+                               && (string.IsNullOrEmpty(prodid) ? 1 == 1 : j.prodId == prodid)
+                               && (dbid == 0 ? 1 == 1 : j.dbId == dbid)
+                               select j).CountAsync();
+            var list = await (from j in context.ProdDBDeploys
+                              join item in context.Items on j.itemId.ToString() equals item.ItemID
+                              join prod in context.Products on j.prodId equals prod.ProID
+                              join db in context.DatabaseDeploys on j.dbId equals db.id
+                              join codeType in context.Codes.Where(p => p.TypeId == (int)ECodesTypeId.databaseType) on db.type.ToString() equals codeType.Code
+                              where (string.IsNullOrEmpty(itemid) ? 1 == 1 : j.itemId.ToString() == itemid)
+                                && (string.IsNullOrEmpty(prodid) ? 1 == 1 : j.prodId == prodid)
+                                && (dbid == 0 ? 1 == 1 : j.dbId == dbid)
+                              orderby j.id descending
+                              select new
+                              {
+                                  j.id,
+                                  j.itemId,
+                                  itemName = item.NAME,
+                                  j.prodId,
+                                  prodName = prod.NAME,
+                                  j.dbId,
+                                  dbNameCn = db.name,
+                                  dbType = codeType.Text,
+                                  db.sqlServerCatlog,
+                                  db.mongoAdminDBName,
+                                  db.mongoDBName,
+                                  db.orclServiceName,
+                                  db.username,
+                                  db.password
+                              }).Skip(form).Take(pageSize).ToListAsync();
+            return Tuple.Create<int, object>(total, list);
+        }
+        public async Task<ProdDBDeploy> GetProdDBDeployAsync(int id)
+        {
+            var model = await context.ProdDBDeploys.Where(p => p.id == id).FirstOrDefaultAsync();
+            return model;
+        }
+        #endregion
 
         #region ProdServer（ProdDeploy）查询
-        public async Task<Tuple<int, object>> GetProdDeployListAsync(int pageIndex, int pageSize, string prodID, int serverID)
+        public async Task<Tuple<int, object>> GetProdServerDeployListAsync(int pageIndex, int pageSize, string prodID, int serverID)
         {
             int form = (pageIndex - 1) * pageSize;
             var total = await (from j in context.ProdServerDeploys
@@ -62,15 +105,44 @@ namespace SHWY.Lib.DB.Repositorys
                               }).Skip(form).Take(pageSize).ToListAsync();
             return Tuple.Create<int, object>(total, list);
         }
-        public async Task<ProdServerDeploy> GetProdDeployAsync(int id)
+        public async Task<ProdServerDeploy> GetProdServerDeployAsync(int id)
         {
             var model = await context.ProdServerDeploys.Where(p => p.id == id).FirstOrDefaultAsync();
             return model;
         }
         #endregion
 
+        #region ProdDBDeploy（ProdDeploy）增删改
+        public async Task<bool> AddOrUpdateProdDBDeployAsync(ProdDBDeploy dbDeploy)
+        {
+            var isAdd = false;
+            var model = await context.ProdDBDeploys.Where(p => p.id == dbDeploy.id).FirstOrDefaultAsync();
+            if (model == null)
+            {
+                isAdd = true;
+                model = new ProdDBDeploy();
+            }
+            model.itemId = dbDeploy.itemId;
+            model.prodId = dbDeploy.prodId;
+            model.dbId = dbDeploy.dbId;
+            if (isAdd)
+                context.ProdDBDeploys.Add(model);
+            return await context.SaveChangesAsync() == 1;
+        }
+        public async Task<bool> DelProdDBDeployAsync(int id)
+        {
+            var model = await context.ProdDBDeploys.Where(p => p.id == id).FirstOrDefaultAsync();
+            if (model != null)
+            {
+                context.ProdDBDeploys.Remove(model);
+                return await context.SaveChangesAsync() == 1;
+            }
+            return false;
+        }
+        #endregion
+
         #region ProdServer（ProdDeploy）增删改
-        public async Task<bool> AddOrUpdateProdDeployAsync(ProdServerDeploy pDeployPara)
+        public async Task<bool> AddOrUpdateProdServerDeployAsync(ProdServerDeploy pDeployPara)
         {
             var isAdd = false;
             var model = await context.ProdServerDeploys.Where(p => p.id == pDeployPara.id).FirstOrDefaultAsync();
@@ -89,7 +161,7 @@ namespace SHWY.Lib.DB.Repositorys
                 context.ProdServerDeploys.Add(model);
             return await context.SaveChangesAsync() == 1;
         }
-        public async Task<bool> DelProdDeployAsync(int id)
+        public async Task<bool> DelProdServerDeployAsync(int id)
         {
             var model = await context.ProdServerDeploys.Where(p => p.id == id).FirstOrDefaultAsync();
             if (model != null)
