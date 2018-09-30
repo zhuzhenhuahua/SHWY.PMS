@@ -12,8 +12,8 @@ namespace SHWY.Model.DB
     /// 此产品部署到哪个服务器
     /// </summary>
     [Serializable]
-    [Table("ProdDeploy")]
-   public class ProdDeploy
+    [Table("ProdServerDeploy")]
+   public class ProdServerDeploy
     {
         /// <summary>
         /// 自增长主键

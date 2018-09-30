@@ -105,7 +105,7 @@ namespace SHWY.Lib.DB.Repositorys
                     context.PersonTasks.Add(ptask);
                 return await context.SaveChangesAsync() == 1;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }

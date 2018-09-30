@@ -13,6 +13,7 @@ namespace SHWY.PMS.Controllers
     {
         ServerRepository serverRepo = ServerRepository.CreateInstance();
         ItemsRepository itemsRepo = ItemsRepository.CreateInstance();
+        CodeRepository codeRepo = CodeRepository.CreateInstance();
         #region Server查询
         public ActionResult Index()
         {
@@ -179,6 +180,48 @@ namespace SHWY.PMS.Controllers
         #endregion
 
         #region databaseDeploy数据库管理操作
+        public async Task<ActionResult> DatabaseDeployEdit(int id)
+        {
+            var model = await serverRepo.GetDatabaseDeployAsync(id);
+            //服务器
+            var ServerList = new List<SelectListItem>();
+            var servers = await serverRepo.GetServerListAsync();
+            var servers2 = new SelectList(servers, "sid", "name");
+            ServerList.AddRange(servers2);
+            ViewBag.ServerList = ServerList;
+            //项目
+            var ItemList = new List<SelectListItem>();
+            var items = await itemsRepo.GetListItemsAsync();
+            var items2 = new SelectList(items, "ItemID", "NAME");
+            ItemList.AddRange(items2);
+            ViewBag.ItemList = ItemList;
+            //数据库架构
+            var SchemaidList = new List<SelectListItem>();
+            var sehemalist = await codeRepo.GetCodesListAsync(ECodesTypeId.databaseSchema);
+            var sehemalist2 = new SelectList(sehemalist, "Code", "Text");
+            SchemaidList.AddRange(sehemalist2);
+            ViewBag.SchemaidList = SchemaidList;
+            //数据库类型
+            var DBTypeList = new List<SelectListItem>();
+            var typelist = await codeRepo.GetCodesListAsync(ECodesTypeId.databaseType);
+            var typelist2 = new SelectList(typelist, "Code", "Text");
+            DBTypeList.AddRange(typelist2);
+            ViewBag.DBTypeList = DBTypeList;
+
+
+
+            return View(model);
+        }
+        public async Task<JsonResult> SaveDatabaseDeploy(DatabaseDeploy dbDeploy)
+        {
+            var result = await serverRepo.AddOrUpdateDatabaseDeploy(dbDeploy);
+            return Json(new { isOk = result });
+        }
+        public async Task<JsonResult> DelDatabaseDeploy(int id)
+        {
+            var result = await serverRepo.DelDatabaseDeploy(id);
+            return Json(new { isOk = result });
+        }
         #endregion
 
         #endregion

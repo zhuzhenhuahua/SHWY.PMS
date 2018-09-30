@@ -58,7 +58,7 @@ namespace SHWY.PMS.Controllers
 
             return View(prodDeply);
         }
-        public async Task<JsonResult> SaveProdDeploy(ProdDeploy model)
+        public async Task<JsonResult> SaveProdDeploy(ProdServerDeploy model)
         {
             var result = await prodRepo.AddOrUpdateProdDeployAsync(model);
             return Json(new { isOk = result });

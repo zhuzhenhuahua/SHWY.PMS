@@ -51,7 +51,7 @@ namespace SHWY.PMS.Controllers
             var result = await repo.AddOrUpdateAsync(user);
             return Json(new { isOk = result });
         }
-        public async Task<JsonResult> BatchSave(List<Sys_User> userList)
+        public JsonResult BatchSave(List<Sys_User> userList)
         {
             var result = true;
             return Json(new { isOk = result });

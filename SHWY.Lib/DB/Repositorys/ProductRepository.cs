@@ -35,11 +35,11 @@ namespace SHWY.Lib.DB.Repositorys
         public async Task<Tuple<int, object>> GetProdDeployListAsync(int pageIndex, int pageSize, string prodID, int serverID)
         {
             int form = (pageIndex - 1) * pageSize;
-            var total = await (from j in context.ProdDeploys
+            var total = await (from j in context.ProdServerDeploys
                                where (string.IsNullOrEmpty(prodID) ? 1 == 1 : j.prodid == prodID)
                                && (serverID == 0 ? 1 == 1 : j.serverid == serverID)
                                select j).CountAsync();
-            var list = await (from j in context.ProdDeploys
+            var list = await (from j in context.ProdServerDeploys
                               join item in context.Items on j.itemid.ToString() equals item.ItemID
                               join prod in context.Products on j.prodid equals prod.ProID
                               join server in context.Servers on j.serverid equals server.sid
@@ -62,22 +62,22 @@ namespace SHWY.Lib.DB.Repositorys
                               }).Skip(form).Take(pageSize).ToListAsync();
             return Tuple.Create<int, object>(total, list);
         }
-        public async Task<ProdDeploy> GetProdDeployAsync(int id)
+        public async Task<ProdServerDeploy> GetProdDeployAsync(int id)
         {
-            var model = await context.ProdDeploys.Where(p => p.id == id).FirstOrDefaultAsync();
+            var model = await context.ProdServerDeploys.Where(p => p.id == id).FirstOrDefaultAsync();
             return model;
         }
         #endregion
 
         #region ProdServer（ProdDeploy）增删改
-        public async Task<bool> AddOrUpdateProdDeployAsync(ProdDeploy pDeployPara)
+        public async Task<bool> AddOrUpdateProdDeployAsync(ProdServerDeploy pDeployPara)
         {
             var isAdd = false;
-            var model = await context.ProdDeploys.Where(p => p.id == pDeployPara.id).FirstOrDefaultAsync();
+            var model = await context.ProdServerDeploys.Where(p => p.id == pDeployPara.id).FirstOrDefaultAsync();
             if (model == null)
             {
                 isAdd = true;
-                model = new ProdDeploy();
+                model = new ProdServerDeploy();
             }
             model.itemid = pDeployPara.itemid;
             model.prodid = pDeployPara.prodid;
@@ -86,15 +86,15 @@ namespace SHWY.Lib.DB.Repositorys
             model.porttype = pDeployPara.porttype;
             model.remark = pDeployPara.remark;
             if (isAdd)
-                context.ProdDeploys.Add(model);
+                context.ProdServerDeploys.Add(model);
             return await context.SaveChangesAsync() == 1;
         }
         public async Task<bool> DelProdDeployAsync(int id)
         {
-            var model = await context.ProdDeploys.Where(p => p.id == id).FirstOrDefaultAsync();
+            var model = await context.ProdServerDeploys.Where(p => p.id == id).FirstOrDefaultAsync();
             if (model != null)
             {
-                context.ProdDeploys.Remove(model);
+                context.ProdServerDeploys.Remove(model);
                 return await context.SaveChangesAsync() == 1;
             }
             return false;

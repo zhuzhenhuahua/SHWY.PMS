@@ -6,9 +6,9 @@
 
 <table id="tt"></table>
 <div id="tb">
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditProdDeploy(0)">新增</a>
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditProdDeploy(1)">修改</a>
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelProdDeploy()">删除</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditDatabaseDeploy(0)">新增</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditDatabaseDeploy(1)">修改</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelDatabaseDeploy()">删除</a>
     <span class="l-btn-text">数据库：</span><input class="easyui-textbox" id="txtDatabaseDeployQ" style="width:180px;" />
     <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
 </div>
@@ -55,7 +55,7 @@
         });
     }
     var isAdd = false;
-    function EditProdDeploy(id) {
+    function EditDatabaseDeploy(id) {
         if (id == 0)
             isAdd = true;
         else {
@@ -67,9 +67,9 @@
             id = row.id;
             isAdd = false;
         }
-        ShowDialog("产品部署", 500, 400, "/Product/ProdServerEdit?id=" + id, saveProdDeploy);
+        ShowDialog("数据库部署维护", 700, 500, "/Server/DatabaseDeployEdit?id=" + id, saveDatabaseDeploy);
     }
-    function DelProdDeploy() {
+    function DelDatabaseDeploy() {
         var row = $("#tt").datagrid("getSelected");
         if (row == null) {
             AlertMsg("请选择一行数据后再操作");
@@ -77,7 +77,7 @@
         }
         $.messager.confirm('提示', "确定要删除吗？", function (r) {
             if (r) {
-                $.post("/Product/DelProdDdeploy", { id: row.id }, function (result) {
+                $.post("/Server/DelDatabaseDeploy", { id: row.id }, function (result) {
                     if (result.isOk) {
                         AlertMsg("删除成功");
                         GridReload("reload");
@@ -89,11 +89,11 @@
             }
         });
     }
-    function saveProdDeploy() {
-        var check = $("#formProdServerEidt").form('enableValidation').form('validate');
+    function saveDatabaseDeploy() {
+        var check = $("#formDatabaseDeployEidt").form('enableValidation').form('validate');
         if (check) {
-            var postData = $("#formProdServerEidt").serialize();
-            $.post("/Product/SaveProdDeploy", postData, function (result) {
+            var postData = $("#formDatabaseDeployEidt").serialize();
+            $.post("/Server/SaveDatabaseDeploy", postData, function (result) {
                 if (result.isOk) {
                     $('#PopWindow').dialog('close');
                     $("#PopWindow").remove();

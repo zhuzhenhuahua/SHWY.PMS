@@ -250,6 +250,46 @@ namespace SHWY.Lib.DB.Repositorys
                              }).Skip(form).Take(pageSize).ToListAsync();
             return Tuple.Create<int, object>(total, obj);
         }
+        public async Task<DatabaseDeploy> GetDatabaseDeployAsync(int id)
+        {
+            var model = await context.DatabaseDeploys.Where(p => p.id == id).FirstOrDefaultAsync();
+            return model;
+        }
+        public async Task<bool> AddOrUpdateDatabaseDeploy(DatabaseDeploy dbDeploy)
+        {
+            var isAdd = false;
+            var model = await context.DatabaseDeploys.Where(p => p.id == dbDeploy.id).FirstOrDefaultAsync();
+            if (model == null)
+            {
+                isAdd = true;
+                model = new DatabaseDeploy();
+            }
+            model.name = dbDeploy.name;
+            model.itemid = dbDeploy.itemid;
+            model.serverid = dbDeploy.serverid;
+            model.schemaid = dbDeploy.schemaid;
+            model.type = dbDeploy.type;
+            model.remark = dbDeploy.remark;
+            model.sqlServerCatlog = dbDeploy.sqlServerCatlog;
+            model.mongoAdminDBName = dbDeploy.mongoAdminDBName;
+            model.mongoDBName = dbDeploy.mongoDBName;
+            model.orclServiceName = dbDeploy.orclServiceName;
+            model.username = dbDeploy.username;
+            model.password = dbDeploy.password;
+            if (isAdd)
+                context.DatabaseDeploys.Add(model);
+            return await context.SaveChangesAsync() == 1;
+        }
+        public async Task<bool> DelDatabaseDeploy(int id)
+        {
+            var model = await context.DatabaseDeploys.Where(p => p.id == id).FirstOrDefaultAsync();
+            if (model != null)
+            {
+                context.DatabaseDeploys.Remove(model);
+                return await context.SaveChangesAsync() == 1;
+            }
+            return false;
+        }
         #endregion
     }
 }

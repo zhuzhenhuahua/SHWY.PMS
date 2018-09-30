@@ -44,7 +44,7 @@ namespace SHWY.Lib.DB.Repositorys
                     context.PersonTaskProcess.Add(processNew);
                 return await context.SaveChangesAsync() == 1;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }

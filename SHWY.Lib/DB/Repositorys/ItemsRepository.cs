@@ -104,7 +104,7 @@ namespace SHWY.Lib.DB.Repositorys
                     context.Items.Add(item);
                 return await context.SaveChangesAsync() == 1;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }

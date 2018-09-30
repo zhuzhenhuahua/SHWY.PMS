@@ -58,7 +58,8 @@
     <Compile Include="DB\Items.cs" />
     <Compile Include="DB\PersonTask.cs" />
     <Compile Include="DB\PersonTaskProcess.cs" />
-    <Compile Include="DB\ProdDeploy.cs" />
+    <Compile Include="DB\ProdDBDeploy.cs" />
+    <Compile Include="DB\ProdServerDeploy.cs" />
     <Compile Include="DB\Product.cs" />
     <Compile Include="DB\ServerIp.cs" />
     <Compile Include="DB\Servers.cs" />

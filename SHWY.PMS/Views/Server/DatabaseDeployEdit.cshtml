@@ -1,0 +1,60 @@
+﻿@model SHWY.Model.DB.DatabaseDeploy
+@{
+    ViewBag.Title = "DatabaseDeployEdit";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+
+<form id="formDatabaseDeployEidt">
+    <table>
+        <tr>
+            <td style="padding-left:20px;">数据库中文名:</td>
+            <td>@Html.TextBoxFor(p => p.name, new { @class = "easyui-textbox", data_options = "required:true" })</td>
+        </tr>
+        <tr>
+            <td style="padding-left:20px;">项目:</td>
+            <td>@Html.DropDownListFor(p => p.itemid, ViewBag.ItemList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+        </tr>
+        <tr>
+            <td style="padding-left:20px;">服务器:</td>
+            <td>@Html.DropDownListFor(p => p.serverid, ViewBag.ServerList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+        </tr>
+        <tr>
+            <td style="padding-left:20px;">数据库架构:</td>
+            <td>@Html.DropDownListFor(p => p.schemaid, ViewBag.SchemaidList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+        </tr>
+        <tr>
+            <td style="padding-left:20px;">数据库类型:</td>
+            <td>@Html.DropDownListFor(p => p.type, ViewBag.DBTypeList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+        </tr>
+        <tr>
+            <td style="padding-left:20px;">MSSql数据库英文名:</td>
+            <td>@Html.TextBoxFor(p => p.sqlServerCatlog, new { @class = "easyui-textbox" })</td>
+        </tr>
+        <tr>
+            <td style="padding-left:20px;">mongoAdminDBName:</td>
+            <td>@Html.TextBoxFor(p => p.mongoAdminDBName, new { @class = "easyui-textbox"})</td>
+        </tr>
+        <tr>
+            <td style="padding-left:20px;">mongoDBName:</td>
+            <td>@Html.TextBoxFor(p => p.mongoDBName, new { @class = "easyui-textbox" })</td>
+        </tr>
+        <tr>
+            <td style="padding-left:20px;">orclServiceName:</td>
+            <td>@Html.TextBoxFor(p => p.orclServiceName, new { @class = "easyui-textbox" })</td>
+        </tr>
+        <tr>
+            <td style="padding-left:20px;">username:</td>
+            <td>@Html.TextBoxFor(p => p.username, new { @class = "easyui-textbox", data_options = "required:true" })</td>
+        </tr>
+        <tr>
+            <td style="padding-left:20px;">password:</td>
+            <td>@Html.TextBoxFor(p => p.password, new { @class = "easyui-textbox", data_options = "required:true" })</td>
+        </tr>
+        <tr>
+            <td style="padding-left:20px;">备注:</td>
+            <td>@Html.TextBoxFor(p => p.remark, new { @class = "easyui-textbox", data_options = "multiline:true", style = "width:300px;height:50px;" })</td>
+        </tr>
+    </table>
+    @Html.HiddenFor(p => p.id)
+</form>
+
