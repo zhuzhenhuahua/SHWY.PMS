@@ -1025,6 +1025,8 @@
     <Content Include="Views\Server\DatabaseDeployEdit.cshtml" />
     <Content Include="Views\Product\ProdDBDeployIndex.cshtml" />
     <Content Include="Views\Product\ProdDBEdit.cshtml" />
+    <Content Include="Views\Server\InPortOutPortIndex.cshtml" />
+    <Content Include="Views\Server\InPortOutPortEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

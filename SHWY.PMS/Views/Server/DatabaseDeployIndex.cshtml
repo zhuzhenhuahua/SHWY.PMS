@@ -9,20 +9,30 @@
     <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditDatabaseDeploy(0)">新增</a>
     <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditDatabaseDeploy(1)">修改</a>
     <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelDatabaseDeploy()">删除</a>
+    <span class="l-btn-text">项目：</span><input class="easyui-textbox" id="txtItemQ" style="width:150px;" />
     <span class="l-btn-text">数据库：</span><input class="easyui-textbox" id="txtDatabaseDeployQ" style="width:180px;" />
     <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
 </div>
 <script>
     $(function () {
+        InitCombobox();
         InitGrid();
     });
+    function InitCombobox() {
+        $("#txtItemQ").combobox({
+            url: '/Items/GetAllItems?isAddAll=1',
+            valueField: 'ItemID',
+            textField: 'NAME'
+        });
+        $("#txtItemQ").combobox("select", "");
+    }
     function InitGrid() {
         $("#tt").datagrid({
             url: '/Server/GetDataBaseDeployList',
             columns: [[
+                { field: 'ItemName', title: '项目名称', width: 180 },
                 { field: 'id', title: 'id', hidden: true },
                 { field: 'name', title: '数据库中文名', width: 220 },
-                { field: 'ItemName', title: '项目名称', width: 180 },
                 { field: 'ServerName', title: '服务器名称', width: 120 },
                 { field: 'SchemaName', title: '数据库架构', width: 200 },
                 { field: 'dbType', title: '数据库类型', width: 80 },
@@ -45,13 +55,15 @@
             rownumbers: true,
             fit: true,
             queryParams: {
-                name: ""
+                name: "",
+                itemID: ""
             }
         });
     }
     function GridReload(loaded) {
         $("#tt").datagrid(loaded, {
-            name: $("#txtDatabaseDeployQ").val()
+            name: $("#txtDatabaseDeployQ").val(),
+            itemID: $("#txtItemQ").val()
         });
     }
     var isAdd = false;

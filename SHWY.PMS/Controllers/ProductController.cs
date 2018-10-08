@@ -25,7 +25,7 @@ namespace SHWY.PMS.Controllers
         public async Task<JsonResult> GetProdDBDeployList(int page, int rows, string itemid, string prodid, int dbid)
         {
             var tuple = await prodRepo.GetProdDBListAsync(page, rows, itemid, prodid, dbid);
-            return Json(new { total = tuple.Item1, rows =tuple.Item2});
+            return Json(new { total = tuple.Item1, rows = tuple.Item2 });
         }
         public async Task<ActionResult> ProdDBEdit(int id)
         {
@@ -44,13 +44,13 @@ namespace SHWY.PMS.Controllers
             ProdList.AddRange(prods2);
             ViewBag.ProdList = ProdList;
             //数据库
-            var DBList = new List<SelectListItem>();
-            var dblist = await serverRepo.GetDatabaseDeployListAsync();
-            var dblist2 = new SelectList(dblist, "id", "name");
-            DBList.AddRange(dblist2);
-            ViewBag.DBList = DBList;
-
-
+            //var DBList = new List<SelectListItem>();
+            //var dblist = await serverRepo.GetDatabaseDeployListAsync();
+            //var dblist2 = new SelectList(dblist, "id", "name");
+            //DBList.AddRange(dblist2);
+            //ViewBag.DBList = DBList;
+            if (prodDBDeply == null)
+                prodDBDeply = new ProdDBDeploy();
             return View(prodDBDeply);
         }
 
@@ -71,9 +71,9 @@ namespace SHWY.PMS.Controllers
         {
             return View();
         }
-        public async Task<JsonResult> GetProdServerList(int page, int rows, string prodID, int serverID)
+        public async Task<JsonResult> GetProdServerList(int page, int rows, string prodID, int serverID, string itemID)
         {
-            var tuple = await prodRepo.GetProdServerDeployListAsync(page, rows, prodID, serverID);
+            var tuple = await prodRepo.GetProdServerDeployListAsync(page, rows, prodID, serverID, itemID);
             return Json(new { total = tuple.Item1, rows = tuple.Item2 });
         }
         public async Task<ActionResult> ProdServerEdit(int id)
@@ -93,11 +93,11 @@ namespace SHWY.PMS.Controllers
             ProdList.AddRange(prods2);
             ViewBag.ProdList = ProdList;
             //服务器
-            var ServerList = new List<SelectListItem>();
-            var serlist = await serverRepo.GetServerListAsync();
-            var serlist2 = new SelectList(serlist, "sid", "name");
-            ServerList.AddRange(serlist2);
-            ViewBag.ServerList = ServerList;
+            //var ServerList = new List<SelectListItem>();
+            //var serlist = await serverRepo.GetServerListAsync();
+            //var serlist2 = new SelectList(serlist, "sid", "name");
+            //ServerList.AddRange(serlist2);
+            //ViewBag.ServerList = ServerList;
             //通讯协议
             var ProtTypeList = new List<SelectListItem>();
             var prots = await codeRepo.GetCodesListAsync(ECodesTypeId.ProtType);
@@ -105,7 +105,8 @@ namespace SHWY.PMS.Controllers
             ProtTypeList.AddRange(prots2);
             ViewBag.ProtTypeList = ProtTypeList;
 
-
+            if (prodDeply == null)
+                prodDeply = new ProdServerDeploy();
             return View(prodDeply);
         }
         public async Task<JsonResult> SaveProdDeploy(ProdServerDeploy model)

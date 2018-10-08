@@ -22,6 +22,9 @@ namespace SHWY.Model.DB
         public int itemid { get; set; }
         [DisplayName("IP6地址")]
         public string ipv6address { get; set; }
+        /// <summary>
+        /// 内外网标识(0:内网1:外网)
+        /// </summary>
         [DisplayName("内外网")]
         public int belong { get; set; }
 

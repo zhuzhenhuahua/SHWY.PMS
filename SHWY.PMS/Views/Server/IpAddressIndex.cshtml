@@ -9,20 +9,36 @@
     <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditIpAddress(0)">新增</a>
     <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditIpAddress(1)">修改</a>
     <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelIpAddress()">删除</a>
+    <span class="l-btn-text">项目：</span><input class="easyui-textbox" id="txtItemQ" style="width:150px;" />
+    <span class="l-btn-text">内外网：</span>
+    <select id="txtbeLongQ" class="easyui-combobox" name="txtbeLongQ" style="width:100px;">
+        <option value="-1" selected="selected">全部</option>
+        <option value="0">内网</option>
+        <option value="1">外网</option>
+    </select>
     <span class="l-btn-text">IP地址：</span><input class="easyui-textbox" id="txtIpAddressQ" style="width:100px;" />
     <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
 </div>
 <script type="text/javascript">
     $(function () {
+        InitCombobox();
         InitGrid();
     });
+    function InitCombobox() {
+        $("#txtItemQ").combobox({
+            url: '/Items/GetAllItems?isAddAll=1',
+            valueField: 'ItemID',
+            textField: 'NAME'
+        });
+        $("#txtItemQ").combobox("select", "");
+    }
     function InitGrid() {
         $("#tt").datagrid({
             url: '/Server/GetIpAddressList',
             columns: [[
+                { field: 'itemName', title: '项目名称', width: 120 },
                 { field: 'ipid', title: 'IpID', width: 80 },
                 { field: 'ipv4address', title: 'IP4地址', width: 120 },
-                { field: 'itemName', title: '项目名称', width: 120 },
                 { field: 'ipv6address', title: 'IP6地址', width: 180 },
                 {
                     field: 'belong', title: '内外网标识', width: 100, formatter: function (value, row, index) {
@@ -41,13 +57,17 @@
             rownumbers: true,
             fit: true,
             queryParams: {
-                ipAddress: ""
+                ipAddress: "",
+                belong: -1,
+                itemID: ""
             }
         });
     }
     function GridReload(loaded) {
         $("#tt").datagrid(loaded, {
-            ipAddress: $("#txtIpAddressQ").val()
+            ipAddress: $("#txtIpAddressQ").val(),
+            belong: $("#txtbeLongQ").val(),
+            itemID: $("#txtItemQ").val()
         });
     }
     var isAdd = false;

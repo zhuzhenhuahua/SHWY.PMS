@@ -54,6 +54,7 @@
     <Compile Include="DB\DatabaseDeploy.cs" />
     <Compile Include="DB\EntApp_SJ_Head.cs" />
     <Compile Include="DB\EntAppAsnHead.cs" />
+    <Compile Include="DB\InPortOutPort.cs" />
     <Compile Include="DB\IpAddress.cs" />
     <Compile Include="DB\Items.cs" />
     <Compile Include="DB\PersonTask.cs" />

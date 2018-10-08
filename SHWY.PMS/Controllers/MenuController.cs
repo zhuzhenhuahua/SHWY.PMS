@@ -25,6 +25,14 @@ namespace SHWY.PMS.Controllers
             }
 
         }
+        public async Task<JsonResult> GetTreeList(string menuName, int parentId)
+        {
+            using (Sys_MenuRepository rep = new Sys_MenuRepository())
+            {
+                var treeResult = await rep.GetTreeListAsync(menuName, parentId);
+                return Json(treeResult);
+            }
+        }
         public PartialViewResult GetMenuListPartialView()
         {
             using (Sys_MenuRepository rep = new Sys_MenuRepository())

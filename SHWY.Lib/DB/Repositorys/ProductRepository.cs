@@ -75,12 +75,13 @@ namespace SHWY.Lib.DB.Repositorys
         #endregion
 
         #region ProdServer（ProdDeploy）查询
-        public async Task<Tuple<int, object>> GetProdServerDeployListAsync(int pageIndex, int pageSize, string prodID, int serverID)
+        public async Task<Tuple<int, object>> GetProdServerDeployListAsync(int pageIndex, int pageSize, string prodID, int serverID, string itemID)
         {
             int form = (pageIndex - 1) * pageSize;
             var total = await (from j in context.ProdServerDeploys
                                where (string.IsNullOrEmpty(prodID) ? 1 == 1 : j.prodid == prodID)
                                && (serverID == 0 ? 1 == 1 : j.serverid == serverID)
+                               && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid.ToString() == itemID)
                                select j).CountAsync();
             var list = await (from j in context.ProdServerDeploys
                               join item in context.Items on j.itemid.ToString() equals item.ItemID
@@ -89,6 +90,7 @@ namespace SHWY.Lib.DB.Repositorys
                               join codes in context.Codes.Where(p => p.TypeId == 6) on j.porttype.ToString() equals codes.Code
                               where (string.IsNullOrEmpty(prodID) ? 1 == 1 : j.prodid == prodID)
                                    && (serverID == 0 ? 1 == 1 : j.serverid == serverID)
+                                   && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid.ToString() == itemID)
                               orderby j.id descending
                               select new
                               {

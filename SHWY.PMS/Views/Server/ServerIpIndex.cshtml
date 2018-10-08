@@ -9,25 +9,34 @@
     <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditServerIp(0, 0)">新增</a>
     <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditServerIp(1, 1)">修改</a>
     <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelServerIp()">删除</a>
+    <span class="l-btn-text">项目：</span><input class="easyui-textbox" id="txtItemQ" style="width:120px;" />
     <span class="l-btn-text">服务器名称：</span><input class="easyui-textbox" id="txtServerNameQ" style="width:80px;" />
     <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
 </div>
 <script type="text/javascript">
     $(function () {
+        InitCombobox();
         InitGrid();
     });
+    function InitCombobox() {
+        $("#txtItemQ").combobox({
+            url: '/Items/GetAllItems?isAddAll=1',
+            valueField: 'ItemID',
+            textField: 'NAME'
+        });
+        $("#txtItemQ").combobox("select", "");
+    }
     function InitGrid() {
         $("#tt").datagrid({
             url: '/Server/GetServerIpList',
             columns: [[
+                  { field: 'itemName', title: '项目名称', width: 150 },
                 { field: 'sid', title: '服务器ID', width: 80 },
                 { field: 'sName', title: '服务器名称', width: 100 },
-                { field: 'itemName', title: '项目名称', width: 150 },
                 { field: 'loginName', title: '登录名', width: 100 },
                 { field: 'password', title: '密码', width: 100 },
-                { field: 'ipid', title: 'ipid', width: 80 },
-                 { field: 'ipv4address', title: 'ip4地址', width: 80 },
-                 { field: 'ipv6address', title: 'ip6地址', width: 80 },
+                 { field: 'ipv4address', title: 'ip4地址', width: 110 },
+                 { field: 'ipv6address', title: 'ip6地址', width: 110 },
                   {
                       field: 'belong', title: '内外网标识', width: 100, formatter: function (value, row, index) {
                           return value == 1 ? "外网" : "内网"
@@ -45,13 +54,15 @@
             rownumbers: true,
             fit: true,
             queryParams: {
-                serverName: ""
+                serverName: "",
+                ItemID:""
             }
         });
     }
     function GridReload(loaded) {
         $("#tt").datagrid(loaded, {
-            serverName: $("#txtServerNameQ").val()
+            serverName: $("#txtServerNameQ").val(),
+            itemID: $("#txtItemQ").val()
         });
     }
     var isAdd = false;

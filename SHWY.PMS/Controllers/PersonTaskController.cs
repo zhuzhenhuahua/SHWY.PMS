@@ -178,7 +178,7 @@ namespace SHWY.PMS.Controllers
             var diffLevel2 = new SelectList(diffLevel, "Code", "Text");
             TaskDiffLevel.AddRange(diffLevel2);
             ViewBag.TaskDiffLevelV = TaskDiffLevel;
-            if ( string.IsNullOrEmpty(taskId))
+            if ( string.IsNullOrEmpty(taskId)||taskId=="0")
             {
                 task.publisherID = task.handlerID = task.followerID = CurrentUser.Sys_User.Uid;
             }

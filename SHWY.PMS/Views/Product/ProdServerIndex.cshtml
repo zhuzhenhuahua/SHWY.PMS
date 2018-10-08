@@ -8,6 +8,7 @@
     <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditProdDeploy(0)">新增</a>
     <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditProdDeploy(1)">修改</a>
     <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelProdDeploy()">删除</a>
+    <span class="l-btn-text">项目：</span><input class="easyui-textbox" id="txtItemQ" style="width:150px;" />
     <span class="l-btn-text">产品：</span><input class="easyui-textbox" id="txtProdQ" style="width:180px;" />
     <span class="l-btn-text">服务器：</span><input class="easyui-textbox" id="txtServerQ" style="width:120px;" />
     <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
@@ -18,6 +19,11 @@
         InitGrid();
     });
     function InitCombobox() {
+        $("#txtItemQ").combobox({
+            url: '/Items/GetAllItems?isAddAll=1',
+            valueField: 'ItemID',
+            textField: 'NAME'
+        });
         $("#txtProdQ").combobox({
             url: '/Product/GetAllProds?isAddAll=1',
             valueField: 'ProID',
@@ -28,6 +34,7 @@
             valueField: 'sid',
             textField: 'name'
         });
+        $("#txtItemQ").combobox("select", "");
         $("#txtProdQ").combobox("select", "");
         $("#txtServerQ").combobox("select", 0);
     }
@@ -55,7 +62,8 @@
             fit: true,
             queryParams: {
                 prodID: "",
-                serverID: 0
+                serverID: 0,
+                itemID:""
             }
         });
     }
@@ -63,6 +71,7 @@
         $("#tt").datagrid(loaded, {
             prodID: $("#txtProdQ").combobox('getValue'),
             serverID: $("#txtServerQ").combobox('getValue'),
+            itemID: $("#txtItemQ").combobox('getValue')
         });
     }
     var isAdd = false;

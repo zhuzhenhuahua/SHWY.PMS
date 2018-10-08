@@ -18,5 +18,8 @@ namespace SHWY.Model.DB
         public int ParentId { get; set; }
         public string MenuUrl { get; set; }
         public int MenuSortID { get; set; }
+
+        [NotMapped]
+        public List<Sys_Menu> children { get; set; }
     }
 }

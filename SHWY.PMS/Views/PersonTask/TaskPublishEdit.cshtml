@@ -7,7 +7,7 @@
     <table>
         <tr style="height:30px;">
             <td style="padding-left:20px;">JIRID:</td>
-            <td>@Html.TextBoxFor(p => p.JIRID, new { @class = "easyui-textbox", data_options = "required:true" })</td>
+            <td>@Html.TextBoxFor(p => p.JIRID, new { @class = "easyui-textbox" })</td>
             <td style="padding-left:20px;">项目:</td>
             <td>@Html.DropDownListFor(p => p.itemID, ViewBag.ItemList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
             <td style="padding-left:20px;">产品:</td>

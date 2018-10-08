@@ -28,22 +28,24 @@
         $("#cmbParentMenu").combobox("select", 0);
     }
     function InitGrid() {
-        $("#tt").datagrid({
-            url: '/Menu/GetList',
+        $("#tt").treegrid({
+            url: '/Menu/GetTreeList',
+            idField: 'MenuId',
+            treeField: 'MenuName',
             columns: [[
                 { field: 'MenuId', title: '菜单ID', width: 70 },
                 { field: 'MenuName', title: '菜单名称', width: 160 },
                 { field: 'MenuUrl', title: '链接地址', width: 200 },
                 { field: 'MenuSortID', title: '排序', width: 70 }
             ]],
+            animate:true,
             autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
             striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
             nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
             singleSelect: true,
             toolbar: '#tb',
-            pagination: true,
-            pageSize: 20,
-            idField: 'MenuId',
+            pagination: false,
+            //pageSize: 20,
             rownumbers: true,
             fit: true,
             queryParams: {
@@ -53,13 +55,13 @@
         });
     }
     function GridReload(loaded) {
-        $("#tt").datagrid(loaded, {
+        $("#tt").treegrid(loaded, {
             menuName: "",
             parentId: $('#cmbParentMenu').combobox("getValue")
         });
     }
     function GetSelect(type) {
-        var selectRow = $("#tt").datagrid("getSelected");
+        var selectRow = $("#tt").treegrid("getSelected");
         if (selectRow == null) {
             AlertMsg("请选择一行数据后再操作");
             return;
@@ -84,7 +86,7 @@
                     if (result.isOk) {
                         AlertMsg("删除成功");
                         GridReload("reload");
-                        $("#tt").datagrid("clearSelections");//因为reload/load后不会清除选择项
+                        $("#tt").treegrid("clearSelections");//因为reload/load后不会清除选择项
 
                     }
                     else {

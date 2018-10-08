@@ -1,15 +1,15 @@
 ﻿
 @{
-    ViewBag.Title = "服务器管理";
+    ViewBag.Title = "端口映射";
     Layout = "~/Views/Shared/_BaseContent.cshtml";
 }
+
 <table id="tt"></table>
 <div id="tb">
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditServer(0)">新增</a>
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditServer(1)">修改</a>
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelTask()">删除</a>
-    <span class="l-btn-text">项目：</span><input class="easyui-textbox" id="txtItemQ" style="width:120px;" />
-    <span class="l-btn-text">服务器名称：</span><input class="easyui-textbox" id="txtServerNameQ" style="width:80px;" />
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditInPortOutPort(0)">新增</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditInPortOutPort(1)">修改</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelInPortOutPort()">删除</a>
+    <span class="l-btn-text">项目：</span><input class="easyui-textbox" id="txtItemQ" style="width:150px;" />
     <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
 </div>
 <script type="text/javascript">
@@ -27,14 +27,15 @@
     }
     function InitGrid() {
         $("#tt").datagrid({
-            url: '/Server/GetList',
+            url: '/Server/GetInPortOutPortList',
             columns: [[
-                { field: 'itemName', title: '项目名称', width: 150 },
-                { field: 'sid', title: '服务器ID', width: 80},
-                { field: 'name', title: '服务器名称', width: 100 },
-                { field: 'remark', title: '备注说明', width: 600 },
-                { field: 'loginName', title: '登录名', width: 100 },
-                { field: 'password', title: '密码', width: 100 },
+                { field: 'ID', title: 'ID', hidden: true },
+                { field: 'itemName', title: '项目名称', width: 120 },
+                { field: 'inIpAddress', title: '内网IP', width: 180 },
+                { field: 'inPort', title: '内网端口', width: 180 },
+                { field: 'outIpAddress', title: '外网IP', width: 180 },
+                { field: 'outPort', title: '外网端口', width: 180 },
+                { field: 'porttypeText', title: '端口类型', width: 100 }
             ]],
             autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
             striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
@@ -43,24 +44,22 @@
             toolbar: '#tb',
             pagination: true,
             pageSize: 20,
-            idField: 'sid',
+            idField: 'ID',
             rownumbers: true,
             fit: true,
             queryParams: {
-                name: "",
-                itemID:""
+                itemID: ""
             }
         });
     }
     function GridReload(loaded) {
         $("#tt").datagrid(loaded, {
-            name: $("#txtServerNameQ").val(),
             itemID: $("#txtItemQ").val()
         });
     }
     var isAdd = false;
-    function EditServer(sid) {
-        if (sid == 0)
+    function EditInPortOutPort(Id) {
+        if (Id == 0)
             isAdd = true;
         else {
             var row = $("#tt").datagrid("getSelected");
@@ -68,12 +67,12 @@
                 AlertMsg("请选择一行数据后再操作");
                 return;
             }
-            sid = row.sid;
+            Id = row.ID;
             isAdd = false;
         }
-        ShowDialog("服务器管理", 700, 500, "/Server/ServerEdit?sid=" + sid, saveTask);
+        ShowDialog("端口映射管理", 700, 500, "/Server/InPortOutPortEdit?Id=" + Id, saveInPortOutPort);
     }
-    function DelTask() {
+    function DelInPortOutPort() {
         var row = $("#tt").datagrid("getSelected");
         if (row == null) {
             AlertMsg("请选择一行数据后再操作");
@@ -81,7 +80,7 @@
         }
         $.messager.confirm('提示', "确定要删除吗？", function (r) {
             if (r) {
-                $.post("/Server/DelServer", { sid: row.sid }, function (result) {
+                $.post("/Server/DelInPortOutPort", { Id: row.ID }, function (result) {
                     if (result.isOk) {
                         AlertMsg("删除成功");
                         GridReload("reload");
@@ -93,25 +92,15 @@
             }
         });
     }
-    function saveTask() {
-        var check = $("#formServerEidt").form('enableValidation').form('validate');
+    function saveInPortOutPort() {
+        var check = $("#formInPortOutPortEidt").form('enableValidation').form('validate');
         if (check) {
-            var postData = $("#formServerEidt").serialize();
-            if (isAdd) {
-                $.post("/Server/IsExists", postData, function (result) {
-                    if (result.IsExists) {
-                        AlertMsg("服务器ID已存在，请重新输入");
-                    } else {
-                        SaveData(postData);
-                    }
-                });
-            } else {
-                SaveData(postData);
-            }
+            var postData = $("#formInPortOutPortEidt").serialize();
+            saveData(postData)
         }
     }
-    function SaveData(postData) {
-        $.post("/Server/SaveServer", postData, function (result) {
+    function saveData(postData) {
+        $.post("/Server/SaveInPortOutPort", postData, function (result) {
             if (result.isOk) {
                 $('#PopWindow').dialog('close');
                 $("#PopWindow").remove();
@@ -123,7 +112,3 @@
         });
     }
 </script>
-
-
-
-
