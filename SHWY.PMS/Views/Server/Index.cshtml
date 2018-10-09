@@ -7,7 +7,7 @@
 <div id="tb">
     <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditServer(0)">新增</a>
     <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditServer(1)">修改</a>
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelTask()">删除</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelServer()">删除</a>
     <span class="l-btn-text">项目：</span><input class="easyui-textbox" id="txtItemQ" style="width:120px;" />
     <span class="l-btn-text">服务器名称：</span><input class="easyui-textbox" id="txtServerNameQ" style="width:80px;" />
     <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
@@ -30,7 +30,7 @@
             url: '/Server/GetList',
             columns: [[
                 { field: 'itemName', title: '项目名称', width: 150 },
-                { field: 'sid', title: '服务器ID', width: 80},
+                { field: 'sid', title: '服务器ID', width: 80,hidden:true },
                 { field: 'name', title: '服务器名称', width: 100 },
                 { field: 'remark', title: '备注说明', width: 600 },
                 { field: 'loginName', title: '登录名', width: 100 },
@@ -48,7 +48,7 @@
             fit: true,
             queryParams: {
                 name: "",
-                itemID:""
+                itemID: ""
             }
         });
     }
@@ -73,7 +73,7 @@
         }
         ShowDialog("服务器管理", 700, 500, "/Server/ServerEdit?sid=" + sid, saveTask);
     }
-    function DelTask() {
+    function DelServer() {
         var row = $("#tt").datagrid("getSelected");
         if (row == null) {
             AlertMsg("请选择一行数据后再操作");
@@ -87,7 +87,7 @@
                         GridReload("reload");
                     }
                     else {
-                        AlertMsg('删除失败');
+                        AlertMsg('删除失败,'+result.msg);
                     }
                 });
             }
@@ -97,17 +97,7 @@
         var check = $("#formServerEidt").form('enableValidation').form('validate');
         if (check) {
             var postData = $("#formServerEidt").serialize();
-            if (isAdd) {
-                $.post("/Server/IsExists", postData, function (result) {
-                    if (result.IsExists) {
-                        AlertMsg("服务器ID已存在，请重新输入");
-                    } else {
-                        SaveData(postData);
-                    }
-                });
-            } else {
-                SaveData(postData);
-            }
+            SaveData(postData);
         }
     }
     function SaveData(postData) {
@@ -123,7 +113,6 @@
         });
     }
 </script>
-
 
 
 

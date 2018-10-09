@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -26,6 +28,7 @@ namespace SHWY.Model.DB
         /// <summary>
         /// 服务态度
         /// </summary>
+        [Description("服务态度")]
         serviceAttri = 1,
         /// <summary>
         /// 完成速度
@@ -50,10 +53,10 @@ namespace SHWY.Model.DB
         /// <summary>
         /// 数据库架构
         /// </summary>
-        databaseSchema=7,
+        databaseSchema = 7,
         /// <summary>
         /// 数据库类型（sql/oracle）
         /// </summary>
-        databaseType=8,
+        databaseType = 8,
     }
 }

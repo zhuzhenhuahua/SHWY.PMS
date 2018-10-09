@@ -14,12 +14,13 @@ namespace SHWY.PMS.Controllers
         ServerRepository serverRepo = ServerRepository.CreateInstance();
         ItemsRepository itemsRepo = ItemsRepository.CreateInstance();
         CodeRepository codeRepo = CodeRepository.CreateInstance();
+        ProductRepository prodRepo = ProductRepository.CreateInstance();
         #region Server查询
         public ActionResult Index()
         {
             return View();
         }
-        public async Task<JsonResult> GetList(int page, int rows, string name,string itemID)
+        public async Task<JsonResult> GetList(int page, int rows, string name, string itemID)
         {
             var tuple = await serverRepo.GetServerListAsync(page, rows, name, itemID);
             return Json(new { total = tuple.Item1, rows = tuple.Item2 });
@@ -48,7 +49,7 @@ namespace SHWY.PMS.Controllers
         {
             return View();
         }
-        public async Task<JsonResult> GetIpAddressList(int page, int rows, string ipAddress,int belong,string itemID)
+        public async Task<JsonResult> GetIpAddressList(int page, int rows, string ipAddress, int belong, string itemID)
         {
             var tuple = await serverRepo.GetIpAddressListAsync(page, rows, ipAddress, belong, itemID);
             return Json(new { total = tuple.Item1, rows = tuple.Item2 });
@@ -75,7 +76,7 @@ namespace SHWY.PMS.Controllers
         {
             return View();
         }
-        public async Task<JsonResult> GetServerIpList(int page, int rows, string serverName,string ItemID)
+        public async Task<JsonResult> GetServerIpList(int page, int rows, string serverName, string ItemID)
         {
             var tuple = await serverRepo.GetServerIpListAsync(page, rows, serverName, ItemID);
             return Json(new { total = tuple.Item1, rows = tuple.Item2 });
@@ -92,7 +93,7 @@ namespace SHWY.PMS.Controllers
         {
             return View();
         }
-        public async Task<JsonResult> GetDataBaseDeployList(int page, int rows, string name,string itemID)
+        public async Task<JsonResult> GetDataBaseDeployList(int page, int rows, string name, string itemID)
         {
             var tuple = await serverRepo.GetDatabaseDeployListAsync(page, rows, name, itemID);
             return Json(new { total = tuple.Item1, rows = tuple.Item2 });
@@ -111,7 +112,7 @@ namespace SHWY.PMS.Controllers
         }
         #endregion
 
-        #region InPortOutPort端口映射
+        #region InPortOutPort端口映射查询
         public ActionResult InPortOutPortIndex()
         {
             return View();
@@ -121,46 +122,6 @@ namespace SHWY.PMS.Controllers
             var tuple = await serverRepo.GetInPortOutPortListAsync(page, rows, itemID);
             return Json(new { total = tuple.Item1, rows = tuple.Item2 });
         }
-        public async Task<ActionResult> InPortOutPortEdit(int Id)
-        {
-            var model = await serverRepo.GetInPortOutPortAsync(Id);
-            //项目
-            var ItemList = new List<SelectListItem>();
-            var items = await itemsRepo.GetListItemsAsync();
-            var items2 = new SelectList(items, "ItemID", "NAME");
-            ItemList.AddRange(items2);
-            ViewBag.ItemList = ItemList;
-            //内网IP
-            //var iplist = await serverRepo.GetIpAddressListAsync();
-            //var InIp4List = new List<SelectListItem>();
-            //var iniplist2 = new SelectList(iplist.Where(p=>p.belong==0), "ipid", "ipv4address");
-            //InIp4List.AddRange(iniplist2);
-            //ViewBag.InIp4List = InIp4List;
-            //外网IP
-            //var OutIp4List = new List<SelectListItem>();
-            //var outiplist2 = new SelectList(iplist.Where(p => p.belong == 1), "ipid", "ipv4address");
-            //OutIp4List.AddRange(outiplist2);
-            //ViewBag.OutIp4List = OutIp4List;
-            //端口类型
-            var PortTypeList = new List<SelectListItem>();
-            var typelist = await codeRepo.GetCodesListAsync(ECodesTypeId.ProtType);
-            var typelist2 = new SelectList(typelist, "Code", "Text");
-            PortTypeList.AddRange(typelist2);
-            ViewBag.PortTypeList = PortTypeList;
-            if (model == null)
-                model = new InPortOutPort();
-            return View(model);
-        }
-        public async Task<JsonResult> SaveInPortOutPort(InPortOutPort port)
-        {
-            var result = await serverRepo.AddOrUpdateInPortOutPortAsync(port);
-            return Json(new { isOk = result });
-        }
-        public async Task<JsonResult> DelInPortOutPort(int Id)
-        {
-            var result = await serverRepo.DelInPortOutPort(Id);
-            return Json(new { isOk = result });
-        }
         #endregion
 
         #region 增删改
@@ -168,8 +129,17 @@ namespace SHWY.PMS.Controllers
         #region IpAddress操作
         public async Task<JsonResult> DelIpAddress(int ipid)
         {
+            //删除时先判断服务器IP对应（ServerIp），端口映射（InPortOutPort）中是否有引用数据
+            int total = await serverRepo.GetServerIpCountByIpidAsync(ipid);
+            if (total > 0)
+                return Json(new { isOk = false, msg = "先删除服务器IP对应数据" });
+
+            var count = await serverRepo.GetInPortOutPortCountByIpIDAsync(ipid);
+            if (count > 0)
+                return Json(new { isOk = false, msg = "先删除端口映射对应数据" });
+
             var result = await serverRepo.DelIpAddressAsync(ipid);
-            return Json(new { isOk = result });
+            return Json(new { isOk = result, msg = "" });
         }
         public async Task<ActionResult> IpAddressEdit(int ipid)
         {
@@ -186,7 +156,6 @@ namespace SHWY.PMS.Controllers
             BeLongList.AddRange(belong2);
             ViewBag.BeLongList = BeLongList;
 
-            ViewBag.isRealOnly = (model != null).ToString().ToLower();
             return View(model);
         }
         public async Task<JsonResult> SaveIpAddress(IpAddress model)
@@ -205,7 +174,6 @@ namespace SHWY.PMS.Controllers
             var items2 = new SelectList(items, "ItemID", "NAME");
             ItemList.AddRange(items2);
             ViewBag.ItemList = ItemList;
-            ViewBag.isRealOnly = (server != null).ToString().ToLower();
             return View(server);
         }
         public async Task<JsonResult> SaveServer(Servers server)
@@ -215,8 +183,15 @@ namespace SHWY.PMS.Controllers
         }
         public async Task<JsonResult> DelServer(int sid)
         {
+            //删除服务器时先判断服务器ip（ServerIp），产品服务器（ProdServerDeploy）中是否有数据
+            var total = await serverRepo.GetServerIpCountBySidAsync(sid);
+            if (total > 0)
+                return Json(new { isOk = false, msg = "先删除服务器IP对应数据" });
+            var count = await prodRepo.GetProdServerCountByServerIDAsync(sid);
+            if (count > 0)
+                return Json(new { isOk = false, msg = "先删除产品服务器对应数据" });
             var result = await serverRepo.DelServerAsync(sid);
-            return Json(new { isOk = result });
+            return Json(new { isOk = result, msg = "" });
         }
         #endregion
 
@@ -269,12 +244,6 @@ namespace SHWY.PMS.Controllers
             var items2 = new SelectList(items, "ItemID", "NAME");
             ItemList.AddRange(items2);
             ViewBag.ItemList = ItemList;
-            //服务器
-            //var ServerList = new List<SelectListItem>();
-            //var servers = await serverRepo.GetServerListAsync();
-            //var servers2 = new SelectList(servers, "sid", "name");
-            //ServerList.AddRange(servers2);
-            //ViewBag.ServerList = ServerList;
             //数据库架构
             var SchemaidList = new List<SelectListItem>();
             var sehemalist = await codeRepo.GetCodesListAsync(ECodesTypeId.databaseSchema);
@@ -299,7 +268,46 @@ namespace SHWY.PMS.Controllers
         }
         public async Task<JsonResult> DelDatabaseDeploy(int id)
         {
+            var t = typeof(ECodesTypeId);
+
+            //删除时先判断产品数据库对应（ProdDBDeploy）中是否有对应数据
+            var total = await prodRepo.GetProdDBDeployCountByDBIDAsync(id);
+            if (total > 0)
+                return Json(new { isOk = false, msg = "先删除产品数据库对应数据" });
+
             var result = await serverRepo.DelDatabaseDeploy(id);
+            return Json(new { isOk = result });
+        }
+        #endregion
+
+        #region InPortOutPort端口映射增删改
+        public async Task<ActionResult> InPortOutPortEdit(int Id)
+        {
+            var model = await serverRepo.GetInPortOutPortAsync(Id);
+            //项目
+            var ItemList = new List<SelectListItem>();
+            var items = await itemsRepo.GetListItemsAsync();
+            var items2 = new SelectList(items, "ItemID", "NAME");
+            ItemList.AddRange(items2);
+            ViewBag.ItemList = ItemList;
+            //端口类型
+            var PortTypeList = new List<SelectListItem>();
+            var typelist = await codeRepo.GetCodesListAsync(ECodesTypeId.ProtType);
+            var typelist2 = new SelectList(typelist, "Code", "Text");
+            PortTypeList.AddRange(typelist2);
+            ViewBag.PortTypeList = PortTypeList;
+            if (model == null)
+                model = new InPortOutPort();
+            return View(model);
+        }
+        public async Task<JsonResult> SaveInPortOutPort(InPortOutPort port)
+        {
+            var result = await serverRepo.AddOrUpdateInPortOutPortAsync(port);
+            return Json(new { isOk = result });
+        }
+        public async Task<JsonResult> DelInPortOutPort(int Id)
+        {
+            var result = await serverRepo.DelInPortOutPort(Id);
             return Json(new { isOk = result });
         }
         #endregion

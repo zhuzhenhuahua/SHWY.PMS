@@ -72,6 +72,11 @@ namespace SHWY.Lib.DB.Repositorys
             var model = await context.ProdDBDeploys.Where(p => p.id == id).FirstOrDefaultAsync();
             return model;
         }
+        public async Task<int> GetProdDBDeployCountByDBIDAsync(int dbid)
+        {
+            var total = await context.ProdDBDeploys.Where(p => p.dbId == dbid).CountAsync();
+            return total;
+        }
         #endregion
 
         #region ProdServer（ProdDeploy）查询
@@ -111,6 +116,11 @@ namespace SHWY.Lib.DB.Repositorys
         {
             var model = await context.ProdServerDeploys.Where(p => p.id == id).FirstOrDefaultAsync();
             return model;
+        }
+        public async Task<int> GetProdServerCountByServerIDAsync(int serverid)
+        {
+            var total = await context.ProdServerDeploys.Where(p => p.serverid == serverid).CountAsync();
+            return total;
         }
         #endregion
 

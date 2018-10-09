@@ -89,7 +89,7 @@ namespace SHWY.Lib.DB.Repositorys
             if (serverNew == null)
             {
                 isAdd = true;
-                serverNew = new Servers() { sid = serverPara.sid };
+                serverNew = new Servers();
             }
             serverNew.name = serverPara.name;
             serverNew.itemid = serverPara.itemid;
@@ -138,9 +138,9 @@ namespace SHWY.Lib.DB.Repositorys
             var list = await context.IpAddress.Where(p => p.itemid == itemID).OrderByDescending(p => p.ipid).ToListAsync();
             return list;
         }
-        public async Task<List<IpAddress>> GetIpAddressListByItemIDAsync(int itemID,int belong)
+        public async Task<List<IpAddress>> GetIpAddressListByItemIDAsync(int itemID, int belong)
         {
-            var list = await context.IpAddress.Where(p => p.itemid == itemID&&p.belong==belong).OrderByDescending(p => p.ipid).ToListAsync();
+            var list = await context.IpAddress.Where(p => p.itemid == itemID && p.belong == belong).OrderByDescending(p => p.ipid).ToListAsync();
             return list;
         }
         public async Task<IpAddress> GetIpAddressAsync(int ipid)
@@ -156,7 +156,7 @@ namespace SHWY.Lib.DB.Repositorys
             if (ipNew == null)
             {
                 isAdd = true;
-                ipNew = new IpAddress() { ipid = ipPara.ipid };
+                ipNew = new IpAddress();
             }
             ipNew.ipv4address = ipPara.ipv4address;
             ipNew.itemid = ipPara.itemid;
@@ -215,6 +215,16 @@ namespace SHWY.Lib.DB.Repositorys
             var model = await context.ServerIps.Where(p => p.sid == sid && p.ipid == ipid).FirstOrDefaultAsync();
             return model;
         }
+        public async Task<int> GetServerIpCountBySidAsync(int sid)
+        {
+            var total = await context.ServerIps.Where(p => p.sid == sid).CountAsync();
+            return total;
+        }
+        public async Task<int> GetServerIpCountByIpidAsync(int ipid)
+        {
+            var total = await context.ServerIps.Where(p => p.ipid == ipid).CountAsync();
+            return total;
+        }
         public async Task<bool> AddOrUpdateServerIpAsync(ServerIp serverIPPara)
         {
             var isAdd = false;
@@ -271,6 +281,11 @@ namespace SHWY.Lib.DB.Repositorys
         {
             var model = await context.InPortOutPorts.Where(p => p.ID == id).FirstOrDefaultAsync();
             return model;
+        }
+        public async Task<int> GetInPortOutPortCountByIpIDAsync(int ipid)
+        {
+            var total = await context.InPortOutPorts.Where(p => p.inIpId == ipid || p.outIpId == ipid).CountAsync();
+            return total;
         }
         public async Task<bool> AddOrUpdateInPortOutPortAsync(InPortOutPort paraModel)
         {
@@ -339,7 +354,7 @@ namespace SHWY.Lib.DB.Repositorys
         }
         public async Task<List<DatabaseDeploy>> GetDatabaseDeployListAsync(int itemID)
         {
-            var list = await context.DatabaseDeploys.Where(p=>p.itemid==itemID).ToListAsync();
+            var list = await context.DatabaseDeploys.Where(p => p.itemid == itemID).ToListAsync();
             return list;
         }
         public async Task<List<DatabaseDeploy>> GetDatabaseDeployListAsync()

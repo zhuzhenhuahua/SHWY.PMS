@@ -36,9 +36,9 @@
         $("#tt").datagrid({
             url: '/Server/GetIpAddressList',
             columns: [[
-                { field: 'itemName', title: '项目名称', width: 120 },
-                { field: 'ipid', title: 'IpID', width: 80 },
-                { field: 'ipv4address', title: 'IP4地址', width: 120 },
+                { field: 'itemName', title: '项目名称', width: 150 },
+                { field: 'ipid', title: 'IpID', width: 80,hidden:true },
+                { field: 'ipv4address', title: 'IP4地址', width: 150 },
                 { field: 'ipv6address', title: 'IP6地址', width: 180 },
                 {
                     field: 'belong', title: '内外网标识', width: 100, formatter: function (value, row, index) {
@@ -99,7 +99,7 @@
                         GridReload("reload");
                     }
                     else {
-                        AlertMsg('删除失败');
+                        AlertMsg('删除失败,' + result.msg);
                     }
                 });
             }
@@ -109,17 +109,7 @@
         var check = $("#formIpAddressEidt").form('enableValidation').form('validate');
         if (check) {
             var postData = $("#formIpAddressEidt").serialize();
-            if (isAdd) {
-                $.post("/Server/IsExistsIpAddressById", postData, function (result) {
-                    if (result.IsExists) {
-                        AlertMsg("IP地址ID已存在，请重新输入");
-                    } else {
-                        SaveData(postData);
-                    }
-                });
-            } else {
-                SaveData(postData);
-            }
+            SaveData(postData);
         }
     }
     function SaveData(postData) {

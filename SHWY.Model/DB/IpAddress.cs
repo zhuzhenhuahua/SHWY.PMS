@@ -13,7 +13,7 @@ namespace SHWY.Model.DB
     [Table("IpAddress")]
    public class IpAddress
     {
-        [Key,DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Key]
         [DisplayName("IpID")]
         public int ipid { get; set; }
         [DisplayName("IP4地址")]

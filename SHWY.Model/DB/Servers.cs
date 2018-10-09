@@ -13,7 +13,7 @@ namespace SHWY.Model.DB
     [Table("Server")]
    public class Servers
     {
-        [Key,DatabaseGenerated( DatabaseGeneratedOption.None)]
+        [Key]
         [DisplayName("服务器ID")]
         public int sid { get; set; }
         [DisplayName("服务器名称")]

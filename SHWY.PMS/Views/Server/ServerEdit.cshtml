@@ -6,10 +6,6 @@
 <form id="formServerEidt">
     <table>
         <tr>
-            <td>@Html.LabelFor(p => p.sid)</td>
-            <td>@Html.TextBoxFor(p => p.sid, new { @class = "easyui-numberbox", data_options = "required:true,readonly:" + ViewData["isRealOnly"] + "" })</td>
-        </tr>
-        <tr>
             <td>@Html.LabelFor(p => p.name)</td>
             <td>@Html.TextBoxFor(p => p.name, new { @class = "easyui-textbox", data_options = "required:true" })</td>
         </tr>
@@ -19,7 +15,7 @@
         </tr>
         <tr>
             <td>@Html.LabelFor(p => p.remark)</td>
-            <td>@Html.TextBoxFor(p => p.remark, new { @class = "easyui-textbox",data_options="multiline:true",style="width:450px;height:50px;" })</td>
+            <td>@Html.TextBoxFor(p => p.remark, new { @class = "easyui-textbox", data_options = "multiline:true", style = "width:450px;height:50px;" })</td>
         </tr>
         <tr>
             <td>@Html.LabelFor(p => p.loginName)</td>
@@ -30,5 +26,5 @@
             <td>@Html.TextBoxFor(p => p.password, new { @class = "easyui-textbox" })</td>
         </tr>
     </table>
+    @Html.HiddenFor(p => p.sid)
 </form>
-
