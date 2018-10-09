@@ -30,6 +30,65 @@ namespace SHWY.Lib.DB.Repositorys
             return _productRepository;
         }
 
+        #region Prod查询
+        public async Task<Tuple<int, List<Product>>> GetListAsync(int rows, int page, string prodName)
+        {
+            int form = (rows - 1) * page;
+            var total = await (from j in context.Products
+                               where prodName == "" ? 1 == 1 : j.NAME.Contains(prodName)
+                               select j).CountAsync();
+            var list = await (from j in context.Products
+                              where prodName == "" ? 1 == 1 : j.NAME.Contains(prodName)
+                              orderby j.ProID
+                              select j).Skip(form).Take(page).ToListAsync();
+            return Tuple.Create(total, list);
+        }
+        public async Task<List<Product>> GetListAsync()
+        {
+            var list = await (from j in context.Products
+                              select j).ToListAsync();
+            return list;
+        }
+        public static ConcurrentDictionary<string, Product> _dicProd = new ConcurrentDictionary<string, Product>();
+        public async Task<Product> GetProductDicAsync(string prodId)
+        {
+            try
+            {
+                if (!_dicProd.ContainsKey(prodId))
+                {
+                    var prod = await (from j in context.Products
+                                      where j.ProID == prodId
+                                      select j).FirstOrDefaultAsync();
+                    if (prod != null)
+                        _dicProd[prodId] = prod;
+                    else
+                        return null;
+                }
+                return _dicProd[prodId];
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public async Task<Product> GetProductAsync(string prodId)
+        {
+            try
+            {
+                var prod = await (from j in context.Products
+                                  where j.ProID == prodId
+                                  select j).FirstOrDefaultAsync();
+                if (prod == null)
+                    return new Product();
+                return prod;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
+
         #region ProdDBDeploy 查询
         public async Task<Tuple<int, object>> GetProdDBListAsync(int pageIndex, int pageSize, string itemid, string prodid, int dbid)
         {
@@ -124,6 +183,87 @@ namespace SHWY.Lib.DB.Repositorys
         }
         #endregion
 
+        #region ProdModule查询
+        public async Task<Tuple<int, object>> GetProdModuleList(int pageIndex, int pageSize, string prodid)
+        {
+            int form = (pageIndex - 1) * pageSize;
+            var total = await (from j in context.ProdModules
+                               where j.ProID.Contains(prodid)
+                               select j).CountAsync();
+            var list = await (from j in context.ProdModules
+                              join prod in context.Products on j.ProID equals prod.ProID
+                              where j.ProID.Contains(prodid)
+                              orderby j.ProID, j.ModuleID descending
+                              select new
+                              {
+                                  j.ModuleID,
+                                  j.ProID,
+                                  prodName = prod.NAME,
+                                  j.NAME,
+                                  j.Description
+                              }).Skip(form).Take(pageSize).ToListAsync();
+            return Tuple.Create<int, object>(total, list);
+        }
+        public async Task<ProdModule> GetProdModuleAsync(int moduledid, string prodid)
+        {
+            var model = await (from j in context.ProdModules
+                               where j.ModuleID == moduledid && j.ProID == prodid
+                               select j).FirstOrDefaultAsync();
+            return model;
+        }
+        public async Task<int> GetProdModuleCountByProdIDAsync(string prodID)
+        {
+            var total = await context.ProdModules.Where(p => p.ProID == prodID).CountAsync();
+            return total;
+        }
+
+        #endregion
+
+        #region 增删改
+        #region Prod增删改
+        public async Task<bool> AddOrUpdateAsync(Product prod)
+        {
+            try
+            {
+                var prodNew = await GetProductAsync(prod.ProID);
+                bool isNew = false;
+
+                if (prodNew == null || string.IsNullOrEmpty(prodNew.ProID))
+                {
+                    isNew = true;
+                }
+                foreach (var p in prodNew.GetType().GetProperties())
+                {
+                    //更新属性
+                    var v = prod.GetType().GetProperty(p.Name).GetValue(prod);
+                    if (v != null)
+                    {
+                        //其他字段更新
+                        p.SetValue(prodNew, v);
+                    }
+                }
+                if (isNew)
+                    context.Products.Add(prod);
+                return await context.SaveChangesAsync() == 1;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteProd(string proId)
+        {
+            var prod = await context.Products.Where(p => p.ProID == proId).FirstOrDefaultAsync();
+            if (prod != null)
+            {
+                context.Products.Remove(prod);
+                return await context.SaveChangesAsync() == 1;
+            }
+            return false;
+        }
+        #endregion
+
         #region ProdDBDeploy（ProdDeploy）增删改
         public async Task<bool> AddOrUpdateProdDBDeployAsync(ProdDBDeploy dbDeploy)
         {
@@ -185,107 +325,36 @@ namespace SHWY.Lib.DB.Repositorys
         }
         #endregion
 
-        #region Prod查询
-        public async Task<Tuple<int, List<Product>>> GetListAsync(int rows, int page, string prodName)
+        #region ProdModule查询
+        public async Task<bool> AddOrUpdateProdModuleAsync(ProdModule modulePara)
         {
-            int form = (rows - 1) * page;
-            var total = await (from j in context.Products
-                               where prodName == "" ? 1 == 1 : j.NAME.Contains(prodName)
-                               select j).CountAsync();
-            var list = await (from j in context.Products
-                              where prodName == "" ? 1 == 1 : j.NAME.Contains(prodName)
-                              orderby j.ProID
-                              select j).Skip(form).Take(page).ToListAsync();
-            return Tuple.Create(total, list);
-        }
-        public async Task<List<Product>> GetListAsync()
-        {
-            var list = await (from j in context.Products
-                              select j).ToListAsync();
-            return list;
-        }
-        public static ConcurrentDictionary<string, Product> _dicProd = new ConcurrentDictionary<string, Product>();
-        public async Task<Product> GetProductDicAsync(string prodId)
-        {
-            try
+            var isAdd = false;
+            var model = await context.ProdModules.Where(p => p.ModuleID == modulePara.ModuleID && p.ProID == modulePara.ProID).FirstOrDefaultAsync();
+            if (model == null)
             {
-                if (!_dicProd.ContainsKey(prodId))
+                isAdd = true;
+                model = new ProdModule()
                 {
-                    var prod = await (from j in context.Products
-                                      where j.ProID == prodId
-                                      select j).FirstOrDefaultAsync();
-                    if (prod != null)
-                        _dicProd[prodId] = prod;
-                    else
-                        return null;
-                }
-                return _dicProd[prodId];
+                    ProID = modulePara.ProID
+                };
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            model.NAME = modulePara.NAME;
+            model.Description = modulePara.Description;
+            if (isAdd)
+                context.ProdModules.Add(model);
+            return await context.SaveChangesAsync() == 1;
         }
-        public async Task<Product> GetProductAsync(string prodId)
+        public async Task<bool> DelProdModuleAsync(int moduleId, string prodId)
         {
-            try
+            var model = await context.ProdModules.Where(p => p.ModuleID == moduleId && p.ProID == prodId).FirstOrDefaultAsync();
+            if (model != null)
             {
-                var prod = await (from j in context.Products
-                                  where j.ProID == prodId
-                                  select j).FirstOrDefaultAsync();
-                if (prod == null)
-                    return new Product();
-                return prod;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        #endregion
-
-        #region Prod增删改
-        public async Task<bool> AddOrUpdateAsync(Product prod)
-        {
-            try
-            {
-                var prodNew = await GetProductAsync(prod.ProID);
-                bool isNew = false;
-
-                if (prodNew == null || string.IsNullOrEmpty(prodNew.ProID))
-                {
-                    isNew = true;
-                }
-                foreach (var p in prodNew.GetType().GetProperties())
-                {
-                    //更新属性
-                    var v = prod.GetType().GetProperty(p.Name).GetValue(prod);
-                    if (v != null)
-                    {
-                        //其他字段更新
-                        p.SetValue(prodNew, v);
-                    }
-                }
-                if (isNew)
-                    context.Products.Add(prod);
-                return await context.SaveChangesAsync() == 1;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        public async Task<bool> DeleteProd(string proId)
-        {
-            var prod = await context.Products.Where(p => p.ProID == proId).FirstOrDefaultAsync();
-            if (prod != null)
-            {
-                context.Products.Remove(prod);
+                context.ProdModules.Remove(model);
                 return await context.SaveChangesAsync() == 1;
             }
             return false;
         }
+        #endregion
         #endregion
     }
 }

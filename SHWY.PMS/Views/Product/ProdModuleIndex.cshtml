@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewBag.Title = "ProdModuleIndex";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+
+<table id="tt"></table>
+<div id="tb">
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditProdModule(0)">新增</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditProdModule(1)">修改</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelProdModule()">删除</a>
+    <span class="l-btn-text">产品：</span><input class="easyui-textbox" id="txtProdQ" style="width:180px;" />
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
+</div>
+<script>
+    $(function () {
+        InitCombobox();
+        InitGrid();
+    });
+    function InitCombobox() {
+        $("#txtProdQ").combobox({
+            url: '/Product/GetAllProds?isAddAll=1',
+            valueField: 'ProID',
+            textField: 'NAME'
+        });
+        $("#txtProdQ").combobox("select", "");
+    }
+    function InitGrid() {
+        $("#tt").datagrid({
+            url: '/Product/GetProdModuleList',
+            columns: [[
+                { field: 'ModuleID', title: 'ModuleID', hidden: true },
+                { field: 'ProID', title: 'ProID', hidden: true },
+                { field: 'prodName', title: '产品名称', width: 200 },
+                { field: 'NAME', title: '模块名称', width: 150 },
+                { field: 'Description', title: '描述', width: 400 }
+            ]],
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            singleSelect: true,
+            pagination: true,
+            pageSize: 20,
+            idField: 'ModuleID',
+            toolbar: '#tb',
+            rownumbers: true,
+            fit: true,
+            queryParams: {
+                prodid: ""
+            }
+        });
+    }
+    function GridReload(loaded) {
+        $("#tt").datagrid(loaded, {
+            prodid: $("#txtProdQ").combobox('getValue')
+        });
+    }
+    var isAdd = false;
+    function EditProdModule(id) {
+        if (id == 0)
+            isAdd = true;
+        else {
+            var row = $("#tt").datagrid("getSelected");
+            if (row == null) {
+                AlertMsg("请选择一行数据后再操作");
+                return;
+            }
+            isAdd = false;
+        }
+        var moduleID = isAdd ? 0 : row.ModuleID;
+        var proID = isAdd ? "" : row.ProID;
+        ShowDialog("模块管理", 500, 400, "/Product/ProdModuleEdit?moduleID=" + moduleID + "&proID=" + proID, saveProdModule);
+    }
+    function DelProdModule() {
+        var row = $("#tt").datagrid("getSelected");
+        if (row == null) {
+            AlertMsg("请选择一行数据后再操作");
+            return;
+        }
+        $.messager.confirm('提示', "确定要删除吗？", function (r) {
+            if (r) {
+                $.post("/Product/DelProdModule", { moduleID: row.ModuleID, proID: row.ProID }, function (result) {
+                    if (result.isOk) {
+                        AlertMsg("删除成功");
+                        GridReload("reload");
+                    }
+                    else {
+                        AlertMsg('删除失败');
+                    }
+                });
+            }
+        });
+    }
+    function saveProdModule() {
+        var check = $("#formProdModuleEidt").form('enableValidation').form('validate');
+        if (check) {
+            var postData = $("#formProdModuleEidt").serialize();
+            $.post("/Product/SaveProdModule", postData, function (result) {
+                if (result.isOk) {
+                    $('#PopWindow').dialog('close');
+                    $("#PopWindow").remove();
+                    GridReload(isAdd ? "load" : "reload");
+                }
+                else {
+                    AlertMsg('保存失败');
+                }
+
+            });
+        }
+    }
+</script>

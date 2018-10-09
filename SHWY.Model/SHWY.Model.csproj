@@ -60,6 +60,7 @@
     <Compile Include="DB\PersonTask.cs" />
     <Compile Include="DB\PersonTaskProcess.cs" />
     <Compile Include="DB\ProdDBDeploy.cs" />
+    <Compile Include="DB\ProdModule.cs" />
     <Compile Include="DB\ProdServerDeploy.cs" />
     <Compile Include="DB\Product.cs" />
     <Compile Include="DB\ServerIp.cs" />

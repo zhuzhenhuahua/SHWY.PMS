@@ -121,6 +121,45 @@ namespace SHWY.PMS.Controllers
         }
         #endregion
 
+        #region 产品模块(ProdModule)
+        public ActionResult ProdModuleIndex()
+        {
+            return View();
+        }
+        public async Task<JsonResult> GetProdModuleList(int page, int rows, string prodid)
+        {
+            var tuple = await prodRepo.GetProdModuleList(page, rows, prodid);
+            return Json(new { total = tuple.Item1, rows = tuple.Item2 });
+        }
+
+        public async Task<ActionResult> ProdModuleEdit(int moduleID, string proID)
+        {
+            var model = await prodRepo.GetProdModuleAsync(moduleID, proID);
+            if (model == null)
+                model = new ProdModule();
+            //产品
+            var ProdList = new List<SelectListItem>();
+            var prods = await prodRepo.GetListAsync();
+            var prods2 = new SelectList(prods, "ProID", "NAME");
+            ProdList.AddRange(prods2);
+            ViewBag.ProdList = ProdList;
+
+            ViewData["isRealOnly"] = (!string.IsNullOrEmpty(model.ProID)).ToString().ToLower();//ProdId不为空时前台控件只读
+
+            return View(model);
+        }
+        public async Task<JsonResult> SaveProdModule(ProdModule model)
+        {
+            var res = await prodRepo.AddOrUpdateProdModuleAsync(model);
+            return Json(new { isOk = res });
+        }
+        public async Task<JsonResult> DelProdModule(int moduleID,string proID)
+        {
+            var res = await prodRepo.DelProdModuleAsync(moduleID, proID);
+            return Json(new { isOk = res });
+        }
+        #endregion
+
         #region Product
         public ActionResult Index()
         {

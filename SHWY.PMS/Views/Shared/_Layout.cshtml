@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
@@ -12,25 +12,32 @@
     @Scripts.Render("~/bundles/CommonJS")
     <style type="text/css">
         #tab_Content .tabs-panels > .panel > .panel-body {
-            overflow:hidden;
+            overflow: hidden;
         }
     </style>
+    <script type="text/javascript">
+        $(function () {
+            var temp = $('#lay').layout('panel', 'center');
+            //2、给区域面板title赋值
+            temp.panel('setTitle', '当前用户：@CurrentUser.Sys_User.Name');
+        });
+    </script>
 </head>
-<body class="easyui-layout">
-        <div data-options="region:'north'" style="height:80px;">
-            @Html.Partial("_PartialHeader")
-        </div>
-        <div data-options="region:'west',split:true" title='菜单' style="width:200px">
-            @*@Html.Partial("_PartialMenu")*@
-         @{Html.RenderAction("GetMenuListPartialView", "Menu");}
-        </div>
-        <div data-options="region:'center',title:'Main Title',iconCls:'icon-ok'">
-            <div id="tab_Content" class="easyui-tabs" data-options="fit:true,border:false">
-                <div title="待办事项" style="padding:5px;overflow:auto;">
-                    @RenderBody()
-                </div>
+<body id="lay" class="easyui-layout">
+    <div data-options="region:'north'" style="height:80px;">
+        @Html.Partial("_PartialHeader")
+    </div>
+    <div data-options="region:'west',split:true" title='菜单' style="width:200px">
+        @*@Html.Partial("_PartialMenu")*@
+        @{Html.RenderAction("GetMenuListPartialView", "Menu");}
+    </div>
+    <div data-options="region:'center',title:'当前用户：',iconCls:'icon-ok'">
+        <div id="tab_Content" class="easyui-tabs" data-options="fit:true,border:false">
+            <div title="待办事项" style="padding:5px;overflow:auto;">
+                @RenderBody()
             </div>
         </div>
+    </div>
     @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -43,6 +43,7 @@ namespace SHWY.Lib.DB.Context
         public DbSet<Sys_RoleMenu> Sys_RoleMenus { get; set; }
         public DbSet<Sys_RoleOper> Sys_RoleOpers { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProdModule> ProdModules { get; set; }
         public DbSet<ProdServerDeploy> ProdServerDeploys { get; set; }
         public DbSet<ProdDBDeploy> ProdDBDeploys { get; set; }
         public DbSet<Items> Items { get; set; }

@@ -1027,6 +1027,8 @@
     <Content Include="Views\Product\ProdDBEdit.cshtml" />
     <Content Include="Views\Server\InPortOutPortIndex.cshtml" />
     <Content Include="Views\Server\InPortOutPortEdit.cshtml" />
+    <Content Include="Views\Product\ProdModuleIndex.cshtml" />
+    <Content Include="Views\Product\ProdModuleEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
