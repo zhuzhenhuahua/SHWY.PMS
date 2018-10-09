@@ -17,9 +17,12 @@
     </style>
     <script type="text/javascript">
         $(function () {
-            var temp = $('#lay').layout('panel', 'center');
-            //2、给区域面板title赋值
-            temp.panel('setTitle', '当前用户：@CurrentUser.Sys_User.Name');
+            $.post("/Account/GetSessionUser", "", function (result) {
+                var temp = $('#lay').layout('panel', 'center');
+                //2、给区域面板title赋值
+                temp.panel('setTitle', "当前用户：" + result.Name);
+            });
+
         });
     </script>
 </head>

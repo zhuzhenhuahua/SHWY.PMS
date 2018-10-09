@@ -19,7 +19,8 @@ namespace SHWY.PMS.Controllers
 
         public async Task<PartialViewResult> myTaskType_Partial()
         {
-            var list = await personTaskRepo.GetTaskListAsync(CurrentUser.Sys_User.Uid);
+            var session = Session["CurrentUser"] as CurrentUser;
+            var list = await personTaskRepo.GetTaskListAsync(session.Sys_User.Uid);
             return PartialView( new MyPersonTaskList() { personTaskList = list });
         }
     }

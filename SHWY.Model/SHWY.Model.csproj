@@ -57,6 +57,7 @@
     <Compile Include="DB\InPortOutPort.cs" />
     <Compile Include="DB\IpAddress.cs" />
     <Compile Include="DB\Items.cs" />
+    <Compile Include="DB\Need.cs" />
     <Compile Include="DB\PersonTask.cs" />
     <Compile Include="DB\PersonTaskProcess.cs" />
     <Compile Include="DB\ProdDBDeploy.cs" />

@@ -44,8 +44,8 @@ namespace SHWY.PMS.Controllers
         //个人任务列表
         public async Task<JsonResult> GetMyTaskList(PersonTaskPara para)
         {
-            int uid = CurrentUser.Sys_User.Uid;
-            var result = await pTaskRepo.GetListAsync(para.page, para.rows, uid, para.itemId,para.prodId, para.taskStatus);
+            var sessionUser = Session["CurrentUser"] as CurrentUser;
+            var result = await pTaskRepo.GetListAsync(para.page, para.rows, sessionUser.Sys_User.Uid, para.itemId,para.prodId, para.taskStatus);
             return Json(new { total = result.Item1, rows = result.Item2 });
         }
         public async Task<ActionResult> TaskPublishEdit(string id)
@@ -111,7 +111,8 @@ namespace SHWY.PMS.Controllers
 
             if (id == "0" || string.IsNullOrEmpty(id))
             {
-                task.publisherID = task.handlerID = task.followerID = CurrentUser.Sys_User.Uid;
+                var session = Session["CurrentUser"] as CurrentUser;
+                task.publisherID = task.handlerID = task.followerID = session.Sys_User.Uid;
             }
             else
             {
@@ -180,7 +181,8 @@ namespace SHWY.PMS.Controllers
             ViewBag.TaskDiffLevelV = TaskDiffLevel;
             if ( string.IsNullOrEmpty(taskId)||taskId=="0")
             {
-                task.publisherID = task.handlerID = task.followerID = CurrentUser.Sys_User.Uid;
+                var session = Session["CurrentUser"] as CurrentUser;
+                task.publisherID = task.handlerID = task.followerID = session.Sys_User.Uid;
             }
             else
             {

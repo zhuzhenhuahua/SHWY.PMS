@@ -144,7 +144,7 @@
             }
         });
         function OpenTabs(menuID, title, url) {
-            $.post("/Account/GetSessionUser", null, function (data) {
+            $.post("/Account/GetSessionUserExists", null, function (data) {
                 if (!data.isExists) {
                     window.top.location = "/Account/Login";
                 } else {
