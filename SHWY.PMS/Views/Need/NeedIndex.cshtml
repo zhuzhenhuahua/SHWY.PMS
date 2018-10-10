@@ -32,13 +32,22 @@
             url: '/Need/GetNeedListAsync',
             columns: [[
                 { field: 'NeedID', title: 'NeedID', hidden: true },
-                { field: 'itemName', title: '项目名称', width: 200 },
-                { field: 'prodName', title: '产品名称', width: 150 },
-                { field: 'taskTypeName', title: '任务类型', width: 120 },
-                { field: 'proposeTime', title: '预计开始时间', width: 120 },
-                { field: 'deadTime', title: '预计结束时间', width: 120 },
-                { field: 'Text', title: '详细描述', width: 120 },
-                { field: 'publisher', title: '发布人', width: 120 },
+                { field: 'itemName', title: '项目名称' },
+                { field: 'prodName', title: '产品名称'},
+                { field: 'moduleName', title: '模块名称' },
+                { field: 'taskTypeName', title: '任务类型'},
+                {
+                    field: 'proposeTime', title: '预计开始时间', width: 80, formatter: function (value, row, index) {
+                        return data_string(value, 'yyyy-MM-dd');
+                    }
+                },
+                {
+                    field: 'deadTime', title: '预计结束时间', width: 80, formatter: function (value, row, index) {
+                        return data_string(value, 'yyyy-MM-dd');
+                    }
+                },
+                { field: 'Text', title: '详细描述'},
+                { field: 'publisher', title: '发布人'},
             ]],
             autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
             striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
@@ -73,7 +82,7 @@
             isAdd = false;
         }
         needID = isAdd ? "" : row.NeedID;
-        ShowDialog("需求管理", 500, 400, "/Need/NeedEdit?needID=" + needID, saveNeed);
+        ShowDialog("需求管理", 600, 400, "/Need/NeedEdit?needID=" + needID, saveNeed);
     }
     function DelNeed() {
         var row = $("#tt").datagrid("getSelected");
@@ -113,4 +122,3 @@
         }
     }
 </script>
-

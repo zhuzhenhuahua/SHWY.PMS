@@ -97,3 +97,20 @@ function AlertMsg(msg) {
         timeout: 5000
     });
 }
+function data_string(str, formatter) {
+    if (formatter == "yyyy-MM-dd hh:mm") {
+        var d = eval('new ' + str.substr(1, str.length - 2));
+        var ar_date = [d.getFullYear(), d.getMonth() + 1, d.getDate(), d.getHours(), d.getMinutes()];
+        for (var i = 0; i < ar_date.length; i++)
+            ar_date[i] = dFormat(ar_date[i]);
+        return ar_date.slice(0, 3).join('-') + ' ' + ar_date.slice(3).join(':');
+    }
+    else if (formatter == "yyyy-MM-dd") {
+        var d = eval('new ' + str.substr(1, str.length - 2));
+        var ar_date = [d.getFullYear(), d.getMonth() + 1, d.getDate()];
+        for (var i = 0; i < ar_date.length; i++)
+            ar_date[i] = dFormat(ar_date[i]);
+        return ar_date.join('-');
+    }
+    function dFormat(i) { return i < 10 ? "0" + i.toString() : i; }
+}

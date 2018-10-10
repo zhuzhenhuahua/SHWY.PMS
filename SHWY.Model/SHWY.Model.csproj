@@ -58,6 +58,9 @@
     <Compile Include="DB\Need.cs" />
     <Compile Include="DB\PersonTask.cs" />
     <Compile Include="DB\PersonTaskProcess.cs" />
+    <Compile Include="DB\PlanPoint.cs" />
+    <Compile Include="DB\Plan.cs" />
+    <Compile Include="DB\PlanType.cs" />
     <Compile Include="DB\ProdDBDeploy.cs" />
     <Compile Include="DB\ProdModule.cs" />
     <Compile Include="DB\ProdServerDeploy.cs" />

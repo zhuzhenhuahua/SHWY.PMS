@@ -53,6 +53,10 @@ namespace SHWY.PMS.Controllers
                 var tasktypes2 = new SelectList(tasktypes, "ID", "NAME");
                 TaskTypeList.AddRange(tasktypes2);
                 ViewBag.TaskTypeList = TaskTypeList;
+                if (model == null)
+                {
+                    model = new Need() {  proposeTime=DateTime.Now, deadTime = DateTime.Now.AddDays(3) };
+                }
                 return View(model);
             }
 

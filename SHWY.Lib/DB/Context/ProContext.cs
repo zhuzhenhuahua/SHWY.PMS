@@ -59,5 +59,8 @@ namespace SHWY.Lib.DB.Context
         public DbSet<DatabaseDeploy> DatabaseDeploys { get; set; }
         public DbSet<InPortOutPort> InPortOutPorts { get; set; }
         public DbSet<Need> Needs { get; set; }
+        public DbSet<Plan> Plans { get; set; }
+        public DbSet<PlanPoint> PlanPoints { get; set; }
+        public DbSet<PlanType> PlanTypes { get; set; }
     }
 }
