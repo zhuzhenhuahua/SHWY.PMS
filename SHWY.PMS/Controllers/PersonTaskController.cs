@@ -245,7 +245,7 @@ namespace SHWY.PMS.Controllers
                 task.ID = CommonHelper.GetRandomString("TK");
                 task.publishTime = DateTime.Now;
             }
-            if (task.complTime == null || task.complTime.Value.Year == 1)
+            if (task.complTime == null || task.complTime.Value.Year == 1900)
                 task.complTime = Convert.ToDateTime("1900-01-01");
             var result = await pTaskRepo.AddOrUpdateAsync(task);
             return Json(new { isOk = result });

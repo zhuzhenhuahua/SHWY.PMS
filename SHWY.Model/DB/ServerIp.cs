@@ -20,6 +20,6 @@ namespace SHWY.Model.DB
         [DisplayName("IP地址")]
         public int ipid { get; set; }
         [DisplayName("项目")]
-        public int itemid { get; set; }
+        public string itemid { get; set; }
     }
 }

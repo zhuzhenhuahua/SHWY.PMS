@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewBag.Title = "NeedIndex";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+
+<table id="tt"></table>
+<div id="tb">
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditNeed(0)">新增</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditNeed(1)">修改</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelNeed()">删除</a>
+    <span class="l-btn-text">项目：</span><input class="easyui-textbox" id="txtItemQ" style="width:180px;" />
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
+</div>
+<script>
+    $(function () {
+        InitCombobox();
+        InitGrid();
+    });
+    function InitCombobox() {
+        $("#txtItemQ").combobox({
+            url: '/Items/GetAllItems?isAddAll=1',
+            valueField: 'ItemID',
+            textField: 'NAME',
+            onLoadSuccess: function () {
+                $("#txtItemQ").combobox("select", "");
+            }
+        });
+    }
+    function InitGrid() {
+        $("#tt").datagrid({
+            url: '/Need/GetNeedListAsync',
+            columns: [[
+                { field: 'NeedID', title: 'NeedID', hidden: true },
+                { field: 'itemName', title: '项目名称', width: 200 },
+                { field: 'prodName', title: '产品名称', width: 150 },
+                { field: 'taskTypeName', title: '任务类型', width: 120 },
+                { field: 'proposeTime', title: '预计开始时间', width: 120 },
+                { field: 'deadTime', title: '预计结束时间', width: 120 },
+                { field: 'Text', title: '详细描述', width: 120 },
+                { field: 'publisher', title: '发布人', width: 120 },
+            ]],
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            singleSelect: true,
+            pagination: true,
+            pageSize: 20,
+            idField: 'ModuleID',
+            toolbar: '#tb',
+            rownumbers: true,
+            fit: true,
+            queryParams: {
+                itemID: ""
+            }
+        });
+    }
+    function GridReload(loaded) {
+        $("#tt").datagrid(loaded, {
+            itemID: $("#txtItemQ").combobox('getValue')
+        });
+    }
+    var isAdd = false;
+    function EditNeed(needID) {
+        if (needID == 0)
+            isAdd = true;
+        else {
+            var row = $("#tt").datagrid("getSelected");
+            if (row == null) {
+                AlertMsg("请选择一行数据后再操作");
+                return;
+            }
+            isAdd = false;
+        }
+        needID = isAdd ? "" : row.NeedID;
+        ShowDialog("需求管理", 500, 400, "/Need/NeedEdit?needID=" + needID, saveNeed);
+    }
+    function DelNeed() {
+        var row = $("#tt").datagrid("getSelected");
+        if (row == null) {
+            AlertMsg("请选择一行数据后再操作");
+            return;
+        }
+        $.messager.confirm('提示', "确定要删除吗？", function (r) {
+            if (r) {
+                $.post("/Need/DelNeed", { needID: row.NeedID }, function (result) {
+                    if (result.isOk) {
+                        AlertMsg("删除成功");
+                        GridReload("reload");
+                    }
+                    else {
+                        AlertMsg('删除失败');
+                    }
+                });
+            }
+        });
+    }
+    function saveNeed() {
+        var check = $("#formNeedEidt").form('enableValidation').form('validate');
+        if (check) {
+            var postData = $("#formNeedEidt").serialize();
+            $.post("/Need/SaveNeed", postData, function (result) {
+                if (result.isOk) {
+                    $('#PopWindow').dialog('close');
+                    $("#PopWindow").remove();
+                    GridReload(isAdd ? "load" : "reload");
+                }
+                else {
+                    AlertMsg('保存失败');
+                }
+
+            });
+        }
+    }
+</script>
+

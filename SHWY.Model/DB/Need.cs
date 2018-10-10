@@ -23,7 +23,7 @@ namespace SHWY.Model.DB
         /// <summary>
         /// 项目ID
         /// </summary>
-        public int ItemID { get; set; }
+        public string ItemID { get; set; }
         /// <summary>
         /// 产品ID
         /// </summary>

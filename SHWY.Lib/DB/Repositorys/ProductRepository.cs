@@ -94,16 +94,16 @@ namespace SHWY.Lib.DB.Repositorys
         {
             int form = (pageIndex - 1) * pageSize;
             var total = await (from j in context.ProdDBDeploys
-                               where (string.IsNullOrEmpty(itemid) ? 1 == 1 : j.itemId.ToString() == itemid)
+                               where (string.IsNullOrEmpty(itemid) ? 1 == 1 : j.itemId == itemid)
                                && (string.IsNullOrEmpty(prodid) ? 1 == 1 : j.prodId == prodid)
                                && (dbid == 0 ? 1 == 1 : j.dbId == dbid)
                                select j).CountAsync();
             var list = await (from j in context.ProdDBDeploys
-                              join item in context.Items on j.itemId.ToString() equals item.ItemID
+                              join item in context.Items on j.itemId equals item.ItemID
                               join prod in context.Products on j.prodId equals prod.ProID
                               join db in context.DatabaseDeploys on j.dbId equals db.id
                               join codeType in context.Codes.Where(p => p.TypeId == (int)ECodesTypeId.databaseType) on db.type.ToString() equals codeType.Code
-                              where (string.IsNullOrEmpty(itemid) ? 1 == 1 : j.itemId.ToString() == itemid)
+                              where (string.IsNullOrEmpty(itemid) ? 1 == 1 : j.itemId == itemid)
                                 && (string.IsNullOrEmpty(prodid) ? 1 == 1 : j.prodId == prodid)
                                 && (dbid == 0 ? 1 == 1 : j.dbId == dbid)
                               orderby j.id descending
@@ -145,16 +145,16 @@ namespace SHWY.Lib.DB.Repositorys
             var total = await (from j in context.ProdServerDeploys
                                where (string.IsNullOrEmpty(prodID) ? 1 == 1 : j.prodid == prodID)
                                && (serverID == 0 ? 1 == 1 : j.serverid == serverID)
-                               && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid.ToString() == itemID)
+                               && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid == itemID)
                                select j).CountAsync();
             var list = await (from j in context.ProdServerDeploys
-                              join item in context.Items on j.itemid.ToString() equals item.ItemID
+                              join item in context.Items on j.itemid equals item.ItemID
                               join prod in context.Products on j.prodid equals prod.ProID
                               join server in context.Servers on j.serverid equals server.sid
                               join codes in context.Codes.Where(p => p.TypeId == 6) on j.porttype.ToString() equals codes.Code
                               where (string.IsNullOrEmpty(prodID) ? 1 == 1 : j.prodid == prodID)
                                    && (serverID == 0 ? 1 == 1 : j.serverid == serverID)
-                                   && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid.ToString() == itemID)
+                                   && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid == itemID)
                               orderby j.id descending
                               select new
                               {
@@ -215,6 +215,11 @@ namespace SHWY.Lib.DB.Repositorys
         {
             var total = await context.ProdModules.Where(p => p.ProID == prodID).CountAsync();
             return total;
+        }
+        public async Task<List<ProdModule>> GetProdModuleListAsync(string prodID)
+        {
+            var list = await context.ProdModules.Where(p => p.ProID == prodID).ToListAsync();
+            return list;
         }
 
         #endregion

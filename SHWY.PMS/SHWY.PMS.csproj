@@ -176,6 +176,7 @@
     <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\MenuOperController.cs" />
+    <Compile Include="Controllers\NeedController.cs" />
     <Compile Include="Controllers\Parameters\PersonTaskPara.cs" />
     <Compile Include="Controllers\PersonTaskController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -1029,6 +1030,8 @@
     <Content Include="Views\Server\InPortOutPortEdit.cshtml" />
     <Content Include="Views\Product\ProdModuleIndex.cshtml" />
     <Content Include="Views\Product\ProdModuleEdit.cshtml" />
+    <Content Include="Views\Need\NeedIndex.cshtml" />
+    <Content Include="Views\Need\NeedEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

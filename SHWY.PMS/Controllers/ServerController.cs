@@ -54,12 +54,12 @@ namespace SHWY.PMS.Controllers
             var tuple = await serverRepo.GetIpAddressListAsync(page, rows, ipAddress, belong, itemID);
             return Json(new { total = tuple.Item1, rows = tuple.Item2 });
         }
-        public async Task<JsonResult> GetIpAddressListByItemID(int itemID, int belong)
+        public async Task<JsonResult> GetIpAddressListByItemID(string itemID, int belong)
         {
             var list = await serverRepo.GetIpAddressListByItemIDAsync(itemID, belong);
             return Json(list);
         }
-        public async Task<JsonResult> GetIpAddressByItemID(int itemID)
+        public async Task<JsonResult> GetIpAddressByItemID(string itemID)
         {
             var list = await serverRepo.GetIpAddressListByItemIDAsync(itemID);
             return Json(list);
@@ -98,7 +98,7 @@ namespace SHWY.PMS.Controllers
             var tuple = await serverRepo.GetDatabaseDeployListAsync(page, rows, name, itemID);
             return Json(new { total = tuple.Item1, rows = tuple.Item2 });
         }
-        public async Task<JsonResult> GetDatabaseListByItemID(int itemID)
+        public async Task<JsonResult> GetDatabaseListByItemID(string itemID)
         {
             var list = await serverRepo.GetDatabaseDeployListAsync(itemID);
             return Json(list);
@@ -205,21 +205,6 @@ namespace SHWY.PMS.Controllers
             var items2 = new SelectList(items, "ItemID", "NAME");
             ItemList.AddRange(items2);
             ViewBag.ItemList = ItemList;
-            //服务器
-            //string itemID = serverIP == null ? items[0].ItemID : serverIP.itemid.ToString();
-            //var ServerList = new List<SelectListItem>();
-            //var servers = await serverRepo.GetServerListByItemIDAsync(itemID);
-            //var servers2 = new SelectList(servers, "sid", "name");
-            //ServerList.AddRange(servers2);
-            //ViewBag.ServerList = ServerList;
-            //IP
-            //var IpList = new List<SelectListItem>();
-            //var iplist = await serverRepo.GetIpAddressListByItemIDAsync(Convert.ToInt32(itemID));
-            //var iplist2 = new SelectList(iplist, "ipid", "ipv4address");
-            //IpList.AddRange(iplist2);
-            //ViewBag.IpList = IpList;
-
-            // ViewBag.isRealOnly = (serverIP != null).ToString().ToLower();
             return View(serverIP);
         }
         public async Task<JsonResult> DelServerIp(int sid, int ipid)

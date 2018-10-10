@@ -109,13 +109,13 @@ namespace SHWY.Lib.DB.Repositorys
             var total = await (from j in context.IpAddress
                                where (j.ipv4address.Contains(ipAddress))
                                && (belong < 0 ? 1 == 1 : j.belong == belong)
-                               && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid.ToString() == itemID)
+                               && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid == itemID)
                                select j).CountAsync();
             var list = await (from j in context.IpAddress
-                              join item in context.Items on j.itemid.ToString() equals item.ItemID
+                              join item in context.Items on j.itemid equals item.ItemID
                               where (j.ipv4address.Contains(ipAddress))
                              && (belong < 0 ? 1 == 1 : j.belong == belong)
-                             && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid.ToString() == itemID)
+                             && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid == itemID)
                               orderby j.ipid descending
                               select new
                               {
@@ -133,12 +133,12 @@ namespace SHWY.Lib.DB.Repositorys
             var list = await context.IpAddress.OrderByDescending(p => p.ipid).ToListAsync();
             return list;
         }
-        public async Task<List<IpAddress>> GetIpAddressListByItemIDAsync(int itemID)
+        public async Task<List<IpAddress>> GetIpAddressListByItemIDAsync(string itemID)
         {
             var list = await context.IpAddress.Where(p => p.itemid == itemID).OrderByDescending(p => p.ipid).ToListAsync();
             return list;
         }
-        public async Task<List<IpAddress>> GetIpAddressListByItemIDAsync(int itemID, int belong)
+        public async Task<List<IpAddress>> GetIpAddressListByItemIDAsync(string itemID, int belong)
         {
             var list = await context.IpAddress.Where(p => p.itemid == itemID && p.belong == belong).OrderByDescending(p => p.ipid).ToListAsync();
             return list;
@@ -185,14 +185,14 @@ namespace SHWY.Lib.DB.Repositorys
             var total = await (from j in context.ServerIps
                                join server in context.Servers on j.sid equals server.sid
                                where (server.name.Contains(serverName))
-                               && (string.IsNullOrEmpty(ItemID) ? 1 == 1 : j.itemid.ToString() == ItemID)
+                               && (string.IsNullOrEmpty(ItemID) ? 1 == 1 : j.itemid == ItemID)
                                select j).CountAsync();
             var list = await (from j in context.ServerIps
-                              join item in context.Items on j.itemid.ToString() equals item.ItemID
+                              join item in context.Items on j.itemid equals item.ItemID
                               join server in context.Servers on j.sid equals server.sid
                               join ipAddress in context.IpAddress on j.ipid equals ipAddress.ipid
                               where (server.name.Contains(serverName))
-                             && (string.IsNullOrEmpty(ItemID) ? 1 == 1 : j.itemid.ToString() == ItemID)
+                             && (string.IsNullOrEmpty(ItemID) ? 1 == 1 : j.itemid == ItemID)
                               orderby j.ipid descending
                               select new
                               {
@@ -256,14 +256,14 @@ namespace SHWY.Lib.DB.Repositorys
         {
             int form = (pageIndex - 1) * pageSize;
             int total = await (from j in context.InPortOutPorts
-                               where string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid.ToString() == itemID
+                               where string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid == itemID
                                select j).CountAsync();
             var obj = await (from j in context.InPortOutPorts
-                             join items in context.Items on j.itemid.ToString() equals items.ItemID
+                             join items in context.Items on j.itemid equals items.ItemID
                              join InIp in context.IpAddress on j.inIpId equals InIp.ipid
                              join OutIp in context.IpAddress on j.outIpId equals OutIp.ipid
                              join portType in context.Codes.Where(p => p.TypeId == (int)ECodesTypeId.ProtType) on j.porttype.ToString() equals portType.Code
-                             where string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid.ToString() == itemID
+                             where string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid == itemID
                              orderby j.ID descending
                              select new
                              {
@@ -324,15 +324,15 @@ namespace SHWY.Lib.DB.Repositorys
             int form = (pageIndex - 1) * pageSize;
             int total = await (from j in context.DatabaseDeploys
                                where (j.name.Contains(name))
-                               && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid.ToString() == itemID)
+                               && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid == itemID)
                                select j).CountAsync();
             var obj = await (from j in context.DatabaseDeploys
-                             join item in context.Items on j.itemid.ToString() equals item.ItemID
+                             join item in context.Items on j.itemid equals item.ItemID
                              join server in context.Servers on j.serverid equals server.sid
                              join schema in context.Codes.Where(p => p.TypeId == (int)ECodesTypeId.databaseSchema) on j.schemaid.ToString() equals schema.Code
                              join dbType in context.Codes.Where(p => p.TypeId == (int)ECodesTypeId.databaseType) on j.type.ToString() equals dbType.Code
                              where (j.name.Contains(name))
-                               && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid.ToString() == itemID)
+                               && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid == itemID)
                              orderby j.id descending
                              select new
                              {
@@ -352,7 +352,7 @@ namespace SHWY.Lib.DB.Repositorys
                              }).Skip(form).Take(pageSize).ToListAsync();
             return Tuple.Create<int, object>(total, obj);
         }
-        public async Task<List<DatabaseDeploy>> GetDatabaseDeployListAsync(int itemID)
+        public async Task<List<DatabaseDeploy>> GetDatabaseDeployListAsync(string itemID)
         {
             var list = await context.DatabaseDeploys.Where(p => p.itemid == itemID).ToListAsync();
             return list;

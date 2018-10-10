@@ -66,6 +66,7 @@
     <Compile Include="DB\Repositorys\BaseRepository.cs" />
     <Compile Include="DB\Repositorys\CodeRepository.cs" />
     <Compile Include="DB\Repositorys\ItemsRepository.cs" />
+    <Compile Include="DB\Repositorys\NeedRepository.cs" />
     <Compile Include="DB\Repositorys\PersonTaskProcessRepository.cs" />
     <Compile Include="DB\Repositorys\PersonTaskRepository.cs" />
     <Compile Include="DB\Repositorys\ProductRepository.cs" />
@@ -93,6 +94,10 @@
     <ProjectReference Include="..\SHWY.Model\SHWY.Model.csproj">
       <Project>{9dc043ee-7066-45ca-9e4d-5a570d0372a2}</Project>
       <Name>SHWY.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SHWY.Utility\SHWY.Utility.csproj">
+      <Project>{c6e0cc01-e41c-4989-8160-6e50d36f66ee}</Project>
+      <Name>SHWY.Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

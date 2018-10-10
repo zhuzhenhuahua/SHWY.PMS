@@ -19,7 +19,7 @@ namespace SHWY.Model.DB
         [DisplayName("IP4地址")]
         public string ipv4address { get; set; }
         [DisplayName("项目")]
-        public int itemid { get; set; }
+        public string itemid { get; set; }
         [DisplayName("IP6地址")]
         public string ipv6address { get; set; }
         /// <summary>

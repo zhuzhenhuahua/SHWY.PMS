@@ -8,7 +8,7 @@
     <table>
         <tr>
             <td>@Html.LabelFor(p => p.ItemID)</td>
-            <td>@Html.TextBoxFor(p => p.ItemID, new { @class = "easyui-textbox", data_options = "required:true,readonly:" + ViewData["isRealOnly"] + "" })</td>
+            <td>@Html.TextBoxFor(p => p.ItemID, new { @class = "easyui-numberbox", data_options = "required:true,readonly:" + ViewData["isRealOnly"] + "" })</td>
         </tr>
         <tr>
             <td>@Html.LabelFor(p => p.NAME)</td>
