@@ -1,0 +1,49 @@
+﻿@model SHWY.Model.DB.Plan
+    @{
+        ViewBag.Title = "PlanEdit";
+        Layout = "~/Views/Shared/_BaseContent.cshtml";
+    }
+
+    <script type="text/javascript">
+        $(function () {
+            $('#startTime').datebox({
+                required: true,
+                value: '@Model.startTime.ToString("yyyy-MM-dd")',
+            });
+            $('#endTime').datebox({
+                required: true,
+                value: '@Model.endTime.ToString("yyyy-MM-dd")',
+            });
+        });
+    </script>
+    <form id="formPlanEidt">
+        <table>
+            <tr>
+                <td>计划标题：</td>
+                <td>
+                    @Html.TextBoxFor(p =>p.title, new { @class = "easyui-textbox", data_options = "required:true", style = "width:170px;" })
+                </td>
+            </tr>
+            <tr>
+                <td>计划类型：</td>
+                <td>
+                    @Html.DropDownListFor(p => p.planType, ViewBag.PlanTypeList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false,required:true", style = "width:170px;" })
+                </td>
+            </tr>
+            <tr>
+                <td>计划描述：</td>
+                <td>@Html.TextBoxFor(p => p.text, new { @class = "easyui-textbox", data_options = "multiline:true", style = "width:350px;height:50px;" })</td>
+            </tr>
+            <tr>
+                <td>预计开始时间：</td>
+                <td>@Html.TextBoxFor(p => p.startTime)</td>
+            </tr>
+            <tr>
+                <td>预计结束时间：</td>
+                <td>@Html.TextBoxFor(p => p.endTime)</td>
+            </tr>
+
+        </table>
+        @Html.HiddenFor(p => p.PlanID)
+    </form>
+

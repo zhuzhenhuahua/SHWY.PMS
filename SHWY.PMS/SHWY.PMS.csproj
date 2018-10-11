@@ -179,6 +179,7 @@
     <Compile Include="Controllers\NeedController.cs" />
     <Compile Include="Controllers\Parameters\PersonTaskPara.cs" />
     <Compile Include="Controllers\PersonTaskController.cs" />
+    <Compile Include="Controllers\PlanController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\ServerController.cs" />
@@ -1032,6 +1033,11 @@
     <Content Include="Views\Product\ProdModuleEdit.cshtml" />
     <Content Include="Views\Need\NeedIndex.cshtml" />
     <Content Include="Views\Need\NeedEdit.cshtml" />
+    <Content Include="Views\Plan\PlanIndex.cshtml" />
+    <Content Include="Views\Plan\PlanEdit.cshtml" />
+    <Content Include="Views\Plan\PlanPointIndex.cshtml" />
+    <Content Include="Views\Shared\_BaseLayOutContent.cshtml" />
+    <Content Include="Views\Plan\PlanPointEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

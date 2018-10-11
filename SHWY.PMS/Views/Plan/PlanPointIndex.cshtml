@@ -1,0 +1,176 @@
+﻿@{
+    ViewBag.Title = "PlanPointIndex";
+    Layout = "~/Views/Shared/_BaseLayOutContent.cshtml";
+}
+<div data-options="region:'west',title:'计划目录',split:true" style="width:300px;">
+    <table id="planGrid"></table>
+</div>
+<div data-options="region:'center',title:'计划制定'">
+    <div id="tb">
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditPlanPoint(0)">新增</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditPlanPoint(1)">修改</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelPlanPoint()">删除</a>
+        <span class="l-btn-text">项目：</span><input class="easyui-textbox" id="txtItemQ" style="width:180px;" />
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
+    </div>
+    <table id="tt"></table>
+</div>
+<script type="text/javascript">
+    $(function () {
+        InitCombobox();
+        InitPlanGrid();
+        InitGrid();
+    });
+    function InitCombobox() {
+        $("#txtItemQ").combobox({
+            url: '/Items/GetAllItems?isAddAll=1',
+            valueField: 'ItemID',
+            textField: 'NAME',
+            onLoadSuccess: function () {
+                $("#txtItemQ").combobox("select", "");
+            }
+        });
+    }
+    function InitPlanGrid() {
+        $("#planGrid").datagrid({
+            url: '/Plan/GetPlanListAsync',
+            columns: [[
+                { field: 'PlanID', title: 'PlanID', hidden: true },
+                { field: 'title', title: '计划标题', width: 180 },
+                { field: 'planTypeName', title: '计划类型', width: 80 },
+            ]],
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            singleSelect: true,
+            pagination: true,
+            pageSize: 20,
+            idField: 'PlanID',
+            rownumbers: true,
+            fit: true,
+            queryParams: {
+                title: ''
+            },
+            onClickRow: function (rowIndex, rowData) {
+                if (rowIndex >= 0) {
+                    GridReload('load');
+                }
+            }
+        });
+    }
+    function InitGrid() {
+        $("#tt").datagrid({
+            url: '/Plan/GetPlanPointListAsync',
+            columns: [[
+                { field: 'PlanID', title: 'PlanID', hidden: true },
+                { field: 'num', title: 'num', hidden: true },
+                { field: 'itemName', title: '项目名称' },
+                { field: 'prodName', title: '产品名称' },
+                { field: 'moduleName', title: '模块名称' },
+                { field: 'taskTypeName', title: '任务类型' },
+                {
+                    field: 'StartTime', title: '开始时间', width: 80, formatter: function (value, row, index) {
+                        return data_string(value, 'yyyy-MM-dd');
+                    }
+                },
+                {
+                    field: 'EndTime', title: '结束时间', width: 80, formatter: function (value, row, index) {
+                        return data_string(value, 'yyyy-MM-dd');
+                    }
+                },
+                { field: 'Text', title: '计划内容' },
+                { field: 'needName', title: '需求' },
+                { field: 'Handler', title: '处理人' },
+                { field: 'Publisher', title: '发布人' },
+            ]],
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            singleSelect: true,
+            pagination: true,
+            pageSize: 20,
+            toolbar: '#tb',
+            rownumbers: true,
+            fit: true,
+            queryParams: {
+                planID: "",
+                itemID: ""
+            }
+        });
+    }
+    function GridReload(loaded) {
+        var row = $("#planGrid").datagrid("getSelected");
+        if (row == null) {
+            AlertMsg("请先选择计划目录");
+        } else {
+            $("#tt").datagrid(loaded, {
+                planID: row.PlanID,
+                itemID: $("#txtItemQ").combobox('getValue')
+            });
+        }
+    }
+    var isAdd = false;
+    function EditPlanPoint(planID) {
+        var planRow = $("#planGrid").datagrid("getSelected");
+        if (planRow == null) {
+            AlertMsg("请先选择计划目录");
+            return;
+        }
+        var num = 0;
+        if (planID == 0)
+            isAdd = true;
+        else {
+            var row = $("#tt").datagrid("getSelected");
+            if (row == null) {
+                AlertMsg("请选择一行数据后再操作");
+                return;
+            }
+            isAdd = false;
+            num = row.num;
+        }
+        planID = planRow.PlanID;
+        ShowDialog(planRow.title, 600, 400, "/Plan/PlanPointEdit?planID=" + planID + "&num=" + num, savePlanPoint);
+    }
+    function DelPlanPoint() {
+        var planRow = $("#planGrid").datagrid("getSelected");
+        if (planRow == null) {
+            AlertMsg("请先选择计划目录");
+            return;
+        }
+        var row = $("#tt").datagrid("getSelected");
+        if (row == null) {
+            AlertMsg("请选择一行数据后再操作");
+            return;
+        }
+        $.messager.confirm('提示', "确定要删除吗？", function (r) {
+            if (r) {
+                $.post("/Plan/DelPlanPoint", { planID: row.PlanID, num: row.num }, function (result) {
+                    if (result.isOk) {
+                        AlertMsg("删除成功");
+                        GridReload("reload");
+                    }
+                    else {
+                        AlertMsg('删除失败');
+                    }
+                });
+            }
+        });
+    }
+    function savePlanPoint() {
+        var check = $("#formPlanPointEidt").form('enableValidation').form('validate');
+        if (check) {
+            var postData = $("#formPlanPointEidt").serialize();
+            $.post("/Plan/SavePlanPoint", postData, function (result) {
+                if (result.isOk) {
+                    $('#PopWindow').dialog('close');
+                    $("#PopWindow").remove();
+                    GridReload(isAdd ? "load" : "reload");
+                }
+                else {
+                    AlertMsg('保存失败');
+                }
+
+            });
+        }
+    }
+</script>

@@ -22,5 +22,6 @@ namespace SHWY.Model.DB
         public DateTime endTime { get; set; }
         public string text { get; set; }
         public int planType { get; set; }
+        public DateTime addTime { get; set; }
     }
 }

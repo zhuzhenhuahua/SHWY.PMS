@@ -30,6 +30,14 @@ namespace SHWY.PMS.Controllers
             }
 
         }
+        public async Task<JsonResult> GetNeedByItemID(string itemID)
+        {
+            using (NeedRepository needRepo = new NeedRepository())
+            {
+                var list = await needRepo.GetNeedListByItemIDAsync(itemID);
+                return Json(list);
+            }
+        }
         public async Task<ActionResult> NeedEdit(string needID)
         {
             using (NeedRepository needRepo = new NeedRepository())

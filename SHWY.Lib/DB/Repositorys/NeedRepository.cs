@@ -44,6 +44,12 @@ namespace SHWY.Lib.DB.Repositorys
                              }).Skip(form).Take(pageSize).ToListAsync();
             return Tuple.Create<int, object>(total, obj);
         }
+        public async Task<List<Need>> GetNeedListByItemIDAsync(string itemID)
+        {
+            var nTime = DateTime.Now.AddMonths(-1);
+            var list = await context.Needs.Where(p => p.ItemID == itemID && p.addTime > nTime).ToListAsync();
+            return list;
+        }
         public async Task<Need> GetNeedAsync(string needID)
         {
             var model = await context.Needs.Where(p => p.NeedID == needID).FirstOrDefaultAsync();
