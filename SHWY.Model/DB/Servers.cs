@@ -18,8 +18,8 @@ namespace SHWY.Model.DB
         public int sid { get; set; }
         [DisplayName("服务器名称")]
         public string name { get; set; }
-        [DisplayName("项目")]
-        public string itemid { get; set; }
+        [DisplayName("甲方公司")]
+        public string partyId { get; set; }
         [DisplayName("备注")]
         public string remark { get; set; }
         [DisplayName("登录名")]

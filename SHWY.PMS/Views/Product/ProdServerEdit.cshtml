@@ -5,9 +5,32 @@
 }
 <script type="text/javascript">
     function ItemOnSelect(record) {
-        var itemID = record.value;
+        var partyID = record.value;
+        $("#itemid").combobox({
+            url: '/Items/GetItemListByPartyID?partyID=' + partyID,
+            valueField: 'ItemID',
+            textField: 'NAME',
+            editable: false,
+            required: true,
+            onBeforeLoad: function (para) {
+                $("#itemid").combobox("clear");
+            },
+            onLoadSuccess:function(){
+                if('@Model.itemid'!=""){
+                    var data=$("#itemid").combobox("getData");
+                    if(data.length>0){
+                        $(data).each(function(index,obj){
+                            if(obj.ItemID=='@Model.itemid')
+                                $("#itemid").combobox("select",'@Model.itemid');
+                        });
+
+                    }
+                }
+            }
+        });
+
         $("#serverid").combobox({
-            url: '/Server/GetServersByItemID?itemID=' + itemID,
+            url: '/Server/GetServersByPartyID?partyID=' + partyID,
             valueField: 'sid',
             textField: 'name',
             editable: false,
@@ -33,8 +56,12 @@
 <form id="formProdServerEidt">
     <table>
         <tr>
+            <td style="padding-left:20px;">甲方公司:</td>
+            <td>@Html.DropDownListFor(p => p.partyID, ViewBag.PartyList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false,onSelect:function(rec){ItemOnSelect(rec)}", style = "width:170px;" })</td>
+        </tr>
+        <tr>
             <td style="padding-left:20px;">项目:</td>
-            <td>@Html.DropDownListFor(p => p.itemid, ViewBag.ItemList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false,onSelect:function(rec){ItemOnSelect(rec)}", style = "width:170px;" })</td>
+            <td>@Html.TextBoxFor(p => p.itemid)</td>
         </tr>
         <tr>
             <td style="padding-left:20px;">产品:</td>

@@ -3,92 +3,83 @@
     ViewBag.Title = "项目管理";
     Layout = "~/Views/Shared/_BaseContent.cshtml";
 }
-
+<div id="tb">
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditItem(0)">新增</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditItem(1)">修改</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelItem()">删除</a>
+    <span class="l-btn-text">甲方公司：</span><input class="easyui-textbox" id="txtPartyQ" style="width:200px;" />
+    <span class="l-btn-text">项目名称：</span><input class="easyui-textbox" id="txtItemNameQ" style="width:100px;" />
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
+</div>
 <table id="tt"></table>
 <script>
     $(function () {
+        InitCombobox();
         InitGrid();
     });
+    function InitCombobox() {
+        $("#txtPartyQ").combobox({
+            url: '/Party/GetAllPartys?isAddAll=1',
+            valueField: 'PartyID',
+            textField: 'name'
+        });
+        $("#txtPartyQ").combobox("select", "");
+    }
     function InitGrid() {
         $("#tt").datagrid({
             url: '/Items/GetList',
             columns: [[
-                { field: 'ItemID', title: '项目ID', width: 50 },
-                { field: 'NAME', title: '项目名称', width: 180 },
-                { field: 'ALIAS', title: '别名', width: 200 }
+                { field: 'partyName', title: '所属甲方公司' },
+                { field: 'ItemID', title: '项目ID' },
+                { field: 'NAME', title: '项目名称' },
+                { field: 'ALIAS', title: '别名' }
             ]],
             autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
             striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
             nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
             singleSelect: true,
-            toolbar: [{
-                iconCls: 'icon-add',
-                id: 'btnAdd',
-                text: '新增',
-                handler: function () {
-                    EditItem(0);
-                }
-            }, {
-                iconCls: 'icon-edit',
-                id: 'btnEdit',
-                text: '修改',
-                handler: function () {
-                    var row = $("#tt").datagrid("getSelected");
-                    if (row == null) {
-                        AlertMsg("请选择一行数据后再操作");
-                        return;
-                    }
-                    EditItem(row.ItemID);
-                }
-            }, {
-                iconCls: 'icon-clear',
-                id: 'btnDelete',
-                text: '删除',
-                handler: function () {
-                    var row = $("#tt").datagrid("getSelected");
-                    if (row == null) {
-                        AlertMsg("请选择一行数据后再操作");
-                        return;
-                    }
-                    DelUser(row.ItemID);
-                }
-            }, {
-                text: '项目名称：<input type="text" id="txtItemNameQ" style="width:120px;" />'
-            }, {
-                iconCls: 'icon-search',
-                id: 'btnSearch',
-                text: '查询',
-                handler: function () {
-                    GridReload("load");
-                }
-            }],
+            toolbar: '#tb',
             pagination: true,
             pageSize: 20,
             idField: 'ItemID',
             rownumbers: true,
             fit: true,
             queryParams: {
-                itemName: ""
+                itemName: "",
+                partyID: ""
             }
         });
     }
     function GridReload(loaded) {
         $("#tt").datagrid(loaded, {
-            itemName: $("#txtItemNameQ").val()
+            itemName: $("#txtItemNameQ").val(),
+            partyID: $("#txtPartyQ").combobox('getValue')
         });
     }
     var isAdd = false;
     function EditItem(itemId) {
         if (itemId == 0)
             isAdd = true;
-        else
-            isAdd = false;
+        else {
+            var row = $("#tt").datagrid("getSelected");
+            if (row == null) {
+                AlertMsg("请选择一行数据后再操作");
+                return;
+            }
+            itemId = row.ItemID;
+        }
+        isAdd = false;
         ShowDialog("项目管理", 500, 400, "/Items/EditItem?strItemId=" + itemId, saveItem);
     }
-    function DelUser(itemId) {
+    function DelItem() {
+        var row = $("#tt").datagrid("getSelected");
+        if (row == null) {
+            AlertMsg("请选择一行数据后再操作");
+            return;
+        }
         $.messager.confirm('提示', "确定要删除吗？", function (r) {
             if (r) {
-                $.post("/Items/DelItem", { itemId: itemId }, function (result) {
+                $.post("/Items/DelItem", { itemId: row.ItemID }, function (result) {
                     if (result.isOk) {
                         AlertMsg("删除成功");
                         GridReload("reload");
@@ -132,4 +123,3 @@
         });
     }
 </script>
-

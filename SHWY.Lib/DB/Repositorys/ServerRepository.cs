@@ -30,23 +30,23 @@ namespace SHWY.Lib.DB.Repositorys
         }
 
         #region Server
-        public async Task<Tuple<int, object>> GetServerListAsync(int pageIndex, int pageSize, string name, string itemID)
+        public async Task<Tuple<int, object>> GetServerListAsync(int pageIndex, int pageSize, string name, string partyID)
         {
             int form = (pageIndex - 1) * pageSize;
             int total = await (from j in context.Servers
                                where (string.IsNullOrEmpty(name) ? 1 == 1 : j.name.Contains(name))
-                               && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid == itemID)
+                               && (string.IsNullOrEmpty(partyID) ? 1 == 1 : j.partyId == partyID)
                                select j
                              ).CountAsync();
             var list = await (from j in context.Servers
-                              join item in context.Items on j.itemid equals item.ItemID
+                              join pary in context.Partys on j.partyId equals pary.PartyID into tempParty
+                              from party in tempParty.DefaultIfEmpty()
                               where (string.IsNullOrEmpty(name) ? 1 == 1 : j.name.Contains(name))
-                                 && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid == itemID)
+                                 && (string.IsNullOrEmpty(partyID) ? 1 == 1 : j.partyId == partyID)
                               orderby j.sid descending
                               select new
                               {
-                                  j.itemid,
-                                  itemName = item.NAME,
+                                  partyName = party == null ? "" : party.name,
                                   j.loginName,
                                   j.name,
                                   j.password,
@@ -61,9 +61,9 @@ namespace SHWY.Lib.DB.Repositorys
             var list = await context.Servers.OrderByDescending(p => p.sid).ToListAsync();
             return list;
         }
-        public async Task<List<Servers>> GetServerListByItemIDAsync(string itemID)
+        public async Task<List<Servers>> GetServerListByPartyIDAsync(string partyID)
         {
-            var list = await context.Servers.Where(p => p.itemid == itemID).OrderByDescending(p => p.sid).ToListAsync();
+            var list = await context.Servers.Where(p => p.partyId == partyID).OrderByDescending(p => p.sid).ToListAsync();
             return list;
         }
         public async Task<Servers> GetServerAsync(int sid)
@@ -92,7 +92,7 @@ namespace SHWY.Lib.DB.Repositorys
                 serverNew = new Servers();
             }
             serverNew.name = serverPara.name;
-            serverNew.itemid = serverPara.itemid;
+            serverNew.partyId = serverPara.partyId;
             serverNew.remark = serverPara.remark;
             serverNew.loginName = serverPara.loginName;
             serverNew.password = serverPara.password;
@@ -103,26 +103,26 @@ namespace SHWY.Lib.DB.Repositorys
         #endregion
 
         #region IpAddress
-        public async Task<Tuple<int, object>> GetIpAddressListAsync(int pageIndex, int pageSize, string ipAddress, int belong, string itemID)
+        public async Task<Tuple<int, object>> GetIpAddressListAsync(int pageIndex, int pageSize, string ipAddress, int belong, string partyID)
         {
             int form = (pageIndex - 1) * pageSize;
             var total = await (from j in context.IpAddress
                                where (j.ipv4address.Contains(ipAddress))
                                && (belong < 0 ? 1 == 1 : j.belong == belong)
-                               && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid == itemID)
+                               && (string.IsNullOrEmpty(partyID) ? 1 == 1 : j.partyID == partyID)
                                select j).CountAsync();
             var list = await (from j in context.IpAddress
-                              join item in context.Items on j.itemid equals item.ItemID
+                              join pary in context.Partys on j.partyID equals pary.PartyID into tempParty
+                              from party in tempParty.DefaultIfEmpty()
                               where (j.ipv4address.Contains(ipAddress))
                              && (belong < 0 ? 1 == 1 : j.belong == belong)
-                             && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid == itemID)
+                             && (string.IsNullOrEmpty(partyID) ? 1 == 1 : j.partyID == partyID)
                               orderby j.ipid descending
                               select new
                               {
                                   j.ipid,
                                   j.ipv4address,
-                                  j.itemid,
-                                  itemName = item.NAME,
+                                  partyName = party == null ? "" : party.name,
                                   j.ipv6address,
                                   j.belong
                               }).Skip(form).Take(pageSize).ToListAsync();
@@ -133,14 +133,14 @@ namespace SHWY.Lib.DB.Repositorys
             var list = await context.IpAddress.OrderByDescending(p => p.ipid).ToListAsync();
             return list;
         }
-        public async Task<List<IpAddress>> GetIpAddressListByItemIDAsync(string itemID)
+        public async Task<List<IpAddress>> GetIpAddressListByPartyIDAsync(string partyID)
         {
-            var list = await context.IpAddress.Where(p => p.itemid == itemID).OrderByDescending(p => p.ipid).ToListAsync();
+            var list = await context.IpAddress.Where(p => p.partyID == partyID).OrderByDescending(p => p.ipid).ToListAsync();
             return list;
         }
-        public async Task<List<IpAddress>> GetIpAddressListByItemIDAsync(string itemID, int belong)
+        public async Task<List<IpAddress>> GetIpAddressListByPartyIDAsync(string partyID, int belong)
         {
-            var list = await context.IpAddress.Where(p => p.itemid == itemID && p.belong == belong).OrderByDescending(p => p.ipid).ToListAsync();
+            var list = await context.IpAddress.Where(p => p.partyID == partyID && p.belong == belong).OrderByDescending(p => p.ipid).ToListAsync();
             return list;
         }
         public async Task<IpAddress> GetIpAddressAsync(int ipid)
@@ -159,7 +159,7 @@ namespace SHWY.Lib.DB.Repositorys
                 ipNew = new IpAddress();
             }
             ipNew.ipv4address = ipPara.ipv4address;
-            ipNew.itemid = ipPara.itemid;
+            ipNew.partyID = ipPara.partyID;
             ipNew.ipv6address = ipPara.ipv6address;
             ipNew.belong = ipPara.belong;
             if (isAdd)
@@ -179,20 +179,21 @@ namespace SHWY.Lib.DB.Repositorys
         #endregion
 
         #region ServerIp
-        public async Task<Tuple<int, object>> GetServerIpListAsync(int pageIndex, int pageSize, string serverName, string ItemID)
+        public async Task<Tuple<int, object>> GetServerIpListAsync(int pageIndex, int pageSize, string serverName, string partyID)
         {
             int form = (pageIndex - 1) * pageSize;
             var total = await (from j in context.ServerIps
                                join server in context.Servers on j.sid equals server.sid
                                where (server.name.Contains(serverName))
-                               && (string.IsNullOrEmpty(ItemID) ? 1 == 1 : j.itemid == ItemID)
+                               && (string.IsNullOrEmpty(partyID) ? 1 == 1 : j.partyID == partyID)
                                select j).CountAsync();
             var list = await (from j in context.ServerIps
-                              join item in context.Items on j.itemid equals item.ItemID
+                              join paty in context.Partys on j.partyID equals paty.PartyID into tempParty
+                              from party in tempParty.DefaultIfEmpty()
                               join server in context.Servers on j.sid equals server.sid
                               join ipAddress in context.IpAddress on j.ipid equals ipAddress.ipid
                               where (server.name.Contains(serverName))
-                             && (string.IsNullOrEmpty(ItemID) ? 1 == 1 : j.itemid == ItemID)
+                             && (string.IsNullOrEmpty(partyID) ? 1 == 1 : j.partyID == partyID)
                               orderby j.ipid descending
                               select new
                               {
@@ -200,8 +201,7 @@ namespace SHWY.Lib.DB.Repositorys
                                   ipv4address = ipAddress.ipv4address,
                                   ipv6address = ipAddress.ipv6address,
                                   belong = ipAddress.belong,
-                                  j.itemid,
-                                  itemName = item.NAME,
+                                  partyName = party == null ? "" : party.name,
                                   sid = server.sid,
                                   sName = server.name,
                                   server.loginName,
@@ -234,7 +234,7 @@ namespace SHWY.Lib.DB.Repositorys
                 isAdd = true;
                 model = new ServerIp() { ipid = serverIPPara.ipid, sid = serverIPPara.sid };
             }
-            model.itemid = serverIPPara.itemid;
+            model.partyID = serverIPPara.partyID;
             if (isAdd)
                 context.ServerIps.Add(model);
             return await context.SaveChangesAsync() == 1;
@@ -252,23 +252,24 @@ namespace SHWY.Lib.DB.Repositorys
         #endregion
 
         #region InPortOutPort
-        public async Task<Tuple<int, object>> GetInPortOutPortListAsync(int pageIndex, int pageSize, string itemID)
+        public async Task<Tuple<int, object>> GetInPortOutPortListAsync(int pageIndex, int pageSize, string partyID)
         {
             int form = (pageIndex - 1) * pageSize;
             int total = await (from j in context.InPortOutPorts
-                               where string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid == itemID
+                               where string.IsNullOrEmpty(partyID) ? 1 == 1 : j.partyID == partyID
                                select j).CountAsync();
             var obj = await (from j in context.InPortOutPorts
-                             join items in context.Items on j.itemid equals items.ItemID
+                             join paty in context.Partys on j.partyID equals paty.PartyID into tempParty
+                             from party in tempParty.DefaultIfEmpty()
                              join InIp in context.IpAddress on j.inIpId equals InIp.ipid
                              join OutIp in context.IpAddress on j.outIpId equals OutIp.ipid
                              join portType in context.Codes.Where(p => p.TypeId == (int)ECodesTypeId.ProtType) on j.porttype.ToString() equals portType.Code
-                             where string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid == itemID
+                             where string.IsNullOrEmpty(partyID) ? 1 == 1 : j.partyID == partyID
                              orderby j.ID descending
                              select new
                              {
                                  j.ID,
-                                 itemName = items.NAME,
+                                 partyName = party.name,
                                  inIpAddress = InIp.ipv4address,
                                  j.inPort,
                                  outIpAddress = OutIp.ipv4address,
@@ -296,7 +297,7 @@ namespace SHWY.Lib.DB.Repositorys
                 isAdd = true;
                 model = new InPortOutPort();
             }
-            model.itemid = paraModel.itemid;
+            model.partyID = paraModel.partyID;
             model.inIpId = paraModel.inIpId;
             model.inPort = paraModel.inPort;
             model.outIpId = paraModel.outIpId;
@@ -319,27 +320,29 @@ namespace SHWY.Lib.DB.Repositorys
         #endregion
 
         #region DatabaseDepoly
-        public async Task<Tuple<int, object>> GetDatabaseDeployListAsync(int pageIndex, int pageSize, string name, string itemID)
+        public async Task<Tuple<int, object>> GetDatabaseDeployListAsync(int pageIndex, int pageSize, string name, string partyID)
         {
             int form = (pageIndex - 1) * pageSize;
             int total = await (from j in context.DatabaseDeploys
                                where (j.name.Contains(name))
-                               && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid == itemID)
+                               && (string.IsNullOrEmpty(partyID) ? 1 == 1 : j.partyID == partyID)
                                select j).CountAsync();
             var obj = await (from j in context.DatabaseDeploys
-                             join item in context.Items on j.itemid equals item.ItemID
-                             join server in context.Servers on j.serverid equals server.sid
+                             join pat in context.Partys on j.partyID equals pat.PartyID into tempParty
+                             from party in tempParty.DefaultIfEmpty()
+                             join ser in context.Servers on j.serverid equals ser.sid into tempServer
+                             from server in tempServer.DefaultIfEmpty()
                              join schema in context.Codes.Where(p => p.TypeId == (int)ECodesTypeId.databaseSchema) on j.schemaid.ToString() equals schema.Code
                              join dbType in context.Codes.Where(p => p.TypeId == (int)ECodesTypeId.databaseType) on j.type.ToString() equals dbType.Code
                              where (j.name.Contains(name))
-                               && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid == itemID)
+                               && (string.IsNullOrEmpty(partyID) ? 1 == 1 : j.partyID == partyID)
                              orderby j.id descending
                              select new
                              {
                                  j.id,
                                  j.name,
-                                 ItemName = item.NAME,
-                                 ServerName = server.name,
+                                 PartyName = party == null ? "" : party.name,
+                                 ServerName = server==null?"": server.name,
                                  SchemaName = schema.Text,
                                  dbType = dbType.Text,
                                  j.remark,
@@ -352,9 +355,9 @@ namespace SHWY.Lib.DB.Repositorys
                              }).Skip(form).Take(pageSize).ToListAsync();
             return Tuple.Create<int, object>(total, obj);
         }
-        public async Task<List<DatabaseDeploy>> GetDatabaseDeployListAsync(string itemID)
+        public async Task<List<DatabaseDeploy>> GetDatabaseDeployListAsync(string partyID)
         {
-            var list = await context.DatabaseDeploys.Where(p => p.itemid == itemID).ToListAsync();
+            var list = await context.DatabaseDeploys.Where(p => p.partyID == partyID).ToListAsync();
             return list;
         }
         public async Task<List<DatabaseDeploy>> GetDatabaseDeployListAsync()
@@ -377,7 +380,7 @@ namespace SHWY.Lib.DB.Repositorys
                 model = new DatabaseDeploy();
             }
             model.name = dbDeploy.name;
-            model.itemid = dbDeploy.itemid;
+            model.partyID = dbDeploy.partyID;
             model.serverid = dbDeploy.serverid;
             model.schemaid = dbDeploy.schemaid;
             model.type = dbDeploy.type;

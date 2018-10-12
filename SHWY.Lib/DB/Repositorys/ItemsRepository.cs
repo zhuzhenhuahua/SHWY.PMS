@@ -29,22 +29,62 @@ namespace SHWY.Lib.DB.Repositorys
             }
             return _itemsRepository;
         }
-        public async Task<Tuple<int, List<Items>>> GetListAsync(int pageIndex, int pageSize, string itemName)
+        public async Task<Tuple<int, object>> GetListAsync(int pageIndex, int pageSize, string itemName, string partyID)
         {
             int from = (pageIndex - 1) * pageSize;
             int total = await (from j in context.Items
-                               where itemName == "" ? 1 == 1 : j.NAME.Contains(itemName)
+                               where (j.NAME.Contains(itemName))
+                               && (string.IsNullOrEmpty(partyID) ? 1 == 1 : j.partyID == partyID)
                                select j).CountAsync();
             var list = await (from j in context.Items
-                              where itemName == "" ? 1 == 1 : j.NAME.Contains(itemName)
+                              join part in context.Partys on j.partyID equals part.PartyID into tempParty
+                              from party in tempParty.DefaultIfEmpty()
+                              where (j.NAME.Contains(itemName))
+                                && (string.IsNullOrEmpty(partyID) ? 1 == 1 : j.partyID == partyID)
                               orderby j.ItemID descending
-                              select j).Skip(from).Take(pageSize).ToListAsync();
-            return Tuple.Create(total, list);
+                              select new
+                              {
+                                  j.ItemID,
+                                  j.NAME,
+                                  j.ALIAS,
+                                  j.partyID,
+                                  partyName = party == null ? "" : party.name
+                              }).Skip(from).Take(pageSize).ToListAsync();
+            return Tuple.Create<int, object>(total, list);
         }
+
+        public async Task<List<Items>> GetItemTreeList(string itemName, string partyID)
+        {
+            var partyList = await context.Partys.ToListAsync();
+            List<Items> itemList = new List<Items>();
+            foreach (var party in partyList)
+            {
+                itemList.Add(new Items() { ItemID = null, NAME = party.name, partyID = party.PartyID });
+            }
+            if (itemList.Count > 0)
+            {
+                foreach (var item in itemList)
+                {
+                    item.children = await (from j in context.Items
+                                           where j.partyID == item.partyID
+                                           && (j.NAME.Contains(itemName))
+                                           && (string.IsNullOrEmpty(partyID) ? 1 == 1 : j.partyID == partyID)
+                                           select j).ToListAsync();
+
+                }
+            }
+            return itemList;
+        }
+
         public async Task<List<Items>> GetListItemsAsync()
         {
             var list = await (from j in context.Items
                               select j).ToListAsync();
+            return list;
+        }
+        public async Task<List<Items>> GetItemListByPartyIDAsync(string partyID)
+        {
+            var list = await context.Items.Where(p => p.partyID == partyID).ToListAsync();
             return list;
         }
         public static ConcurrentDictionary<string, Items> _dicItem = new ConcurrentDictionary<string, Items>();

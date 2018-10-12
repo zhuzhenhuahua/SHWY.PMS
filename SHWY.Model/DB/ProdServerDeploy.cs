@@ -21,6 +21,10 @@ namespace SHWY.Model.DB
         [Key]
         public int id { get; set; }
         /// <summary>
+        /// 甲方公司ID
+        /// </summary>
+        public string partyID { get; set; }
+        /// <summary>
         /// 项目ID
         /// </summary>
         public string itemid { get; set; }

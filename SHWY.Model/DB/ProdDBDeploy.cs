@@ -17,6 +17,7 @@ namespace SHWY.Model.DB
     {
         [Key]
         public int id { get; set; }
+        public string partyID { get; set; }
         public string itemId { get; set; }
         public string prodId { get; set; }
         public int dbId { get; set; }

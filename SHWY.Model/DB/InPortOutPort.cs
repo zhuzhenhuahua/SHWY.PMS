@@ -21,9 +21,9 @@ namespace SHWY.Model.DB
         [Key]
         public int ID { get; set; }
         /// <summary>
-        /// 项目ID
+        /// 甲方公司ID
         /// </summary>
-        public string itemid { get; set; }
+        public string partyID { get; set; }
         /// <summary>
         /// 内网IP(ID)
         /// </summary>

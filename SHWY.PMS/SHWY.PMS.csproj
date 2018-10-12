@@ -178,6 +178,7 @@
     <Compile Include="Controllers\MenuOperController.cs" />
     <Compile Include="Controllers\NeedController.cs" />
     <Compile Include="Controllers\Parameters\PersonTaskPara.cs" />
+    <Compile Include="Controllers\PartyController.cs" />
     <Compile Include="Controllers\PersonTaskController.cs" />
     <Compile Include="Controllers\PlanController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -1038,6 +1039,8 @@
     <Content Include="Views\Plan\PlanPointIndex.cshtml" />
     <Content Include="Views\Shared\_BaseLayOutContent.cshtml" />
     <Content Include="Views\Plan\PlanPointEdit.cshtml" />
+    <Content Include="Views\Party\PartyIndex.cshtml" />
+    <Content Include="Views\Party\PartyEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

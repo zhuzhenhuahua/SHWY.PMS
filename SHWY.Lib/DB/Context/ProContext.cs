@@ -46,6 +46,7 @@ namespace SHWY.Lib.DB.Context
         public DbSet<ProdModule> ProdModules { get; set; }
         public DbSet<ProdServerDeploy> ProdServerDeploys { get; set; }
         public DbSet<ProdDBDeploy> ProdDBDeploys { get; set; }
+        public DbSet<Party> Partys { get; set; }
         public DbSet<Items> Items { get; set; }
         public DbSet<PersonTask> PersonTasks { get; set; }
         public DbSet<V_PersonTask> VPersonTask { get; set; }

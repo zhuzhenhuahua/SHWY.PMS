@@ -1,65 +1,53 @@
 ﻿
 @{
-    ViewBag.Title = "端口映射";
+    ViewBag.Title = "PartyIndex";
     Layout = "~/Views/Shared/_BaseContent.cshtml";
 }
 
+
 <table id="tt"></table>
 <div id="tb">
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditInPortOutPort(0)">新增</a>
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditInPortOutPort(1)">修改</a>
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelInPortOutPort()">删除</a>
-    <span class="l-btn-text">甲方公司：</span><input class="easyui-textbox" id="txtPartyQ" style="width:150px;" />
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditParty(0)">新增</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditParty(1)">修改</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelParty()">删除</a>
+    <span class="l-btn-text">甲方：</span><input class="easyui-textbox" id="txtNameQ" style="width:180px;" />
     <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
 </div>
-<script type="text/javascript">
+<script>
     $(function () {
-        InitCombobox();
         InitGrid();
     });
-    function InitCombobox() {
-        $("#txtPartyQ").combobox({
-            url: '/Party/GetAllPartys?isAddAll=1',
-            valueField: 'PartyID',
-            textField: 'name'
-        });
-        $("#txtPartyQ").combobox("select", "");
-    }
     function InitGrid() {
         $("#tt").datagrid({
-            url: '/Server/GetInPortOutPortList',
+            url: '/Party/GetPartyList',
             columns: [[
-                { field: 'ID', title: 'ID', hidden: true },
-                { field: 'partyName', title: '甲方公司', width: 120 },
-                { field: 'inIpAddress', title: '内网IP', width: 180 },
-                { field: 'inPort', title: '内网端口', width: 180 },
-                { field: 'outIpAddress', title: '外网IP', width: 180 },
-                { field: 'outPort', title: '外网端口', width: 180 },
-                { field: 'porttypeText', title: '端口类型', width: 100 }
+                { field: 'PartyID', title: '编号' },
+                { field: 'name', title: '甲方公司名称', width: 150 },
+                { field: 'text', title: '描述', width: 400 }
             ]],
             autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
             striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
             nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
             singleSelect: true,
-            toolbar: '#tb',
             pagination: true,
             pageSize: 20,
-            idField: 'ID',
+            idField: 'PartyID',
+            toolbar: '#tb',
             rownumbers: true,
             fit: true,
             queryParams: {
-                partyID: ""
+                name: ""
             }
         });
     }
     function GridReload(loaded) {
         $("#tt").datagrid(loaded, {
-            partyID: $("#txtpartyQ").val()
+            name: $("#txtNameQ").val()
         });
     }
     var isAdd = false;
-    function EditInPortOutPort(Id) {
-        if (Id == 0)
+    function EditParty(partyid) {
+        if (partyid == 0)
             isAdd = true;
         else {
             var row = $("#tt").datagrid("getSelected");
@@ -67,12 +55,12 @@
                 AlertMsg("请选择一行数据后再操作");
                 return;
             }
-            Id = row.ID;
             isAdd = false;
         }
-        ShowDialog("端口映射管理", 700, 500, "/Server/InPortOutPortEdit?Id=" + Id, saveInPortOutPort);
+        var id = partyid == 0 ? "" : row.PartyID;
+        ShowDialog("甲方公司管理", 500, 400, "/Party/PartyEdit?partyID=" + id, saveParty);
     }
-    function DelInPortOutPort() {
+    function DelParty() {
         var row = $("#tt").datagrid("getSelected");
         if (row == null) {
             AlertMsg("请选择一行数据后再操作");
@@ -80,7 +68,7 @@
         }
         $.messager.confirm('提示', "确定要删除吗？", function (r) {
             if (r) {
-                $.post("/Server/DelInPortOutPort", { Id: row.ID }, function (result) {
+                $.post("/Party/DelParty", { partyID: row.PartyID }, function (result) {
                     if (result.isOk) {
                         AlertMsg("删除成功");
                         GridReload("reload");
@@ -92,15 +80,27 @@
             }
         });
     }
-    function saveInPortOutPort() {
-        var check = $("#formInPortOutPortEidt").form('enableValidation').form('validate');
+    function saveParty() {
+        var check = $("#formPartyEidt").form('enableValidation').form('validate');
         if (check) {
-            var postData = $("#formInPortOutPortEidt").serialize();
-            saveData(postData)
+            var postData = $("#formPartyEidt").serialize();
+            if (isAdd) {
+                $.post("/Party/IsExistsByPartyID", postData, function (result) {
+                    if (result.isExists) {
+                        AlertMsg("甲方公司编号已存在,请重新输入");
+                        return;
+                    }
+                    else {
+                        SaveData(postData);
+                    }
+                });
+            } else {
+                SaveData(postData);
+            }
         }
     }
-    function saveData(postData) {
-        $.post("/Server/SaveInPortOutPort", postData, function (result) {
+    function SaveData(postData) {
+        $.post("/Party/SaveParty", postData, function (result) {
             if (result.isOk) {
                 $('#PopWindow').dialog('close');
                 $("#PopWindow").remove();
@@ -109,6 +109,7 @@
             else {
                 AlertMsg('保存失败');
             }
+
         });
     }
 </script>

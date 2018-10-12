@@ -7,6 +7,10 @@
 <form id="formItemEidt">
     <table>
         <tr>
+            <td>@Html.LabelFor(p => p.partyID)</td>
+            <td>@Html.DropDownListFor(p => p.partyID, ViewBag.PartyList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+        </tr>
+        <tr>
             <td>@Html.LabelFor(p => p.ItemID)</td>
             <td>@Html.TextBoxFor(p => p.ItemID, new { @class = "easyui-numberbox", data_options = "required:true,readonly:" + ViewData["isRealOnly"] + "" })</td>
         </tr>

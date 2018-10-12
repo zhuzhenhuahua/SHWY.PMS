@@ -21,7 +21,10 @@ namespace SHWY.Model.DB
         [Key]
         public int id { get; set; }
         public string name { get; set; }
-        public string itemid { get; set; }
+        /// <summary>
+        /// 甲方公司ID
+        /// </summary>
+        public string partyID { get; set; }
         public int serverid { get; set; }
         /// <summary>
         /// 数据库架构ID，对应ECodesTypeId.databaseSchema

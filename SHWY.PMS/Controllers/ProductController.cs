@@ -16,6 +16,7 @@ namespace SHWY.PMS.Controllers
         ItemsRepository itemsRepo = ItemsRepository.CreateInstance();
         ServerRepository serverRepo = ServerRepository.CreateInstance();
         CodeRepository codeRepo = CodeRepository.CreateInstance();
+        PartyRepository partyRepo = PartyRepository.CreateInstance();
 
         #region 产品部署数据库
         public ActionResult ProdDBDeployIndex()
@@ -30,13 +31,12 @@ namespace SHWY.PMS.Controllers
         public async Task<ActionResult> ProdDBEdit(int id)
         {
             var prodDBDeply = await prodRepo.GetProdDBDeployAsync(id);
-
-            //项目
-            var ItemList = new List<SelectListItem>();
-            var items = await itemsRepo.GetListItemsAsync();
-            var items2 = new SelectList(items, "ItemID", "NAME");
-            ItemList.AddRange(items2);
-            ViewBag.ItemList = ItemList;
+            //甲方公司
+            var PartyList = new List<SelectListItem>();
+            var party = await partyRepo.GetPartyListAsync();
+            var party2 = new SelectList(party, "PartyID", "name");
+            PartyList.AddRange(party2);
+            ViewBag.PartyList = PartyList;
             //产品
             var ProdList = new List<SelectListItem>();
             var prods = await prodRepo.GetListAsync();
@@ -79,25 +79,18 @@ namespace SHWY.PMS.Controllers
         public async Task<ActionResult> ProdServerEdit(int id)
         {
             var prodDeply = await prodRepo.GetProdServerDeployAsync(id);
-
-            //项目
-            var ItemList = new List<SelectListItem>();
-            var items = await itemsRepo.GetListItemsAsync();
-            var items2 = new SelectList(items, "ItemID", "NAME");
-            ItemList.AddRange(items2);
-            ViewBag.ItemList = ItemList;
+            //甲方公司
+            var PartyList = new List<SelectListItem>();
+            var party = await partyRepo.GetPartyListAsync();
+            var party2 = new SelectList(party, "PartyID", "name");
+            PartyList.AddRange(party2);
+            ViewBag.PartyList = PartyList;
             //产品
             var ProdList = new List<SelectListItem>();
             var prods = await prodRepo.GetListAsync();
             var prods2 = new SelectList(prods, "ProID", "NAME");
             ProdList.AddRange(prods2);
             ViewBag.ProdList = ProdList;
-            //服务器
-            //var ServerList = new List<SelectListItem>();
-            //var serlist = await serverRepo.GetServerListAsync();
-            //var serlist2 = new SelectList(serlist, "sid", "name");
-            //ServerList.AddRange(serlist2);
-            //ViewBag.ServerList = ServerList;
             //通讯协议
             var ProtTypeList = new List<SelectListItem>();
             var prots = await codeRepo.GetCodesListAsync(ECodesTypeId.ProtType);

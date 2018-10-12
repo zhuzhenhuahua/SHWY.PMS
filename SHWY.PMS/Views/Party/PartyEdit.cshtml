@@ -1,0 +1,24 @@
+﻿@model SHWY.Model.DB.Party
+@{
+    ViewBag.Title = "PartyEdit";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+
+<form id="formPartyEidt">
+    <table>
+        <tr>
+            <td>编号：</td>
+            <td>@Html.TextBoxFor(p => p.PartyID, new { @class = "easyui-numberbox", data_options = "required:true,readonly:" + ViewData["isRealOnly"] + "" })</td>
+        </tr>
+        <tr>
+            <td>甲方公司名称：</td>
+            <td>@Html.TextBoxFor(p => p.name, new { @class = "easyui-textbox", data_options = "required:true" })</td>
+        </tr>
+        <tr>
+            <td>描述：</td>
+            <td>@Html.TextBoxFor(p => p.text, new { @class = "easyui-textbox",data_options = "multiline:true", style = "width:100%;height:50px;" })</td>
+        </tr>
+    </table>
+</form>
+
+

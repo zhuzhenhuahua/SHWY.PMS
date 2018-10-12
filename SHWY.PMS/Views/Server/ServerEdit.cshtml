@@ -6,12 +6,12 @@
 <form id="formServerEidt">
     <table>
         <tr>
-            <td>@Html.LabelFor(p => p.name)</td>
-            <td>@Html.TextBoxFor(p => p.name, new { @class = "easyui-textbox", data_options = "required:true" })</td>
+            <td>@Html.LabelFor(p => p.partyId)</td>
+            <td>@Html.DropDownListFor(p => p.partyId, ViewBag.PartyList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
         </tr>
         <tr>
-            <td>@Html.LabelFor(p => p.itemid)</td>
-            <td>@Html.DropDownListFor(p => p.itemid, ViewBag.ItemList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+            <td>@Html.LabelFor(p => p.name)</td>
+            <td>@Html.TextBoxFor(p => p.name, new { @class = "easyui-textbox", data_options = "required:true" })</td>
         </tr>
         <tr>
             <td>@Html.LabelFor(p => p.remark)</td>

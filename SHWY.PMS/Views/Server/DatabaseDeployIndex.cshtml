@@ -9,7 +9,7 @@
     <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditDatabaseDeploy(0)">新增</a>
     <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditDatabaseDeploy(1)">修改</a>
     <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelDatabaseDeploy()">删除</a>
-    <span class="l-btn-text">项目：</span><input class="easyui-textbox" id="txtItemQ" style="width:150px;" />
+    <span class="l-btn-text">甲方公司：</span><input class="easyui-textbox" id="txtPartyQ" style="width:150px;" />
     <span class="l-btn-text">数据库：</span><input class="easyui-textbox" id="txtDatabaseDeployQ" style="width:180px;" />
     <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
 </div>
@@ -19,18 +19,18 @@
         InitGrid();
     });
     function InitCombobox() {
-        $("#txtItemQ").combobox({
-            url: '/Items/GetAllItems?isAddAll=1',
-            valueField: 'ItemID',
-            textField: 'NAME'
+        $("#txtPartyQ").combobox({
+            url: '/Party/GetAllPartys?isAddAll=1',
+            valueField: 'PartyID',
+            textField: 'name'
         });
-        $("#txtItemQ").combobox("select", "");
+        $("#txtPartyQ").combobox("select", "");
     }
     function InitGrid() {
         $("#tt").datagrid({
             url: '/Server/GetDataBaseDeployList',
             columns: [[
-                { field: 'ItemName', title: '项目名称', width: 180 },
+                { field: 'PartyName', title: '甲方公司名称', width: 180 },
                 { field: 'id', title: 'id', hidden: true },
                 { field: 'name', title: '数据库中文名', width: 220 },
                 { field: 'ServerName', title: '服务器名称', width: 120 },
@@ -56,14 +56,14 @@
             fit: true,
             queryParams: {
                 name: "",
-                itemID: ""
+                partyID: ""
             }
         });
     }
     function GridReload(loaded) {
         $("#tt").datagrid(loaded, {
             name: $("#txtDatabaseDeployQ").val(),
-            itemID: $("#txtItemQ").val()
+            partyID: $("#txtPartyQ").val()
         });
     }
     var isAdd = false;

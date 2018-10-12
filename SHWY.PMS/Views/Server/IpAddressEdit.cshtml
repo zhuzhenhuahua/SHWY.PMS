@@ -7,12 +7,12 @@
 <form id="formIpAddressEidt">
     <table>
         <tr>
-            <td>@Html.LabelFor(p => p.ipv4address)</td>
-            <td>@Html.TextBoxFor(p => p.ipv4address, new { @class = "easyui-textbox", data_options = "required:true" })</td>
+            <td>@Html.LabelFor(p => p.partyID)</td>
+            <td>@Html.DropDownListFor(p => p.partyID, ViewBag.PartyList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
         </tr>
         <tr>
-            <td>@Html.LabelFor(p => p.itemid)</td>
-            <td>@Html.DropDownListFor(p => p.itemid, ViewBag.ItemList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+            <td>@Html.LabelFor(p => p.ipv4address)</td>
+            <td>@Html.TextBoxFor(p => p.ipv4address, new { @class = "easyui-textbox", data_options = "required:true" })</td>
         </tr>
         <tr>
             <td>@Html.LabelFor(p => p.ipv6address)</td>

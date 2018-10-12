@@ -32,5 +32,14 @@ namespace SHWY.Model.DB
         /// </summary>
         [DisplayName("项目别名")]
         public string ALIAS { get; set; }
+
+        /// <summary>
+        /// 所属甲方公司
+        /// </summary>
+        [DisplayName("所属甲方公司")]
+        public string partyID { get; set; }
+
+        [NotMapped]
+        public List<Items> children { get; set; }
     }
 }

@@ -279,6 +279,7 @@ namespace SHWY.Lib.DB.Repositorys
                 isAdd = true;
                 model = new ProdDBDeploy();
             }
+            model.partyID = dbDeploy.partyID;
             model.itemId = dbDeploy.itemId;
             model.prodId = dbDeploy.prodId;
             model.dbId = dbDeploy.dbId;
@@ -308,6 +309,7 @@ namespace SHWY.Lib.DB.Repositorys
                 isAdd = true;
                 model = new ProdServerDeploy();
             }
+            model.partyID = pDeployPara.partyID;
             model.itemid = pDeployPara.itemid;
             model.prodid = pDeployPara.prodid;
             model.serverid = pDeployPara.serverid;

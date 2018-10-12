@@ -19,7 +19,7 @@ namespace SHWY.Model.DB
         [Key, Column(Order = 2)]
         [DisplayName("IP地址")]
         public int ipid { get; set; }
-        [DisplayName("项目")]
-        public string itemid { get; set; }
+        [DisplayName("甲方公司")]
+        public string partyID { get; set; }
     }
 }

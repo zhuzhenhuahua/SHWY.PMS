@@ -12,7 +12,8 @@ namespace SHWY.PMS.Controllers
     public class ServerController : BaseController
     {
         ServerRepository serverRepo = ServerRepository.CreateInstance();
-        ItemsRepository itemsRepo = ItemsRepository.CreateInstance();
+         ItemsRepository itemsRepo = ItemsRepository.CreateInstance();
+        PartyRepository partyRepo = PartyRepository.CreateInstance();
         CodeRepository codeRepo = CodeRepository.CreateInstance();
         ProductRepository prodRepo = ProductRepository.CreateInstance();
         #region Server查询
@@ -20,9 +21,9 @@ namespace SHWY.PMS.Controllers
         {
             return View();
         }
-        public async Task<JsonResult> GetList(int page, int rows, string name, string itemID)
+        public async Task<JsonResult> GetList(int page, int rows, string name, string partyID)
         {
-            var tuple = await serverRepo.GetServerListAsync(page, rows, name, itemID);
+            var tuple = await serverRepo.GetServerListAsync(page, rows, name, partyID);
             return Json(new { total = tuple.Item1, rows = tuple.Item2 });
         }
         public async Task<JsonResult> IsExists(Servers server)
@@ -37,9 +38,9 @@ namespace SHWY.PMS.Controllers
                 result.Insert(0, new Servers() { sid = 0, name = "全部" });
             return Json(result);
         }
-        public async Task<JsonResult> GetServersByItemID(string itemID)
+        public async Task<JsonResult> GetServersByPartyID(string partyID)
         {
-            var result = await serverRepo.GetServerListByItemIDAsync(itemID);
+            var result = await serverRepo.GetServerListByPartyIDAsync(partyID);
             return Json(result);
         }
         #endregion
@@ -49,19 +50,19 @@ namespace SHWY.PMS.Controllers
         {
             return View();
         }
-        public async Task<JsonResult> GetIpAddressList(int page, int rows, string ipAddress, int belong, string itemID)
+        public async Task<JsonResult> GetIpAddressList(int page, int rows, string ipAddress, int belong, string partyID)
         {
-            var tuple = await serverRepo.GetIpAddressListAsync(page, rows, ipAddress, belong, itemID);
+            var tuple = await serverRepo.GetIpAddressListAsync(page, rows, ipAddress, belong, partyID);
             return Json(new { total = tuple.Item1, rows = tuple.Item2 });
         }
-        public async Task<JsonResult> GetIpAddressListByItemID(string itemID, int belong)
+        public async Task<JsonResult> GetIpAddressListByPartyID(string partyID, int belong)
         {
-            var list = await serverRepo.GetIpAddressListByItemIDAsync(itemID, belong);
+            var list = await serverRepo.GetIpAddressListByPartyIDAsync(partyID, belong);
             return Json(list);
         }
-        public async Task<JsonResult> GetIpAddressByItemID(string itemID)
+        public async Task<JsonResult> GetIpAddressByPartyID(string partyID)
         {
-            var list = await serverRepo.GetIpAddressListByItemIDAsync(itemID);
+            var list = await serverRepo.GetIpAddressListByPartyIDAsync(partyID);
             return Json(list);
         }
         public async Task<JsonResult> IsExistsIpAddressById(IpAddress ipModel)
@@ -76,9 +77,9 @@ namespace SHWY.PMS.Controllers
         {
             return View();
         }
-        public async Task<JsonResult> GetServerIpList(int page, int rows, string serverName, string ItemID)
+        public async Task<JsonResult> GetServerIpList(int page, int rows, string serverName, string partyID)
         {
-            var tuple = await serverRepo.GetServerIpListAsync(page, rows, serverName, ItemID);
+            var tuple = await serverRepo.GetServerIpListAsync(page, rows, serverName, partyID);
             return Json(new { total = tuple.Item1, rows = tuple.Item2 });
         }
         public async Task<JsonResult> IsExistsServerIp(ServerIp sip)
@@ -93,14 +94,14 @@ namespace SHWY.PMS.Controllers
         {
             return View();
         }
-        public async Task<JsonResult> GetDataBaseDeployList(int page, int rows, string name, string itemID)
+        public async Task<JsonResult> GetDataBaseDeployList(int page, int rows, string name, string partyID)
         {
-            var tuple = await serverRepo.GetDatabaseDeployListAsync(page, rows, name, itemID);
+            var tuple = await serverRepo.GetDatabaseDeployListAsync(page, rows, name, partyID);
             return Json(new { total = tuple.Item1, rows = tuple.Item2 });
         }
-        public async Task<JsonResult> GetDatabaseListByItemID(string itemID)
+        public async Task<JsonResult> GetDatabaseListByPartyID(string partyID)
         {
-            var list = await serverRepo.GetDatabaseDeployListAsync(itemID);
+            var list = await serverRepo.GetDatabaseDeployListAsync(partyID);
             return Json(list);
         }
         public async Task<JsonResult> GetAllDatabase(int isAddAll)
@@ -117,9 +118,9 @@ namespace SHWY.PMS.Controllers
         {
             return View();
         }
-        public async Task<JsonResult> GetInPortOutPortList(int page, int rows, string itemID)
+        public async Task<JsonResult> GetInPortOutPortList(int page, int rows, string partyID)
         {
-            var tuple = await serverRepo.GetInPortOutPortListAsync(page, rows, itemID);
+            var tuple = await serverRepo.GetInPortOutPortListAsync(page, rows, partyID);
             return Json(new { total = tuple.Item1, rows = tuple.Item2 });
         }
         #endregion
@@ -144,11 +145,11 @@ namespace SHWY.PMS.Controllers
         public async Task<ActionResult> IpAddressEdit(int ipid)
         {
             var model = await serverRepo.GetIpAddressAsync(ipid);
-            var ItemList = new List<SelectListItem>();
-            var items = await itemsRepo.GetListItemsAsync();
-            var items2 = new SelectList(items, "ItemID", "NAME");
-            ItemList.AddRange(items2);
-            ViewBag.ItemList = ItemList;
+            var PartyList = new List<SelectListItem>();
+            var party = await partyRepo.GetPartyListAsync();
+            var party2 = new SelectList(party, "PartyID", "name");
+            PartyList.AddRange(party2);
+            ViewBag.PartyList = PartyList;
 
             var BeLongList = new List<SelectListItem>();
             var belong = await CodeRepository.CreateInstance().GetCodesListAsync(ECodesTypeId.IpAddressBeLong);
@@ -169,11 +170,11 @@ namespace SHWY.PMS.Controllers
         public async Task<ActionResult> ServerEdit(int sid)
         {
             var server = await serverRepo.GetServerAsync(sid);
-            var ItemList = new List<SelectListItem>();
-            var items = await itemsRepo.GetListItemsAsync();
-            var items2 = new SelectList(items, "ItemID", "NAME");
-            ItemList.AddRange(items2);
-            ViewBag.ItemList = ItemList;
+            var PartyList = new List<SelectListItem>();
+            var party = await partyRepo.GetPartyListAsync();
+            var party2 = new SelectList(party, "PartyID", "name");
+            PartyList.AddRange(party2);
+            ViewBag.PartyList = PartyList;
             return View(server);
         }
         public async Task<JsonResult> SaveServer(Servers server)
@@ -199,12 +200,14 @@ namespace SHWY.PMS.Controllers
         public async Task<ActionResult> ServerIpEdit(int sid, int ipid)
         {
             var serverIP = await serverRepo.GetServerIpAsync(sid, ipid);
+            if (serverIP == null)
+                serverIP = new ServerIp();
             //项目
-            var ItemList = new List<SelectListItem>();
-            var items = await itemsRepo.GetListItemsAsync();
-            var items2 = new SelectList(items, "ItemID", "NAME");
-            ItemList.AddRange(items2);
-            ViewBag.ItemList = ItemList;
+            var PartyList = new List<SelectListItem>();
+            var party = await partyRepo.GetPartyListAsync();
+            var party2 = new SelectList(party, "PartyID", "name");
+            PartyList.AddRange(party2);
+            ViewBag.PartyList = PartyList;
             return View(serverIP);
         }
         public async Task<JsonResult> DelServerIp(int sid, int ipid)
@@ -224,11 +227,11 @@ namespace SHWY.PMS.Controllers
         {
             var model = await serverRepo.GetDatabaseDeployAsync(id);
             //项目
-            var ItemList = new List<SelectListItem>();
-            var items = await itemsRepo.GetListItemsAsync();
-            var items2 = new SelectList(items, "ItemID", "NAME");
-            ItemList.AddRange(items2);
-            ViewBag.ItemList = ItemList;
+            var PartyList = new List<SelectListItem>();
+            var party = await partyRepo.GetPartyListAsync();
+            var party2 = new SelectList(party, "PartyID", "name");
+            PartyList.AddRange(party2);
+            ViewBag.PartyList = PartyList;
             //数据库架构
             var SchemaidList = new List<SelectListItem>();
             var sehemalist = await codeRepo.GetCodesListAsync(ECodesTypeId.databaseSchema);
@@ -270,11 +273,11 @@ namespace SHWY.PMS.Controllers
         {
             var model = await serverRepo.GetInPortOutPortAsync(Id);
             //项目
-            var ItemList = new List<SelectListItem>();
-            var items = await itemsRepo.GetListItemsAsync();
-            var items2 = new SelectList(items, "ItemID", "NAME");
-            ItemList.AddRange(items2);
-            ViewBag.ItemList = ItemList;
+            var PartyList = new List<SelectListItem>();
+            var party = await partyRepo.GetPartyListAsync();
+            var party2 = new SelectList(party, "PartyID", "name");
+            PartyList.AddRange(party2);
+            ViewBag.PartyList = PartyList;
             //端口类型
             var PortTypeList = new List<SelectListItem>();
             var typelist = await codeRepo.GetCodesListAsync(ECodesTypeId.ProtType);

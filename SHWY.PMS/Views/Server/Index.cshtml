@@ -8,7 +8,7 @@
     <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditServer(0)">新增</a>
     <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditServer(1)">修改</a>
     <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelServer()">删除</a>
-    <span class="l-btn-text">项目：</span><input class="easyui-textbox" id="txtItemQ" style="width:120px;" />
+    <span class="l-btn-text">甲方公司：</span><input class="easyui-textbox" id="txtPartyQ" style="width:120px;" />
     <span class="l-btn-text">服务器名称：</span><input class="easyui-textbox" id="txtServerNameQ" style="width:80px;" />
     <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
 </div>
@@ -18,18 +18,18 @@
         InitGrid();
     });
     function InitCombobox() {
-        $("#txtItemQ").combobox({
-            url: '/Items/GetAllItems?isAddAll=1',
-            valueField: 'ItemID',
-            textField: 'NAME'
+        $("#txtPartyQ").combobox({
+            url: '/Party/GetAllPartys?isAddAll=1',
+            valueField: 'PartyID',
+            textField: 'name'
         });
-        $("#txtItemQ").combobox("select", "");
+        $("#txtPartyQ").combobox("select", "");
     }
     function InitGrid() {
         $("#tt").datagrid({
             url: '/Server/GetList',
             columns: [[
-                { field: 'itemName', title: '项目名称', width: 150 },
+                { field: 'partyName', title: '甲方公司', width: 150 },
                 { field: 'sid', title: '服务器ID', width: 80,hidden:true },
                 { field: 'name', title: '服务器名称', width: 100 },
                 { field: 'remark', title: '备注说明', width: 600 },
@@ -48,14 +48,14 @@
             fit: true,
             queryParams: {
                 name: "",
-                itemID: ""
+                partyID: ""
             }
         });
     }
     function GridReload(loaded) {
         $("#tt").datagrid(loaded, {
             name: $("#txtServerNameQ").val(),
-            itemID: $("#txtItemQ").val()
+            partyID: $("#txtPartyQ").val()
         });
     }
     var isAdd = false;
