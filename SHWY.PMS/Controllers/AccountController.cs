@@ -18,6 +18,7 @@ namespace SHWY.PMS.Controllers
         public ActionResult Login()
         {
             LoginViewModel model = new LoginViewModel();
+            Session.Clear();
             return View(model);
         }
         public async Task<ActionResult> LoginSubmit(LoginViewModel viewModel)

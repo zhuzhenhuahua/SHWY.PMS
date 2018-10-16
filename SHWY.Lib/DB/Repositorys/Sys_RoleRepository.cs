@@ -70,9 +70,9 @@ namespace SHWY.Lib.DB.Repositorys
             if (role != null)
             {
                 var roleMenus = await context.Sys_RoleMenus.Where(p => p.RoleId == rid).ToListAsync();
-                foreach (var item in roleMenus)
+                if(roleMenus.Count>0)
                 {
-                    context.Sys_RoleMenus.Remove(item);
+                    context.Sys_RoleMenus.RemoveRange(roleMenus);//删除角色时，先删除角色下所有的菜单
                 }
                 context.Sys_Roles.Remove(role);
                 return await context.SaveChangesAsync() > 0;

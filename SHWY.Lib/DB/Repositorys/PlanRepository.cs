@@ -77,7 +77,7 @@ namespace SHWY.Lib.DB.Repositorys
         {
             int form = (pageIndex - 1) * pageSize;
             var total = await (from j in context.PlanPoints
-                               where j.PlanID == planID && j.ItemID.Contains(itemID)
+                               where j.PlanID == planID && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.ItemID == itemID)
                                select j).CountAsync();
             var obj = await (from j in context.PlanPoints
                              join ite in context.Items on j.ItemID equals ite.ItemID into tempItem
@@ -94,7 +94,7 @@ namespace SHWY.Lib.DB.Repositorys
                              from handler in tempHander.DefaultIfEmpty()
                              join ned in context.Needs on j.NeedID equals ned.NeedID into tempNed
                              from need in tempNed.DefaultIfEmpty()
-                             where j.PlanID == planID && j.ItemID.Contains(itemID)
+                             where j.PlanID == planID && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.ItemID == itemID)
                              orderby j.addTime descending
                              select new
                              {

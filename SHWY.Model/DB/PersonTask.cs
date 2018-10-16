@@ -40,6 +40,11 @@ namespace SHWY.Model.DB
         [DisplayName("任务类型")]
         public int TaskType { get; set; }
         /// <summary>
+        /// 任务所属模块ID
+        /// </summary>
+        [DisplayName("所属模块")]
+        public int ModuleID { get; set; }
+        /// <summary>
         /// 任务描述
         /// </summary>
         [DisplayName("任务描述")]

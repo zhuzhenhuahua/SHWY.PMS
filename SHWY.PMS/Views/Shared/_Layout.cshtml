@@ -22,7 +22,13 @@
                 //2、给区域面板title赋值
                 temp.panel('setTitle', "当前用户：" + result.Name);
             });
-
+            $("#aLoginOut").click(function () {
+                $.messager.confirm('Confirm', 'Are you sure to exit this system?', function (r) {
+                    if (r) {
+                        window.location.href = "/Account/Login";
+                    }
+                });
+            });
         });
     </script>
 </head>

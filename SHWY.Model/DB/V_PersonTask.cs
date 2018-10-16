@@ -13,7 +13,7 @@ namespace SHWY.Model.DB
     /// </summary>
     [Serializable]
     [Table("V_PersonTask")]
-   public class V_PersonTask
+    public class V_PersonTask
     {
         [Key]
         public string ID { get; set; }
@@ -36,6 +36,7 @@ namespace SHWY.Model.DB
         /// </summary>
         public int TaskType { get; set; }
         public string taskTypeName { get; set; }
+        public string moduleName { get; set; }
         /// <summary>
         /// 任务描述
         /// </summary>

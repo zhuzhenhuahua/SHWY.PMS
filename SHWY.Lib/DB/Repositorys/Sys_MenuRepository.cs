@@ -24,6 +24,15 @@ namespace SHWY.Lib.DB.Repositorys
                         select j).ToList();
             return list;
         }
+        public List<Sys_Menu> GetMeunListByRoleID(int roleID)
+        {
+            var list = (from j in context.Sys_Menus
+                        join roleMenu in context.Sys_RoleMenus on j.MenuId equals roleMenu.MenuId
+                        where roleMenu.RoleId == roleID
+                        orderby j.MenuSortID
+                        select j).ToList();
+            return list;
+        }
         public async Task<List<Sys_Menu>> GetTreeListAsync(string menuName, int parentId)
         {
             var list = await context.Sys_Menus.OrderBy(p=>p.MenuSortID).ToListAsync();

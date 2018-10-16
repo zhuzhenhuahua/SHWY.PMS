@@ -56,8 +56,15 @@ namespace SHWY.PMS.Controllers
         {
             using (Sys_RoleRepository rep = new Sys_RoleRepository())
             {
-                var result = await rep.DeleteRoleAsync(rid);
-                return Json(new { isOk = result });
+                using (Sys_UserRepository userRepo = new Sys_UserRepository())
+                {
+                    var userTotal = await userRepo.GetUserListCountByRoleID(rid);
+                    if (userTotal > 0)
+                        return Json(new { isOk = false, msg = "请先删除该角色下的用户" });
+                    var result = await rep.DeleteRoleAsync(rid);
+                    return Json(new { isOk = result });
+                }
+
             }
         }
 

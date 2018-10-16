@@ -3,7 +3,33 @@
     ViewBag.Title = "MyTaskPublishEdit";
     Layout = "~/Views/Shared/_BaseContent.cshtml";
 }
+<script type="text/javascript">
+        function ProdOnSelect(record) {
+            var prodId = record.value;
+            $("#ModuleID").combobox({
+                url: '/Product/GetProdModuleByProdId?prodID=' + prodId,
+                valueField: 'ModuleID',
+                textField: 'NAME',
+                editable: false,
+                required: false,
+                onBeforeLoad: function (para) {
+                    $("#ModuleID").combobox("clear");
+                },
+                onLoadSuccess: function () {
+                    if ('@Model.ModuleID' != 0) {
+                        var data = $("#ModuleID").combobox("getData");
+                        if (data.length > 0) {
+                            $(data).each(function (index, obj) {
+                                if (obj.ModuleID == '@Model.ModuleID')
+                                    $("#ModuleID").combobox("select", '@Model.ModuleID');
+                            });
 
+                        }
+                    }
+                }
+            });
+        }
+</script>
 <form id="formMyTaskPublishEidt">
     <table>
         <tr style="height:30px;">
@@ -12,7 +38,7 @@
             <td style="padding-left:20px;">项目:</td>
             <td>@Html.DropDownListFor(p => p.itemID, ViewBag.ItemList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
             <td style="padding-left:20px;">产品:</td>
-            <td>@Html.DropDownListFor(p => p.prodId, ViewBag.ProdList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
+            <td>@Html.DropDownListFor(p => p.prodId, ViewBag.ProdList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false,onSelect:function(rec){ProdOnSelect(rec)}", style = "width:170px;" })</td>
         </tr>
         <tr style="height:30px;">
             <td style="padding-left:20px;">任务类型:</td>
@@ -21,6 +47,10 @@
             <td>@Html.DropDownListFor(p => p.taskStatus, ViewBag.TaskStatusList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
             <td style="padding-left:20px;">预期完成时间:</td>
             <td>@Html.TextBoxFor(p => p.predDeadTime, new { @class = "easyui-datetimebox", data_options = "required:true" })</td>
+        </tr>
+        <tr style="height:30px;">
+            <td style="padding-left:20px;">所属模块:</td>
+            <td colspan="5">@Html.TextBoxFor(p => p.ModuleID)</td>
         </tr>
         <tr>
             <td style="padding-left:20px;">任务描述:</td>

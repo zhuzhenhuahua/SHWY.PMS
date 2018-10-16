@@ -37,7 +37,8 @@ namespace SHWY.PMS.Controllers
         {
             using (Sys_MenuRepository rep = new Sys_MenuRepository())
             {
-                var list = rep.GetList();//所有菜单
+                var currentUser = Session["CurrentUser"] as CurrentUser;
+                var list = rep.GetMeunListByRoleID(currentUser.Sys_User.RoleId);//该角色下的菜单
                 return PartialView("_PartialMenu", new MenuListPartial() { list = list });
             }
         }

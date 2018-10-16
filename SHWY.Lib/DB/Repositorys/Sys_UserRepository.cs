@@ -56,6 +56,11 @@ namespace SHWY.Lib.DB.Repositorys
                               select j).ToListAsync();
             return list;
         }
+        public async Task<int> GetUserListCountByRoleID(int roleID)
+        {
+            var total = await context.Sys_Users.Where(p => p.RoleId == roleID).CountAsync();
+            return total;
+        }
         public async Task<Sys_User> GetUserAsync(string loginName, string pwd)
         {
             var user = await (from j in context.Sys_Users
