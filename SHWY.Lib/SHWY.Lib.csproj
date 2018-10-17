@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DB\Context\ProContext.cs" />
+    <Compile Include="DB\Repositorys\ApiManaRepository.cs" />
     <Compile Include="DB\Repositorys\BaseRepository.cs" />
     <Compile Include="DB\Repositorys\CodeRepository.cs" />
     <Compile Include="DB\Repositorys\ItemsRepository.cs" />

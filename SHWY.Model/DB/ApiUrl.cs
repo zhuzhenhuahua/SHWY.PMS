@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -9,11 +10,12 @@ namespace SHWY.Model.DB
 {
     [Serializable]
     [Table("ApiUrl")]
-   public class ApiUrl
+    public class ApiUrl
     {
         /// <summary>
         /// 自增长主键
         /// </summary>
+        [Key]
         public int UrlID { get; set; }
         /// <summary>
         /// 所属产品ID
@@ -32,7 +34,7 @@ namespace SHWY.Model.DB
         /// </summary>
         public string Url { get; set; }
         /// <summary>
-        /// method：请求的类型；GET 或 POST
+        /// method：请求的类型；1:GET 或 2:POST
         /// </summary>
         public int method { get; set; }
         /// <summary>
@@ -43,5 +45,13 @@ namespace SHWY.Model.DB
         /// 备注
         /// </summary>
         public string Remark { get; set; }
+
+        [NotMapped]
+        public List<ApiUrl> children { get; set; }
+        [NotMapped]
+        public List<ApiParameter> apiParas { get; set; }
+
+        [NotMapped]
+        public string methodName { get; set; }
     }
 }

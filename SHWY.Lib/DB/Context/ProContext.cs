@@ -63,5 +63,7 @@ namespace SHWY.Lib.DB.Context
         public DbSet<Plan> Plans { get; set; }
         public DbSet<PlanPoint> PlanPoints { get; set; }
         public DbSet<PlanType> PlanTypes { get; set; }
+        public DbSet<ApiUrl> ApiUrls { get; set; }
+        public DbSet<ApiParameter> ApiParameters { get; set; }
     }
 }

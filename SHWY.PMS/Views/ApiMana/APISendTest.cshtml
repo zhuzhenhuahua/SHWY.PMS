@@ -1,0 +1,64 @@
+﻿@model SHWY.Model.DB.ApiUrl
+@{
+    ViewBag.Title = "SendAPi";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+<script type="text/javascript">
+    $(function () {
+        var url = $("#txtWebApiUrl").textbox('getValue');
+        $("#txtUrl").textbox({
+            multiline: true,
+            value: url + '@Model.Url'
+        });
+    });
+    function SendApi(urlID) {
+
+        var url = $("#txtWebApiUrl").textbox('getValue');
+        var urlPara = "";
+        var txts = $("input[name='txtParas']");
+        var paraData = {};
+        $.each(txts, function (index, obj) {
+            var ename = $(this).attr("enamessss");
+            var value = $(this).val();
+            if (index == 0)
+                urlPara += ename + "=" + value + "";
+            else
+                urlPara += "&" + ename + "=" + value + "";
+
+        });
+        $.post("/ApiMana/SendAPi", { urlID: urlID, urlPara: urlPara, url: url }, function (result) {
+            $("#txt_ShowJson").textbox("setValue", result);
+        });
+    }
+</script>
+<form id="formApiSend">
+    <div>
+        <span>
+            <input type="text" id="txtUrl" style="width:530px;height:50px;" />
+        </span>
+        <span>
+            <input type="button" value="Send" style="height:50px;width:100px;" onclick="SendApi('@Model.UrlID')" />
+        </span>
+    </div>
+    <table>
+
+        @for (int i = 0; i < Model.apiParas.Count; i++)
+        {
+            <tr>
+                <td>
+                    @Model.apiParas[i].EName ( @Model.apiParas[i].CName )
+                </td>
+                <td>
+                    <input type="text" enamessss="@Model.apiParas[i].EName" name="txtParas" />
+                </td>
+            </tr>
+        }
+        <tr>
+            <td colspan="4">
+                <input class="easyui-textbox" id="txt_ShowJson" data-options="multiline:true" style="width:670px;height:600%">
+            </td>
+        </tr>
+
+        @Html.HiddenFor(p => p.UrlID)
+    </table>
+</form>

@@ -58,5 +58,9 @@ namespace SHWY.Model.DB
         /// 数据库类型（sql/oracle）
         /// </summary>
         databaseType = 8,
+        /// <summary>
+        /// 接口请求类型(post、get)
+        /// </summary>
+        MethodType=9,
     }
 }

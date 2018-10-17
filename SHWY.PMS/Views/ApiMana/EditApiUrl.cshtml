@@ -1,0 +1,36 @@
+﻿@model SHWY.Model.DB.ApiUrl
+@{
+    ViewBag.Title = "EditApiUrl";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+
+<form id="formApiUrlEidt">
+    <table>
+        <tr>
+            <td style="padding-left:20px;">产品:</td>
+            <td>@Html.DropDownListFor(p => p.ProdID, ViewBag.ProdList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:340px;" })</td>
+        </tr>
+        <tr>
+            <td>接口名称:</td>
+            <td>@Html.TextBoxFor(p => p.Name, new { @class = "easyui-textbox", data_options = "required:true", style = "width:340px;" })</td>
+        </tr>
+        <tr>
+            <td>上级名称:</td>
+            <td>@Html.DropDownListFor(p => p.ParentID, ViewBag.ParentUrlList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:340px;" })</td>
+        </tr>
+        <tr>
+            <td>接口URL:</td>
+            <td>@Html.TextBoxFor(p => p.Url, new { @class = "easyui-textbox", data_options = "multiline :true", style = "width:340px;height:50px;" })</td>
+        </tr>
+        <tr>
+            <td style="padding-left:20px;">请求类型:</td>
+            <td>@Html.DropDownListFor(p => p.method, ViewBag.MethodList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false,required:true", style = "width:340px;" })</td>
+        </tr>
+        <tr>
+            <td>排序ID:</td>
+            <td>@Html.TextBoxFor(p => p.SortID, new { @class = "easyui-numberbox", style = "width:340px;" })</td>
+        </tr>
+    </table>
+    @Html.HiddenFor(p=>p.UrlID)
+</form>
+

@@ -166,6 +166,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AlgorithmController.cs" />
+    <Compile Include="Controllers\ApiManaController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DataGridController.cs" />
     <Compile Include="Controllers\Demo\DevXtraReportController.cs" />
@@ -1041,6 +1042,10 @@
     <Content Include="Views\Plan\PlanPointEdit.cshtml" />
     <Content Include="Views\Party\PartyIndex.cshtml" />
     <Content Include="Views\Party\PartyEdit.cshtml" />
+    <Content Include="Views\ApiMana\ApiUrlIndex.cshtml" />
+    <Content Include="Views\ApiMana\EditApiUrl.cshtml" />
+    <Content Include="Views\ApiMana\APISendTest.cshtml" />
+    <Content Include="Views\ApiMana\ApiParameterIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

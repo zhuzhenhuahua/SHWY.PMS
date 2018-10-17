@@ -1,0 +1,135 @@
+﻿
+@{
+    ViewBag.Title = "ApiUrlIndex";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+
+<table id="tt"></table>
+<div id="tb">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditApiUrl(0)">新增</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="GetSelect('edit')">修改</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="GetSelect('del')">删除</a>
+    <span>
+        父菜单:
+    </span>
+    <input class="easyui-textbox" id="cmbParentMenu">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">搜索</a>
+    <div class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none" />
+    <span>
+        接口服务器地址:
+    </span>
+    <input class="easyui-textbox" id="txtWebApiUrl" style="width:300px;" value="http://47.93.82.245/UnifyDataServices1001">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="GetSelect('apiTest')">接口测试</a>
+</div>
+<script>
+    $(function () {
+        bindGrid();
+        InitGrid();
+    });
+    function bindGrid() {
+        $("#cmbParentMenu").combobox({
+            url: '/ApiMana/GetParentApiUrlList?isAddAll=1',
+            valueField: 'UrlID',
+            textField: 'Name'
+        });
+        $("#cmbParentMenu").combobox("select", 0);
+    }
+    function InitGrid() {
+        $("#tt").treegrid({
+            url: '/ApiMana/GetApiUrlTreeList',
+            idField: 'UrlID',
+            treeField: 'Name',
+            columns: [[
+                { field: 'UrlID', title: '菜单ID', hidden: true },
+                { field: 'Name', title: '菜单名称', width: 220 },
+                { field: 'Url', title: '链接地址' },
+                { field: 'methodName', title: '请求类型' },
+                { field: 'SortID', title: '排序', width: 70 }
+            ]],
+            animate: true,
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            singleSelect: true,
+            toolbar: '#tb',
+            pagination: false,
+            //pageSize: 20,
+            rownumbers: true,
+            fit: true,
+            queryParams: {
+                parentId: 0
+            }
+        });
+    }
+    function GridReload(loaded) {
+        $("#tt").treegrid(loaded, {
+            parentId: $('#cmbParentMenu').combobox("getValue")
+        });
+    }
+    function GetSelect(type) {
+        var selectRow = $("#tt").treegrid("getSelected");
+        if (selectRow == null) {
+            AlertMsg("请选择一行数据后再操作");
+            return;
+        }
+        if (type == "edit")
+            EditApiUrl(selectRow.UrlID);
+        else if (type == "del")
+            DelApiUrl(selectRow.UrlID);
+        else if (type == "apiTest") {
+            var parentID = selectRow.ParentID;
+            if (parentID == "" || parentID == "0") {
+                AlertMsg('父节点不能测试');
+                return;
+            }
+            var url = selectRow.Url;
+            if (url == "") {
+                AlertMsg("先输入URL再测试");
+                return;
+            }
+            ShowDialogNoSaveCancel(selectRow.Name, 700, 500, "/ApiMana/APISendTest?urlID=" + selectRow.UrlID);
+        }
+    }
+    var isAdd = false;
+    function EditApiUrl(urlID) {
+        if (urlID == 0)
+            isAdd = true;
+        else
+            isAdd = false;
+        ShowDialog("接口链接管理", 700, 500, "/ApiMana/EditApiUrl?urlID=" + urlID, saveApiUrl);
+    }
+    function DelApiUrl(urlID) {
+        $.messager.confirm('提示', "确定要删除吗？", function (r) {
+            if (r) {
+                $.post("/ApiMana/DelApiUrl", { urlID: urlID }, function (result) {
+                    if (result.isOk) {
+                        AlertMsg("删除成功");
+                        GridReload("reload");
+                        $("#tt").treegrid("clearSelections");//因为reload/load后不会清除选择项
+
+                    }
+                    else {
+                        AlertMsg('删除失败');
+                    }
+                });
+            }
+        });
+    }
+    function saveApiUrl() {
+        var check = $("#formApiUrlEidt").form('validate');
+        if (check) {
+            var postData = $("#formApiUrlEidt").serialize();
+            $.post("/ApiMana/SaveApiUrl", postData, function (result) {
+                if (result.isOk) {
+                    $('#PopWindow').dialog('close');
+                    $("#PopWindow").remove();
+                    GridReload(isAdd ? "load" : "reload");
+                }
+                else {
+                    alert('保存失败');
+                }
+
+            });
+        }
+    }
+</script>
