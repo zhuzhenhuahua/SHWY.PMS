@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SHWY.Lib.DB.Repositorys
 {
-   public class ApiManaRepository:BaseRepository
+    public class ApiManaRepository : BaseRepository
     {
         #region APIURL
         public async Task<Tuple<int, List<ApiUrl>>> GetApiUrlListAsync(int page, int rows, string name, int parentId)
@@ -35,7 +35,7 @@ namespace SHWY.Lib.DB.Repositorys
                 item.children = list.Where(p => p.ParentID == item.UrlID).ToList();
                 foreach (var child in item.children)
                 {
-                    child.methodName = methodList.Where(p => p.Code ==child.method.ToString()).FirstOrDefault()?.Text;
+                    child.methodName = methodList.Where(p => p.Code == child.method.ToString()).FirstOrDefault()?.Text;
                 }
             }
             return treeList;
@@ -73,7 +73,7 @@ namespace SHWY.Lib.DB.Repositorys
         public async Task<bool> DelApiUrlAsync(int urlID)
         {
             var model = await context.ApiUrls.Where(p => p.UrlID == urlID).FirstOrDefaultAsync();
-            if (model!=null)
+            if (model != null)
             {
                 context.ApiUrls.Remove(model);
                 return await context.SaveChangesAsync() == 1;
@@ -83,10 +83,73 @@ namespace SHWY.Lib.DB.Repositorys
         #endregion
 
         #region APIPARA
+        public async Task<Tuple<int, object>> GetApiParaListAsync(int pageIndex, int pageSize, int urlID, int inputOrOupPut)
+        {
+            int form = (pageIndex - 1) * pageSize;
+            int total = await (from j in context.ApiParameters
+                               where j.ApiUrlID == urlID
+                               && (inputOrOupPut == 0 ? 1 == 1 : j.InOROutPut == inputOrOupPut)
+                               select j).CountAsync();
+            var obj = await (from j in context.ApiParameters
+                             where j.ApiUrlID == urlID
+                              && (inputOrOupPut == 0 ? 1 == 1 : j.InOROutPut == inputOrOupPut)
+                             orderby j.ParaID descending
+                             select new
+                             {
+                                 j.ParaID,
+                                 j.ApiUrlID,
+                                 j.CName,
+                                 j.EName,
+                                 j.DataType,
+                                 j.InOROutPut,
+                                 j.IsNull,
+                                 j.Remark
+                             }).Skip(form).Take(pageSize).ToListAsync();
+            return Tuple.Create<int, object>(total, obj);
+        }
         public async Task<List<ApiParameter>> GetApiParaListAsync(int urlID)
         {
             var list = await context.ApiParameters.Where(p => p.ApiUrlID == urlID).ToListAsync();
             return list;
+        }
+        public async Task<List<ApiParameter>> GetApiParaListAsync(int urlID, int inOutPut)
+        {
+            var list = await context.ApiParameters.Where(p => p.ApiUrlID == urlID && p.InOROutPut == inOutPut).ToListAsync();
+            return list;
+        }
+        public async Task<ApiParameter> GetApiParaByParaIDAsync(int urlID, int paraID)
+        {
+            var model = await context.ApiParameters.Where(p => p.ApiUrlID == urlID && p.ParaID == paraID).FirstOrDefaultAsync();
+            return model;
+        }
+        public async Task<bool> AddOrUpdateApiParaAsync(ApiParameter para)
+        {
+            var isAdd = false;
+            var model = await context.ApiParameters.Where(p => p.ApiUrlID == para.ApiUrlID&&p.ParaID==para.ParaID).FirstOrDefaultAsync();
+            if (model == null)
+            {
+                isAdd = true;
+                model = new ApiParameter() {  ApiUrlID= para .ApiUrlID};
+            }
+            model.CName = para.CName;
+            model.EName = para.EName;
+            model.DataType = para.DataType;
+            model.InOROutPut = para.InOROutPut;
+            model.IsNull = para.IsNull;
+            model.Remark = para.Remark;
+            if (isAdd)
+                context.ApiParameters.Add(model);
+            return await context.SaveChangesAsync() == 1;
+        }
+        public async Task<bool> DelApiParaAsync(int urlID,int paraID)
+        {
+            var model = await context.ApiParameters.Where(p => p.ApiUrlID == urlID&&p.ParaID==paraID).FirstOrDefaultAsync();
+            if (model != null)
+            {
+                context.ApiParameters.Remove(model);
+                return await context.SaveChangesAsync() == 1;
+            }
+            return false;
         }
         #endregion
     }

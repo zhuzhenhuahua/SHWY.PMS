@@ -87,7 +87,7 @@ namespace SHWY.PMS.Controllers
             using (ApiManaRepository rep = new ApiManaRepository())
             {
                 var model = await rep.GetApiUrlAsync(urlID);
-                model.apiParas = await rep.GetApiParaListAsync(urlID);
+                model.apiParas = await rep.GetApiParaListAsync(urlID,1);//这里只查输入参数
                 return View(model);
             }
         }
@@ -100,8 +100,11 @@ namespace SHWY.PMS.Controllers
                 string[] paraArray = urlPara.Split('&');
                 foreach (string str in paraArray)
                 {
-                    string[] p = str.Split('=');
-                    dicPara.Add(p[0], p[1]);
+                    if (!string.IsNullOrEmpty(str))
+                    {
+                        string[] p = str.Split('=');
+                        dicPara.Add(p[0], p[1]);
+                    }
                 }
                 string result = string.Empty;
                 if (apiUrl.method == 1)
@@ -117,6 +120,58 @@ namespace SHWY.PMS.Controllers
         public ActionResult ApiParameterIndex()
         {
             return View();
+        }
+        public async Task<JsonResult> GetApiParaListAsync(int urlID, int inOrOutPut, int page, int rows)
+        {
+            if (urlID == 0 && inOrOutPut == 0)
+                return null;
+            using (ApiManaRepository rep = new ApiManaRepository())
+            {
+                var tuple = await rep.GetApiParaListAsync(page, rows, urlID, inOrOutPut);
+                return Json(new { total = tuple.Item1, rows = tuple.Item2 });
+            }
+        }
+        public async Task<ActionResult> ApiParaEdit(int paraID, int urlID)
+        {
+            using (ApiManaRepository rep = new ApiManaRepository())
+            {
+                var model = await rep.GetApiParaByParaIDAsync(urlID, paraID);
+                if (model == null)
+                    model = new ApiParameter() { ApiUrlID = urlID, DataType = 1, IsNull = false, InOROutPut = 1 };
+                //数据类型
+                var DataTypeList = new List<SelectListItem>();
+                var datatype = await codeRepo.GetCodesListAsync(ECodesTypeId.DataTypeByApiPara);
+                var datatype2 = new SelectList(datatype, "Code", "Text");
+                DataTypeList.AddRange(datatype2);
+                ViewBag.DataTypeList = DataTypeList;
+                //输入输出类型
+                var InOrOutPutList = new List<SelectListItem>();
+                InOrOutPutList.Add(new SelectListItem() { Value = "1", Text = "输入参数", Selected = true });
+                InOrOutPutList.Add(new SelectListItem() { Value = "2", Text = "输出参数" });
+                ViewBag.InOrOutPutList = InOrOutPutList;
+                //允许NULL值
+                var ISNULLList = new List<SelectListItem>();
+                ISNULLList.Add(new SelectListItem() { Value = "False", Text = "不允许为空", Selected = true });
+                ISNULLList.Add(new SelectListItem() { Value = "True", Text = "可空" });
+                ViewBag.ISNULLList = ISNULLList;
+                return View(model);
+            }
+        }
+        public async Task<JsonResult> SaveUrlPara(ApiParameter para)
+        {
+            using (ApiManaRepository rep = new ApiManaRepository())
+            {
+                var res = await rep.AddOrUpdateApiParaAsync(para);
+                return Json(new { isOk = res });
+            }
+        }
+        public async Task<JsonResult> DelUrlPara(int paraID, int urlID)
+        {
+            using (ApiManaRepository rep = new ApiManaRepository())
+            {
+                var res = await rep.DelApiParaAsync(urlID, paraID);
+                return Json(new { isOk = res });
+            }
         }
         #endregion
     }

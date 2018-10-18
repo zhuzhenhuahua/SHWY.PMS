@@ -4,5 +4,165 @@
     Layout = "~/Views/Shared/_BaseLayOutContent.cshtml";
 }
 
-<h2>ApiParameterIndex</h2>
+<div data-options="region:'west',title:'接口链接',split:true" style="width:460px;">
+    <table id="apiUrlGrid"></table>
+</div>
+<div data-options="region:'center',title:'参数设置'">
+    <div id="tb">
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditApiPara(0)">新增</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditApiPara(1)">修改</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelApiPara()">删除</a>
+        <span class="l-btn-text">参数类型：</span>
+        <select id="select_InOrOutPut" class="easyui-combobox" style="width:100px;">
+            <option value="0" selected="selected">全部</option>
+            <option value="1">输入参数</option>
+            <option value="2">输出参数</option>
+        </select>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
+    </div>
+    <table id="tt"></table>
+</div>
+<script type="text/javascript">
+    $(function () {
+        InitApiUrlGrid();
+        InitGrid();
+    });
+    function InitApiUrlGrid() {
+        $("#apiUrlGrid").treegrid({
+            url: '/ApiMana/GetApiUrlTreeList',
+            idField: 'UrlID',
+            treeField: 'Name',
+            columns: [[
+                { field: 'UrlID', title: '菜单ID', hidden: true },
+                { field: 'Name', title: '菜单名称', width: 200 },
+                { field: 'Url', title: '链接地址', width: 160 },
+                { field: 'methodName', title: '请求类型', width: 60 }
+            ]],
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            singleSelect: true,
+            pagination: false,
+            // pageSize: 20,
+            rownumbers: true,
+            fit: true,
+            queryParams: {
+                parentId: 0
+            },
+            onClickRow: function (row) {
+                if (row.ParentID != 0) {
+                    GridReload('load');
+                }
+            }
+        });
+    }
+    function InitGrid() {
+        $("#tt").datagrid({
+            url: '/ApiMana/GetApiParaListAsync',
+            columns: [[
+                { field: 'ParaID', title: 'ParaID', hidden: true },
+                { field: 'ApiUrlID', title: 'ApiUrlID', hidden: true },
+                { field: 'CName', title: '参数中文名' },
+                { field: 'EName', title: '参数名' },
+                { field: 'DataType', title: '数据类型' },
+                {
+                    field: 'InOROutPut', title: '参数类型', formatter: function (value, row, index) {
+                        return value == 1 ? "输入参数" : "输出参数";
+                    }
+                },
+                { field: 'IsNull', title: '允许NULL值' },
+                { field: 'Remark', title: '备注' }
+            ]],
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            singleSelect: true,
+            pagination: true,
+            pageSize: 20,
+            toolbar: '#tb',
+            rownumbers: true,
+            fit: true,
+            queryParams: {
+                urlID: 0,
+                inOrOutPut: 0
+            }
+        });
+    }
+    function GridReload(loaded) {
+        var row = $("#apiUrlGrid").datagrid("getSelected");
+        if (row == null) {
+            AlertMsg("请先选择接口链接");
+        } else {
+            if (row.ParentID != 0) {
+                $("#tt").datagrid(loaded, {
+                    urlID: row.UrlID,
+                    inOrOutPut: $("#select_InOrOutPut").combobox('getValue')
+                });
+            }
+        }
+    }
+    var isAdd = false;
+    function EditApiPara(paraID) {
+        var apiUrl = $("#apiUrlGrid").datagrid("getSelected");
+        var urlID = 0;
+        if (apiUrl == null) {
+            AlertMsg("请先选择接口链接");
+            return;
+        }
+        if (paraID == 0)
+            isAdd = true;
+        else {
+            var row = $("#tt").datagrid("getSelected");
+            if (row == null) {
+                AlertMsg("请选择一行数据后再操作");
+                return;
+            }
+            isAdd = false;
+            paraID = row.ParaID;
+        }
+        urlID = apiUrl.UrlID;
+        ShowDialog(apiUrl.Name, 600, 400, "/ApiMana/ApiParaEdit?paraID=" + paraID + "&urlID=" + urlID, saveApiPara);
+    }
+    function DelApiPara() {
+        var apiUrl = $("#apiUrlGrid").datagrid("getSelected");
+        if (apiUrl == null) {
+            AlertMsg("请先选择接口链接");
+            return;
+        }
+        var row = $("#tt").datagrid("getSelected");
+        if (row == null) {
+            AlertMsg("请选择一行数据后再操作");
+            return;
+        }
+        $.messager.confirm('提示', "确定要删除吗？", function (r) {
+            if (r) {
+                $.post("/Plan/DelUrlPara", { paraID: row.ParaID, urlID: apiUrl.UrlID }, function (result) {
+                    if (result.isOk) {
+                        AlertMsg("删除成功");
+                        GridReload("reload");
+                    }
+                    else {
+                        AlertMsg('删除失败');
+                    }
+                });
+            }
+        });
+    }
+    function saveApiPara() {
+        var check = $("#formApiParaEidt").form('enableValidation').form('validate');
+        if (check) {
+            var postData = $("#formApiParaEidt").serialize();
+            $.post("/ApiMana/SaveUrlPara", postData, function (result) {
+                if (result.isOk) {
+                    $('#PopWindow').dialog('close');
+                    $("#PopWindow").remove();
+                    GridReload(isAdd ? "load" : "reload");
+                }
+                else {
+                    AlertMsg('保存失败');
+                }
 
+            });
+        }
+    }
+</script>

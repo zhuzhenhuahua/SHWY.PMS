@@ -16,7 +16,6 @@
         });
     });
     function ItemOnSelect(record) {
-        debugger;
         var itemId = record.value;
         $("#NeedID").combobox({
             url: '/Need/GetNeedByItemID?itemID=' + itemId,
@@ -26,7 +25,6 @@
                 $("#NeedID").combobox("clear");
             },
             onLoadSuccess:function(){
-                debugger;
                 if("@Model.NeedID"!=""||"@Model.NeedID"!="0"){
                     var data=$("#NeedID").combobox("getData");
                     if(data.length>0){

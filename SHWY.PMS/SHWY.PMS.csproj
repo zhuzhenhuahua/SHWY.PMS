@@ -1046,6 +1046,7 @@
     <Content Include="Views\ApiMana\EditApiUrl.cshtml" />
     <Content Include="Views\ApiMana\APISendTest.cshtml" />
     <Content Include="Views\ApiMana\ApiParameterIndex.cshtml" />
+    <Content Include="Views\ApiMana\ApiParaEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

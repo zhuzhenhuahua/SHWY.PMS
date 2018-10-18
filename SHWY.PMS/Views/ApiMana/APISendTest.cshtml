@@ -26,12 +26,31 @@
                 urlPara += "&" + ename + "=" + value + "";
 
         });
-        $.post("/ApiMana/SendAPi", { urlID: urlID, urlPara: urlPara, url: url }, function (result) {
-            $("#txt_ShowJson").textbox("setValue", result);
+        var index = 0;
+        $.ajax({
+            url: '/ApiMana/SendAPi',
+            type: 'POST',
+            dataType: "json",
+            data: { urlID: urlID, urlPara: urlPara, url: url },
+            beforeSend: function () {
+                $('#progressbar').progressbar({
+                    value: 60
+                });
+            },
+            success: function (result) {
+                $('#progressbar').progressbar({
+                    value: 100
+                });
+                $("#txt_ShowJson").textbox("setValue", result);
+            }
         });
+        //$.post("/ApiMana/SendAPi", { urlID: urlID, urlPara: urlPara, url: url }, function (result) {
+        //    $("#txt_ShowJson").textbox("setValue", result);
+        //});
     }
 </script>
 <form id="formApiSend">
+    <div id="progressbar" style="width:400px;"></div>
     <div>
         <span>
             <input type="text" id="txtUrl" style="width:530px;height:50px;" />
@@ -41,7 +60,14 @@
         </span>
     </div>
     <table>
-
+        @if (Model.apiParas.Count == 0)
+        {
+            <tr>
+                <td colspan="4">
+                    该接口未设置输入参数
+                </td>
+            </tr>
+        }
         @for (int i = 0; i < Model.apiParas.Count; i++)
         {
             <tr>

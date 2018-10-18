@@ -62,5 +62,9 @@ namespace SHWY.Model.DB
         /// 接口请求类型(post、get)
         /// </summary>
         MethodType=9,
+        /// <summary>
+        /// API参数的数据类型
+        /// </summary>
+        DataTypeByApiPara=10
     }
 }
