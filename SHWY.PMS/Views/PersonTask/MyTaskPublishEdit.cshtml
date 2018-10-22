@@ -46,7 +46,8 @@
             <td style="padding-left:20px;">当前状态:</td>
             <td>@Html.DropDownListFor(p => p.taskStatus, ViewBag.TaskStatusList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
             <td style="padding-left:20px;">预期完成时间:</td>
-            <td>@Html.TextBoxFor(p => p.predDeadTime, new { @class = "easyui-datetimebox", data_options = "required:true" })</td>
+            <td>@Html.TextBoxFor(p => p.predDeadTime, new { @class = "easyui-datetimebox", Value = Model.predDeadTime.ToString("yyyy-MM-dd HH:mm"), data_options = "required:true" })
+            </td>
         </tr>
         <tr style="height:30px;">
             <td style="padding-left:20px;">所属模块:</td>
@@ -66,7 +67,7 @@
         </tr>
         <tr style="height:30px;">
             <td style="padding-left:20px;">完成时间:</td>
-            <td>@Html.TextBoxFor(p => p.complTime, new { @class = "easyui-datetimebox" })</td>
+            <td>@Html.TextBoxFor(p => p.complTime, new { @class = "easyui-datetimebox",Value=Model.complTime==null?"": Model.complTime.Value.ToString("yyyy-MM-dd HH:mm") })</td>
             <td style="padding-left:20px;">完成程度:</td>
             <td>@Html.DropDownListFor(p => p.taskComplDegree, ViewBag.TaskComplDegreeV as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
             <td style="padding-left:20px;">服务态度:</td>

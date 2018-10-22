@@ -52,7 +52,7 @@ namespace SHWY.Lib.DB.Repositorys
         public async Task<List<Sys_User>> GetUserListAsync()
         {
             var list = await (from j in context.Sys_Users
-                              orderby j.Uid
+                              orderby j.Name
                               select j).ToListAsync();
             return list;
         }

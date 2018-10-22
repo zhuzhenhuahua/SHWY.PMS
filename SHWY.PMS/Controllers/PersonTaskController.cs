@@ -124,6 +124,10 @@ namespace SHWY.PMS.Controllers
         public async Task<ActionResult> MyTaskPublishEdit(string taskId)
         {
             PersonTask task = await pTaskRepo.GetTaskAsync(taskId);
+            if (task == null || string.IsNullOrEmpty(task.ID))
+            {
+                task.predDeadTime = DateTime.Now.AddDays(1);
+            }
             //产品
             var ItemList = new List<SelectListItem>();
             var items = await itemsRepo.GetListItemsAsync();
