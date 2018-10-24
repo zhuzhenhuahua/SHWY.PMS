@@ -31,20 +31,30 @@ namespace SHWY.Lib.DB.Repositorys
         //}
 
         public async Task<Tuple<int, List<V_PersonTask>>> GetListAsync(int pageIndex, int pageSize,
-            int handlerId, string itemId, string prodId, int taskStatus)
+            int handlerId, string itemId, string prodId, int taskStatus, DateTime? publishForm, DateTime? publishTo)
         {
+            DateTime tempTo = new DateTime();
+            if (publishTo != null)
+            {
+                tempTo = publishTo.Value.AddDays(1);
+            }
+            
             int from = (pageIndex - 1) * pageSize;
             int total = await (from j in context.VPersonTask
                                where (handlerId == 0 ? 1 == 1 : j.handlerID == handlerId)
                              && (string.IsNullOrEmpty(itemId) ? 1 == 1 : j.itemID == itemId)
                               && (string.IsNullOrEmpty(prodId) ? 1 == 1 : j.prodId == prodId)
                              && (taskStatus == 0 ? 1 == 1 : j.taskStatus == taskStatus)
+                             && (publishForm == null ? 1 == 1 : j.publishTimeDate >= publishForm.Value)
+                             && (publishTo == null ? 1 == 1 : j.publishTimeDate < tempTo)
                                select j).CountAsync();
             var list = await (from j in context.VPersonTask
                               where (handlerId == 0 ? 1 == 1 : j.handlerID == handlerId)
                             && (string.IsNullOrEmpty(itemId) ? 1 == 1 : j.itemID == itemId)
                             && (string.IsNullOrEmpty(prodId) ? 1 == 1 : j.prodId == prodId)
                             && (taskStatus == 0 ? 1 == 1 : j.taskStatus == taskStatus)
+                               && (publishForm == null ? 1 == 1 : j.publishTimeDate >= publishForm.Value)
+                             && (publishTo == null ? 1 == 1 : j.publishTimeDate < tempTo)
                               orderby j.publishTime descending
                               select j).Skip(from).Take(pageSize).ToListAsync();
             return Tuple.Create<int, List<V_PersonTask>>(total, list);

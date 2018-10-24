@@ -42,9 +42,13 @@ namespace SHWY.Model.DB
         /// </summary>
         public string detail { get; set; }
         /// <summary>
-        /// 发布时间
+        /// 发布时间(视图转好的格式，直接显示)
         /// </summary>
         public string publishTime { get; set; }
+        /// <summary>
+        /// 原字段类型（datetime）
+        /// </summary>
+        public DateTime publishTimeDate { get; set; }
         /// <summary>
         /// 预期完成时间
         /// </summary>

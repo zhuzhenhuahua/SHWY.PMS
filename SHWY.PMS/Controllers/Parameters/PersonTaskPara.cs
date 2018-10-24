@@ -13,5 +13,7 @@ namespace SHWY.PMS.Controllers
        public string itemId { get; set; }
         public string prodId { get; set; }
        public int taskStatus { get; set; }
+        public DateTime? publishForm { get; set; }
+        public DateTime? publishTo { get; set; }
     }
 }

@@ -38,14 +38,14 @@ namespace SHWY.PMS.Controllers
         //任务发布管理/任务查询列表
         public async Task<JsonResult> GetList(PersonTaskPara para)
         {
-            var result = await pTaskRepo.GetListAsync(para.page, para.rows, para.handlerId, para.itemId,para.prodId, para.taskStatus);
+            var result = await pTaskRepo.GetListAsync(para.page, para.rows, para.handlerId, para.itemId,para.prodId, para.taskStatus,para.publishForm,para.publishTo);
             return Json(new { total = result.Item1, rows = result.Item2 });
         }
         //个人任务列表
         public async Task<JsonResult> GetMyTaskList(PersonTaskPara para)
         {
             var sessionUser = Session["CurrentUser"] as CurrentUser;
-            var result = await pTaskRepo.GetListAsync(para.page, para.rows, sessionUser.Sys_User.Uid, para.itemId,para.prodId, para.taskStatus);
+            var result = await pTaskRepo.GetListAsync(para.page, para.rows, sessionUser.Sys_User.Uid, para.itemId,para.prodId, para.taskStatus, para.publishForm, para.publishTo);
             return Json(new { total = result.Item1, rows = result.Item2 });
         }
         public async Task<ActionResult> TaskPublishEdit(string id)

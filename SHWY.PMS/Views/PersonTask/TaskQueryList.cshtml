@@ -14,6 +14,8 @@
     <span class="l-btn-text">产品：</span><input class="easyui-textbox" id="txtProdQ" style="width:140px;" />
     <span class="l-btn-text">状态：</span><input class="easyui-textbox" id="txtStatusQ" style="width:100px;" />
     <span class="l-btn-text">处理人：</span><input class="easyui-textbox" id="txtHandlerIDQ" style="width:80px;" />
+    <span class="l-btn-text">开始时间：</span><input class="easyui-datebox" id="txtPublishFrom" style="width:100px;" />
+    <span class="l-btn-text">结束时间：</span><input class="easyui-datebox" id="txtPublishTo" style="width:100px;" />
     <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
 </div>
 <script type="text/javascript">
@@ -26,6 +28,7 @@
             url: '/User/GetAllUsers?isAddAll=1',
             valueField: 'Uid',
             textField: 'Name',
+            editable:false,
             onLoadSuccess: function () {
                 $("#txtHandlerIDQ").combobox("select", 0);
             }
@@ -42,6 +45,7 @@
             url: '/Product/GetAllProds?isAddAll=1',
             valueField: 'ProID',
             textField: 'NAME',
+            editable: false,
             onLoadSuccess: function () {
                 $("#txtProdQ").combobox("select", "");
             }
@@ -50,6 +54,7 @@
             url: '/PersonTask/GetAllTaskStatus?isAddAll=1',
             valueField: 'id',
             textField: 'name',
+            editable:false,
             onLoadSuccess: function () {
                 $("#txtStatusQ").combobox("select", 0);
             }
@@ -99,6 +104,8 @@
                 itemId: "",
                 prodId: "",
                 taskStatus: "",
+                publishForm: "",
+                publishTo:""
             }
         });
     }
@@ -108,6 +115,8 @@
             itemId: $("#txtItemQ").combobox('getValue'),
             prodId: $("#txtProdQ").combobox('getValue'),
             taskStatus: $("#txtStatusQ").combobox('getValue'),
+            publishForm: $("#txtPublishFrom").datebox('getValue'),
+            publishTo: $("#txtPublishTo").datebox('getValue')
         });
     }
     var isAdd = false;
