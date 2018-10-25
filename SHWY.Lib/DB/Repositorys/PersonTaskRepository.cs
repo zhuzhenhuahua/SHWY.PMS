@@ -38,7 +38,7 @@ namespace SHWY.Lib.DB.Repositorys
             {
                 tempTo = publishTo.Value.AddDays(1);
             }
-            
+
             int from = (pageIndex - 1) * pageSize;
             int total = await (from j in context.VPersonTask
                                where (handlerId == 0 ? 1 == 1 : j.handlerID == handlerId)
