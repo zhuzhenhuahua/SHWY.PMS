@@ -57,7 +57,7 @@
             isAdd = true;
         else
             isAdd = false;
-        ShowDialog("角色管理", 500, 400, "/Role/EditRole?rid=" + Rid, saveRole);
+        ShowDialog("角色管理", 600, 400, "/Role/EditRole?rid=" + Rid, saveRole);
     }
     function DelRole(rid) {
         $.messager.confirm('提示', "确定要删除吗？", function (r) {

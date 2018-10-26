@@ -96,7 +96,7 @@
             isAdd = true;
         else
             isAdd = false;
-        ShowDialog("接口链接管理", 700, 500, "/ApiMana/EditApiUrl?urlID=" + urlID, saveApiUrl);
+        ShowDialog("接口链接管理", 600, 400, "/ApiMana/EditApiUrl?urlID=" + urlID, saveApiUrl);
     }
     function DelApiUrl(urlID) {
         $.messager.confirm('提示', "确定要删除吗？", function (r) {

@@ -71,7 +71,7 @@
             sid = row.sid;
             isAdd = false;
         }
-        ShowDialog("服务器管理", 700, 500, "/Server/ServerEdit?sid=" + sid, saveTask);
+        ShowDialog("服务器管理", 600, 400, "/Server/ServerEdit?sid=" + sid, saveTask);
     }
     function DelServer() {
         var row = $("#tt").datagrid("getSelected");

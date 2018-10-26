@@ -79,7 +79,7 @@
             ipid = row.ipid;
             isAdd = false;
         }
-        ShowDialog("服务器IP管理", 700, 500, "/Server/ServerIpEdit?sid=" + sid+"&ipid="+ipid, saveServerIp);
+        ShowDialog("服务器IP管理", 600, 400, "/Server/ServerIpEdit?sid=" + sid+"&ipid="+ipid, saveServerIp);
     }
     function DelServerIp() {
         var row = $("#tt").datagrid("getSelected");

@@ -83,7 +83,7 @@
             ipid = row.ipid;
             isAdd = false;
         }
-        ShowDialog("IP地址管理", 700, 500, "/Server/IpAddressEdit?ipid=" + ipid, saveIpAddress);
+        ShowDialog("IP地址管理", 600, 400, "/Server/IpAddressEdit?ipid=" + ipid, saveIpAddress);
     }
     function DelIpAddress() {
         var row = $("#tt").datagrid("getSelected");

@@ -69,7 +69,7 @@
             itemId = row.ItemID;
         }
         isAdd = false;
-        ShowDialog("项目管理", 500, 400, "/Items/EditItem?strItemId=" + itemId, saveItem);
+        ShowDialog("项目管理", 600, 400, "/Items/EditItem?strItemId=" + itemId, saveItem);
     }
     function DelItem() {
         var row = $("#tt").datagrid("getSelected");

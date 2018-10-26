@@ -83,7 +83,7 @@
             isAdd = true;
         else
             isAdd = false;
-        ShowDialog("产品管理", 500, 400, "/Product/EditProd?prodId=" + prodId, saveProd);
+        ShowDialog("产品管理", 600, 400, "/Product/EditProd?prodId=" + prodId, saveProd);
     }
     function DelProd(prodId) {
         $.messager.confirm('提示', "确定要删除吗？", function (r) {

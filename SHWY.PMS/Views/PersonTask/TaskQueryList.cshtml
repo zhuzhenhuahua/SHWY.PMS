@@ -132,7 +132,7 @@
             id = row.ID;
             isAdd = false;
         }
-        ShowDialog("任务发布", 800, 550, "/PersonTask/TaskPublishEdit?id=" + id, saveTask);
+        ShowDialog("任务发布", 800, 500, "/PersonTask/TaskPublishEdit?id=" + id, saveTask);
     }
     function DelTask() {
         var row = $("#tt").datagrid("getSelected");
@@ -177,7 +177,7 @@
             AlertMsg("请选择一行数据后再操作");
             return;
         }
-        ShowDialogNoSaveCancel("任务过程", 800, 550, "/PersonTask/TaskProcessEdit");
+        ShowDialogNoSaveCancel("任务过程", 800, 500, "/PersonTask/TaskProcessEdit");
     }
 </script>
 

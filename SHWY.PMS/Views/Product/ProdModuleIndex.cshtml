@@ -69,7 +69,7 @@
         }
         var moduleID = isAdd ? 0 : row.ModuleID;
         var proID = isAdd ? "" : row.ProID;
-        ShowDialog("模块管理", 500, 400, "/Product/ProdModuleEdit?moduleID=" + moduleID + "&proID=" + proID, saveProdModule);
+        ShowDialog("模块管理", 600, 400, "/Product/ProdModuleEdit?moduleID=" + moduleID + "&proID=" + proID, saveProdModule);
     }
     function DelProdModule() {
         var row = $("#tt").datagrid("getSelected");

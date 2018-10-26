@@ -70,7 +70,7 @@
             Id = row.ID;
             isAdd = false;
         }
-        ShowDialog("端口映射管理", 700, 500, "/Server/InPortOutPortEdit?Id=" + Id, saveInPortOutPort);
+        ShowDialog("端口映射管理", 600, 400, "/Server/InPortOutPortEdit?Id=" + Id, saveInPortOutPort);
     }
     function DelInPortOutPort() {
         var row = $("#tt").datagrid("getSelected");

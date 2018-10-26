@@ -84,7 +84,7 @@
             isAdd = true;
         else
             isAdd = false;
-        ShowDialog("用户管理", 500, 400, "/User/EditUser?uid=" + uid, saveUser);
+        ShowDialog("用户管理", 600, 400, "/User/EditUser?uid=" + uid, saveUser);
     }
     function DelUser(uid) {
         $.messager.confirm('提示', "确定要删除吗？", function (r) {

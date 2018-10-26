@@ -58,7 +58,7 @@
             isAdd = false;
         }
         var id = partyid == 0 ? "" : row.PartyID;
-        ShowDialog("甲方公司管理", 500, 400, "/Party/PartyEdit?partyID=" + id, saveParty);
+        ShowDialog("甲方公司管理", 600, 400, "/Party/PartyEdit?partyID=" + id, saveParty);
     }
     function DelParty() {
         var row = $("#tt").datagrid("getSelected");

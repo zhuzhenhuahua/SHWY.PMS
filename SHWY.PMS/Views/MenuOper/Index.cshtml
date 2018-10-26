@@ -69,7 +69,7 @@
             menuOperId = row.MenuOperId;
             isAdd = false;
         }
-        ShowDialog("菜单操作管理", 500, 400, "/MenuOper/EditMeunOper?MenuOperId=" + menuOperId, saveData);
+        ShowDialog("菜单操作管理", 600, 400, "/MenuOper/EditMeunOper?MenuOperId=" + menuOperId, saveData);
     }
     function saveData() {
         var check = $("#formMenuOperEidt").form('enableValidation').form('validate');
