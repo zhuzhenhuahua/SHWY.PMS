@@ -14,6 +14,54 @@ namespace SHWY.PMS.Controllers
     {
         ProductRepository prodRepo = ProductRepository.CreateInstance();
         CodeRepository codeRepo = CodeRepository.CreateInstance();
+        #region ApiBaseUrl
+        public ActionResult BaseUrlIndex()
+        {
+            return View();
+        }
+        public async Task<JsonResult> GetBaseUrlList(int page, int rows)
+        {
+            using (ApiManaRepository rep = new ApiManaRepository())
+            {
+                var tuple = await rep.GetApiBaseUrlListAsync(page, rows);
+                return Json(new { total = tuple.Item1, rows = tuple.Item2 });
+            }
+        }
+        public async Task<JsonResult> GetAllBaseUrlList()
+        {
+            using (ApiManaRepository rep = new ApiManaRepository())
+            {
+                var list = await rep.GetApiBaseUrlListAsync();
+                return Json(list);
+            }
+
+        }
+        public async Task<ActionResult> EditBaseUrl(int Id)
+        {
+            using (ApiManaRepository rep = new ApiManaRepository())
+            {
+                var model = await rep.GetApiBaseUrlAsync(Id);
+                return View(model);
+            }
+        }
+        public async Task<JsonResult> SaveApiBaseUrl(ApiBaseUrl model)
+        {
+            using (ApiManaRepository rep = new ApiManaRepository())
+            {
+                var res = await rep.AddOrUpdateApiBaseUrlAsync(model);
+                return Json(new { isOk = res });
+            }
+        }
+        public async Task<JsonResult> DelBaseUrl(int BaseUrlId)
+        {
+            using (ApiManaRepository rep = new ApiManaRepository())
+            {
+                var res = await rep.DelApiBaseUrlAsync(BaseUrlId);
+                return Json(new { isOk = res });
+            }
+        }
+        #endregion
+
         #region ApiUrl
         public ActionResult ApiUrlIndex()
         {
@@ -87,7 +135,7 @@ namespace SHWY.PMS.Controllers
             using (ApiManaRepository rep = new ApiManaRepository())
             {
                 var model = await rep.GetApiUrlAsync(urlID);
-                model.apiParas = await rep.GetApiParaListAsync(urlID,1);//这里只查输入参数
+                model.apiParas = await rep.GetApiParaListAsync(urlID, 1);//这里只查输入参数
                 return View(model);
             }
         }

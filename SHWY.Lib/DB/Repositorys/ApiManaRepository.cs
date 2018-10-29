@@ -10,6 +10,54 @@ namespace SHWY.Lib.DB.Repositorys
 {
     public class ApiManaRepository : BaseRepository
     {
+        #region APIBASEURL
+        public async Task<Tuple<int, List<ApiBaseUrl>>> GetApiBaseUrlListAsync(int page, int rows)
+        {
+            int from = (page - 1) * rows;
+            var total = await (from j in context.ApiBaseUrls
+                               select j).CountAsync();
+            var list = await (from j in context.ApiBaseUrls
+                              orderby j.Id descending
+                              select j).Skip(from).Take(rows).ToListAsync();
+            return Tuple.Create(total, list);
+        }
+        public async Task<List<ApiBaseUrl>> GetApiBaseUrlListAsync()
+        {
+            var list = await context.ApiBaseUrls.ToListAsync();
+            return list;
+        }
+        public async Task<ApiBaseUrl> GetApiBaseUrlAsync(int Id)
+        {
+            var model = await context.ApiBaseUrls.Where(p => p.Id == Id).FirstOrDefaultAsync();
+            return model;
+        }
+        public async Task<bool> AddOrUpdateApiBaseUrlAsync(ApiBaseUrl para)
+        {
+            var isAdd = false;
+            var model = await context.ApiBaseUrls.Where(p => p.Id == para.Id).FirstOrDefaultAsync();
+            if (model == null)
+            {
+                isAdd = true;
+                model = new ApiBaseUrl();
+            }
+            model.BaseName = para.BaseName;
+            model.BaseUrl = para.BaseUrl;
+            model.Remark = para.Remark;
+            if (isAdd)
+                context.ApiBaseUrls.Add(model);
+            return await context.SaveChangesAsync() == 1;
+        }
+        public async Task<bool> DelApiBaseUrlAsync(int Id)
+        {
+            var model = await context.ApiBaseUrls.Where(p => p.Id == Id).FirstOrDefaultAsync();
+            if (model != null)
+            {
+                context.ApiBaseUrls.Remove(model);
+                return await context.SaveChangesAsync() == 1;
+            }
+            return false;
+        }
+        #endregion
         #region APIURL
         public async Task<Tuple<int, List<ApiUrl>>> GetApiUrlListAsync(int page, int rows, string name, int parentId)
         {

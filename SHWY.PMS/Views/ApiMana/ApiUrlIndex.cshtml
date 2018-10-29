@@ -18,7 +18,7 @@
     <span>
         基地址:
     </span>
-    <input class="easyui-textbox" id="txtWebApiUrl" style="width:300px;" value="http://47.93.82.245/UnifyDataServices1001">
+    <input type="text" id="txtWebApiUrl" style="width:300px;">
     <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="GetSelect('apiTest')">接口测试</a>
 </div>
 <script>
@@ -31,6 +31,25 @@
             url: '/ApiMana/GetParentApiUrlList?isAddAll=1',
             valueField: 'UrlID',
             textField: 'Name'
+        });
+        $("#txtWebApiUrl").combobox({
+            url: '/ApiMana/GetAllBaseUrlList',
+            valueField: 'BaseUrl',
+            textField: 'BaseUrl',
+            editable: false,
+            onLoadSuccess: function () {
+                var baseData = $("#txtWebApiUrl").combobox("getData");
+                if (baseData.length > 0)
+                    $("#txtWebApiUrl").combobox("select", baseData[0].BaseUrl);
+            },
+            onSelect: function (item) {
+                var txtUrl = $("#txtUrl");
+                if (txtUrl && txtUrl.length > 0) {
+                    var url = item.BaseUrl;
+                    var selectRow = $("#tt").treegrid("getSelected");
+                    $("#txtUrl").textbox("setValue",url + selectRow.Url);
+                }
+            }
         });
         $("#cmbParentMenu").combobox("select", 0);
     }
@@ -60,6 +79,10 @@
                 parentId: 0
             }
         });
+        //var baseData = $("#txtWebApiUrl").combobox("getData");
+        //if (baseData.length > 0)
+        //    $("#txtWebApiUrl").combobox("select", baseData[0].BaseUrl);
+        //debugger;
     }
     function GridReload(loaded) {
         $("#tt").treegrid(loaded, {

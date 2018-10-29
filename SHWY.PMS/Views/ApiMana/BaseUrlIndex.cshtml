@@ -1,0 +1,100 @@
+﻿
+@{
+    ViewBag.Title = "BaseUrlIndex";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+
+<div id="tb">
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditBaseUrl(0)">新增</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditBaseUrl(1)">修改</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelBaseUrl()">删除</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">刷新</a>
+</div>
+<table id="tt"></table>
+<script>
+    $(function () {
+        InitGrid();
+    });
+    function InitGrid() {
+        $("#tt").datagrid({
+            url: '/ApiMana/GetBaseUrlList',
+            columns: [[
+                { field: 'Id', title: '主键', hidden: true },
+                { field: 'BaseName', title: '基地址说明' },
+                { field: 'BaseUrl', title: '基地址' },
+                { field: 'Remark', title: '备注' }
+            ]],
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            singleSelect: true,
+            toolbar: '#tb',
+            pagination: true,
+            pageSize: 20,
+            idField: 'Id',
+            rownumbers: true,
+            fit: true,
+            queryParams: {
+            }
+        });
+    }
+    function GridReload(loaded) {
+        $("#tt").datagrid(loaded, {
+        });
+    }
+    var isAdd = false;
+    function EditBaseUrl(BaseUrlId) {
+        if (BaseUrlId == 0)
+            isAdd = true;
+        else {
+            var row = $("#tt").datagrid("getSelected");
+            if (row == null) {
+                AlertMsg("请选择一行数据后再操作");
+                return;
+            }
+            BaseUrlId = row.Id;
+        }
+        isAdd = false;
+        ShowDialog("基地址管理", 600, 400, "/ApiMana/EditBaseUrl?Id=" + BaseUrlId, saveBaseUrl);
+    }
+    function DelBaseUrl() {
+        var row = $("#tt").datagrid("getSelected");
+        if (row == null) {
+            AlertMsg("请选择一行数据后再操作");
+            return;
+        }
+        $.messager.confirm('提示', "确定要删除吗？", function (r) {
+            if (r) {
+                $.post("/ApiMana/DelBaseUrl", { BaseUrlId: row.Id }, function (result) {
+                    if (result.isOk) {
+                        AlertMsg("删除成功");
+                        GridReload("reload");
+                    }
+                    else {
+                        AlertMsg('删除失败');
+                    }
+                });
+            }
+        });
+    }
+    function saveBaseUrl() {
+        var check = $("#formBaseUrlEidt").form('enableValidation').form('validate');
+        if (check) {
+            var postData = $("#formBaseUrlEidt").serialize();
+
+            SaveData(postData);
+        }
+    }
+    function SaveData(postData) {
+        $.post("/ApiMana/SaveApiBaseUrl", postData, function (result) {
+            if (result.isOk) {
+                $('#PopWindow').dialog('close');
+                $("#PopWindow").remove();
+                GridReload(isAdd ? "load" : "reload");
+            }
+            else {
+                alert('保存失败');
+            }
+        });
+    }
+</script>

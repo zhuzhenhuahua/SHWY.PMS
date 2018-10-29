@@ -1,0 +1,25 @@
+﻿@model SHWY.Model.DB.ApiBaseUrl
+@{
+    ViewBag.Title = "EditBaseUrl";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+
+<form id="formBaseUrlEidt">
+    <table>
+        <tr>
+            <td>基地址中文说明:</td>
+            <td>@Html.TextBoxFor(p => p.BaseName, new { @class = "easyui-textbox", data_options = "required:true" })</td>
+        </tr>
+        <tr>
+            <td>基地址:</td>
+            <td>@Html.TextBoxFor(p => p.BaseUrl, new { @class = "easyui-textbox", data_options = "required :true", style = "width:340px;" })</td>
+        </tr>
+        <tr>
+            <td style="padding-left:20px;">备注：</td>
+            <td>@Html.TextBoxFor(p => p.Remark, new { @class = "easyui-textbox", data_options = "multiline :true", style = "width:340px;height:50px;" })</td>
+        </tr>
+    </table>
+    @Html.HiddenFor(p => p.Id)
+</form>
+
+

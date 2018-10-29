@@ -97,7 +97,7 @@
         return '<a href="javascript:void(0)" onclick="ShowSetQX(' + row.Rid + ')">权限</a>';
     }
     function ShowSetQX(rid) {
-        ShowDialog("权限配置", 500, 400, "/Role/RoleMenuIndex?rid=" + rid + "", SaveRoleMenu);
+        ShowDialog("权限配置", 600, 400, "/Role/RoleMenuIndex?rid=" + rid + "", SaveRoleMenu);
     }
     function SaveRoleMenu() {
         var rid = $("#txtRid").val();

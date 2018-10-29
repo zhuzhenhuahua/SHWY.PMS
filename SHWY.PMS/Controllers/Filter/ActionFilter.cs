@@ -19,15 +19,14 @@ namespace SHWY.PMS.Controllers.Filter
             var sessionUser= filterContext.HttpContext.Session["CurrentUser"];
             if ( sessionUser == null)
             {
-                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new
-                {
-                    controller = "Account",
-                    action = "Login"
-                }));
-                // filterContext.Result = new ContentResult() { Content = "请重新登录" };
+                //filterContext.Controller = new AccountController();
+                //string scheme = filterContext.HttpContext.Request.Url.Scheme;//http
+                //string authority = filterContext.HttpContext.Request.Url.Authority;//localhost:28158
+                //string path = scheme + "://" + authority + "/Account/Login";
+                //filterContext.Result = new RedirectResult(path);
+                filterContext.Result = new ContentResult() { Content = "登录超时，请重新登录" };
                 //filterContext.Result = new JavaScriptResult() { Script = "alert('dfd')" };
                 //var result= new JavaScriptResult() { Script = "window.top.location.href = '/Account/Login'" };
-                //filterContext.Result = result;
             }
             //else
             //{

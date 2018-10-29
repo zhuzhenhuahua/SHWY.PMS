@@ -5,7 +5,7 @@
 }
 <script type="text/javascript">
     $(function () {
-        var url = $("#txtWebApiUrl").textbox('getValue');
+        var url = $("#txtWebApiUrl").combobox('getValue');
         $("#txtUrl").textbox({
             multiline: true,
             value: url + '@Model.Url'
@@ -13,7 +13,7 @@
     });
     function SendApi(urlID) {
 
-        var url = $("#txtWebApiUrl").textbox('getValue');
+        var url = $("#txtWebApiUrl").combobox('getValue');
         var urlPara = "";
         var txts = $("input[name='txtParas']");
         var paraData = {};
