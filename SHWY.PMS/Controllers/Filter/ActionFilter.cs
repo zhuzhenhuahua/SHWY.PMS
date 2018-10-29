@@ -15,9 +15,9 @@ namespace SHWY.PMS.Controllers.Filter
         /// <param name="filterContext"></param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-           // base.OnActionExecuting(filterContext);
-            var sessionUser= filterContext.HttpContext.Session["CurrentUser"];
-            if ( sessionUser == null)
+            // base.OnActionExecuting(filterContext);
+            var sessionUser = filterContext.HttpContext.Session["CurrentUser"];
+            if (sessionUser == null)
             {
                 //filterContext.Controller = new AccountController();
                 //string scheme = filterContext.HttpContext.Request.Url.Scheme;//http
@@ -28,10 +28,6 @@ namespace SHWY.PMS.Controllers.Filter
                 //filterContext.Result = new JavaScriptResult() { Script = "alert('dfd')" };
                 //var result= new JavaScriptResult() { Script = "window.top.location.href = '/Account/Login'" };
             }
-            //else
-            //{
-
-            //}
             base.OnActionExecuting(filterContext);
         }
         /// <summary>
@@ -40,7 +36,7 @@ namespace SHWY.PMS.Controllers.Filter
         /// <param name="filterContext"></param>
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
-            
+
         }
     }
 }

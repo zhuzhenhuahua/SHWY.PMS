@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using SHWY.Lib.DB.Repositorys;
+using SHWY.PMS.Controllers.Filter;
 
 namespace SHWY.PMS.Controllers
 {
@@ -21,6 +22,7 @@ namespace SHWY.PMS.Controllers
             Session.Clear();
             return View(model);
         }
+        [LogRecord("系统登录")]
         public async Task<ActionResult> LoginSubmit(LoginViewModel viewModel)
         {
             if (string.IsNullOrEmpty(viewModel.LoginName))

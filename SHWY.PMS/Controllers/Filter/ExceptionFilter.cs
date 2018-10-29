@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SHWY.Lib.Log;
 
 namespace SHWY.PMS.Controllers.Filter
 {
@@ -11,7 +12,7 @@ namespace SHWY.PMS.Controllers.Filter
         public void OnException(ExceptionContext filterContext)
         {
             Exception ex = filterContext.Exception;
-            filterContext.HttpContext.Response.Write(ex.Message);
+            SHLog4net.LogError(ex);
         }
     }
 }
