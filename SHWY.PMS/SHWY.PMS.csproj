@@ -1742,6 +1742,10 @@
     <Content Include="Content\jquery-easyui-1.6.7\themes\metro\window.css" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\mobile.css" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\vue.css" />
+    <Content Include="Content\jsonFormatter\images\Collapsed.gif" />
+    <Content Include="Content\jsonFormatter\images\Expanded.gif" />
+    <Content Include="Content\jsonFormatter\jsonFormater.css" />
+    <Content Include="Content\jsonFormatter\jsonFormater.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -1810,6 +1814,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\json2.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />

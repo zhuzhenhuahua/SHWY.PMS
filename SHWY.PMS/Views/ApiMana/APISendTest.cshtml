@@ -3,6 +3,13 @@
     ViewBag.Title = "SendAPi";
     Layout = "~/Views/Shared/_BaseContent.cshtml";
 }
+
+<link href="~/Content/jsonFormatter/jsonFormater.css" rel="stylesheet" />
+<script src="~/Content/jsonFormatter/jsonFormater.js"></script>
+
+
+
+
 <script type="text/javascript">
     $(function () {
         var url = $("#txtWebApiUrl").combobox('getValue');
@@ -41,12 +48,13 @@
                 $('#progressbar').progressbar({
                     value: 100
                 });
-                $("#txt_ShowJson").textbox("setValue", result);
+                var options = {
+                    dom: '#container' //对应容器的css选择器
+                };
+                var jf = new JsonFormater(options); //创建对象
+                jf.doFormat(result); //格式化json
             }
         });
-        //$.post("/ApiMana/SendAPi", { urlID: urlID, urlPara: urlPara, url: url }, function (result) {
-        //    $("#txt_ShowJson").textbox("setValue", result);
-        //});
     }
 </script>
 <form id="formApiSend">
@@ -79,12 +87,8 @@
                 </td>
             </tr>
         }
-        <tr>
-            <td colspan="4">
-                <input class="easyui-textbox" id="txt_ShowJson" data-options="multiline:true" style="width:670px;height:600%">
-            </td>
-        </tr>
 
         @Html.HiddenFor(p => p.UrlID)
     </table>
+    <div id='container'></div>
 </form>
