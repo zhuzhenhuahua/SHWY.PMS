@@ -20,7 +20,7 @@ namespace SHWY.PMS.Controllers.Filter
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
            var currentUser= filterContext.HttpContext.Session["CurrentUser"] as CurrentUser;
-            SHLog4net.LogInfo(currentUser.Sys_User.LoginName + logInfo);
+            SHLog4net.LogInfo(currentUser?.Sys_User.LoginName + logInfo);
             base.OnActionExecuted(filterContext);
 
         }

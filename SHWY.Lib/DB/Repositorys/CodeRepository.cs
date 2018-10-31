@@ -16,6 +16,9 @@ namespace SHWY.Lib.DB.Repositorys
     {
         private static CodeRepository codeRepository;
         private static readonly object locker = new object();
+        /// <summary>
+        /// 此处private不允许new对象，防止使用using释放资源
+        /// </summary>
         private CodeRepository()
         {
 
