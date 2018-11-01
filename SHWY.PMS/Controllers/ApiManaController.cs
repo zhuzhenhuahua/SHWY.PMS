@@ -185,7 +185,7 @@ namespace SHWY.PMS.Controllers
             {
                 var model = await rep.GetApiParaByParaIDAsync(urlID, paraID);
                 if (model == null)
-                    model = new ApiParameter() { ApiUrlID = urlID, DataType = 1, IsNull = false, InOROutPut = 1 };
+                    model = new ApiParameter() { ApiUrlID = urlID, DataType = 1, IsNull = true, InOROutPut = 1 };
                 //数据类型
                 var DataTypeList = new List<SelectListItem>();
                 var datatype = await codeRepo.GetCodesListAsync(ECodesTypeId.DataTypeByApiPara);
@@ -199,8 +199,8 @@ namespace SHWY.PMS.Controllers
                 ViewBag.InOrOutPutList = InOrOutPutList;
                 //允许NULL值
                 var ISNULLList = new List<SelectListItem>();
-                ISNULLList.Add(new SelectListItem() { Value = "False", Text = "不允许为空", Selected = true });
-                ISNULLList.Add(new SelectListItem() { Value = "True", Text = "可空" });
+                ISNULLList.Add(new SelectListItem() { Value = "True", Text = "可空", Selected = true });
+                ISNULLList.Add(new SelectListItem() { Value = "False", Text = "不允许为空"});
                 ViewBag.ISNULLList = ISNULLList;
                 return View(model);
             }
