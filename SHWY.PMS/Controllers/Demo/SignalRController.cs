@@ -7,7 +7,7 @@ using System.Web.Http;
 
 namespace SHWY.PMS.Controllers.Demo
 {
-    [RoutePrefix("api/signalR")]
+    [RoutePrefix("api/signalr")]
     public class SignalRController : ApiController
     {
         [HttpGet]
