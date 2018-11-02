@@ -4,7 +4,20 @@
 }
 @*MVC5不支持分部视图的异步调用，MVC6才支持，所以用第二种方法
 @Html.RenderPartial("myTaskType_Partial")*@
-<div id="mytaskList"></div>
 <script type="text/javascript">
-    $("#mytaskList").load('@Url.Action("myTaskType_Partial")');
+    $(function () {
+        var domain = document.URL.split('/Home')[0] + "/signalr/hubs";
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        script.setAttribute("src", domain);
+        var head = document.getElementsByTagName("head");
+        if (head.length)
+            head[0].appendChild(script);
+        else
+            document.documentElement.appendChild(script);
+        $("#mytaskList").load('@Url.Action("myTaskType_Partial")');
+    });
+
 </script>
+
+<div id="mytaskList"></div>

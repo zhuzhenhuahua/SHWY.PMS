@@ -29,14 +29,10 @@
         }
 </style>
 
-
-
-
-
 <script type="text/javascript">
     function showDetails(that) {
         var taskId = $(that).attr("taskId");
-        if (taskId=="") {
+        if (taskId == "") {
             AlertMsg("未找到当前任务，请刷新重试");
             return;
         }
@@ -62,6 +58,18 @@
     function refresh() {
         $("#mytaskLitPartial").load('@Url.Action("myTaskType_Partial")');
     }
+
+
+    $(function () {
+        var server = $.connection.serverHub;
+        server.client.send = function (msg) {
+            alert("head:" + msg.head + ",body:" + msg.body);
+        }
+        //Start the connection.
+        $.connection.hub.start().done(function () {
+            //alert('创建了一个新的连接');
+        });
+    });
 </script>
 
 <div id="mytaskLitPartial">

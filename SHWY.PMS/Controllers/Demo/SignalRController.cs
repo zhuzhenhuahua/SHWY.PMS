@@ -12,9 +12,12 @@ namespace SHWY.PMS.Controllers.Demo
     {
         [HttpGet]
         [Route("testapi")]
-        public string testapi(string code)
+        public string testapi(string msg)
         {
-            return code;
+            SignalRMessage message = new PMS.SignalRMessage("All","testapi", msg);
+            ServerHub hub = new ServerHub();
+            hub.Send(message);
+            return "sucess";
         }
     }
 }
