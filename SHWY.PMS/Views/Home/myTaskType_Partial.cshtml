@@ -28,6 +28,7 @@
             text-align: left;
         }
 </style>
+@*服务端自动生成的hubs文件*@
 <script src="~/signalr/hubs"></script>
 <script type="text/javascript">
     function showDetails(that) {
@@ -68,6 +69,14 @@
         //Start the connection.
         $.connection.hub.start().done(function () {
             //alert('创建了一个新的连接');
+            //如果需要给服务端发消息，
+            var msg = {
+                clientIp: "192.168.1.1",
+                head: "标题",
+                body: "这里是内容"
+            };
+            //第一个server是上面的对象，第二个server指发送给服务端
+            //server.server.send(msg);
         });
     });
 </script>
