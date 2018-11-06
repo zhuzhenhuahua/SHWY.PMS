@@ -67,6 +67,15 @@
 .icon-more{
 	background:url('icons/more.png') no-repeat center center;
 }
+.icon-monthrep {
+    background:url('icons/monthrep.png') no-repeat center center;
+}
+.icon-weekrep {
+    background:url('icons/weekrep.png') no-repeat center center;
+}
+.icon-dayrep {
+    background:url('icons/dayrep.png') no-repeat center center;
+}
 
 
 .icon-mini-add{

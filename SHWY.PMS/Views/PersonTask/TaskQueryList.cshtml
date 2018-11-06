@@ -5,18 +5,23 @@
 }
 
 <table id="tt"></table>
-<div id="tb">
-    @*<a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditPersonTask(0)">发布</a>*@
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditPersonTask(1)">详情</a>
-    @*<a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelTask()">删除</a>*@
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="TaskProcess()">任务过程</a>
-    <span class="l-btn-text">项目：</span><input class="easyui-textbox" id="txtItemQ" style="width:120px;" />
-    <span class="l-btn-text">产品：</span><input class="easyui-textbox" id="txtProdQ" style="width:140px;" />
-    <span class="l-btn-text">状态：</span><input class="easyui-textbox" id="txtStatusQ" style="width:100px;" />
-    <span class="l-btn-text">处理人：</span><input class="easyui-textbox" id="txtHandlerIDQ" style="width:80px;" />
-    <span class="l-btn-text">开始时间：</span><input class="easyui-datebox" id="txtPublishFrom" style="width:100px;" />
-    <span class="l-btn-text">结束时间：</span><input class="easyui-datebox" id="txtPublishTo" style="width:100px;" />
-    <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
+<div id="tb" style="padding:5px;height:auto;">
+    <div style="margin-bottom:5px">
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditPersonTask(1)">详情</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="TaskProcess()">任务过程</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-dayrep',plain:true" onclick="TaskProcess()">日报统计</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-weekrep',plain:true" onclick="TaskProcess()">周报统计</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-monthrep',plain:true" onclick="TaskProcess()">月报统计</a>
+    </div>
+    <div>
+        <span class="l-btn-text">项目：</span><input class="easyui-textbox" id="txtItemQ" style="width:120px;" />
+        <span class="l-btn-text">产品：</span><input class="easyui-textbox" id="txtProdQ" style="width:140px;" />
+        <span class="l-btn-text">状态：</span><input class="easyui-textbox" id="txtStatusQ" style="width:100px;" />
+        <span class="l-btn-text">处理人：</span><input class="easyui-textbox" id="txtHandlerIDQ" style="width:80px;" />
+        <span class="l-btn-text">开始时间：</span><input class="easyui-datebox" id="txtPublishFrom" style="width:100px;" />
+        <span class="l-btn-text">结束时间：</span><input class="easyui-datebox" id="txtPublishTo" style="width:100px;" />
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
+    </div>
 </div>
 <script type="text/javascript">
     $(function () {
@@ -28,7 +33,7 @@
             url: '/User/GetAllUsers?isAddAll=1',
             valueField: 'Uid',
             textField: 'Name',
-            editable:false,
+            editable: false,
             onLoadSuccess: function () {
                 $("#txtHandlerIDQ").combobox("select", 0);
             }
@@ -54,7 +59,7 @@
             url: '/PersonTask/GetAllTaskStatus?isAddAll=1',
             valueField: 'id',
             textField: 'name',
-            editable:false,
+            editable: false,
             onLoadSuccess: function () {
                 $("#txtStatusQ").combobox("select", 0);
             }
@@ -105,7 +110,7 @@
                 prodId: "",
                 taskStatus: "",
                 publishForm: "",
-                publishTo:""
+                publishTo: ""
             }
         });
     }
@@ -180,4 +185,3 @@
         ShowDialogNoSaveCancel("任务过程", 800, 500, "/PersonTask/TaskProcessEdit");
     }
 </script>
-
