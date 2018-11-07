@@ -66,6 +66,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\TaskReport\daily.cs" />
+    <Compile Include="Business\TaskReport\ITaskReport.cs" />
+    <Compile Include="Business\TaskReport\monthly.cs" />
+    <Compile Include="Business\TaskReport\weekly.cs" />
     <Compile Include="DB\Context\ProContext.cs" />
     <Compile Include="DB\Repositorys\ApiManaRepository.cs" />
     <Compile Include="DB\Repositorys\BaseRepository.cs" />

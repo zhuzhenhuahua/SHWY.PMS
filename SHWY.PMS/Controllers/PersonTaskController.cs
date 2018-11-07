@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using SHWY.Model.DB;
 using SHWY.Utility;
 using SHWY.PMS.Controllers.Filter;
+using SHWY.Lib.Business.TaskReport;
 
 namespace SHWY.PMS.Controllers
 {
@@ -32,9 +33,31 @@ namespace SHWY.PMS.Controllers
             return View();
         }
         //任务查询
-        public ActionResult TaskQueryList()
+        public async Task<ActionResult> TaskQueryList()
         {
-            return View();
+            var sessionUser = Session["CurrentUser"] as CurrentUser;
+            TaskQueryViewModel model = new TaskQueryViewModel();
+            model.userList = await userRepo.GetUserListAsync();
+            model.currentUserID = sessionUser.Sys_User.Uid;
+            return View(model);
+        }
+        public async Task<JsonResult> GetReport(string type,List<int> userIDs)
+        {
+            if (string.IsNullOrEmpty(type))
+                return null;
+            string result = string.Empty;
+            ITaskReport iReport = null;
+            if (type == "daily")
+            {
+                iReport = new daily();
+                result=await iReport.CreateReport(userIDs);
+            }
+            return Json(result);
+        }
+        public class TaskQueryViewModel
+        {
+            public List<Sys_User> userList { get; set; }
+            public int currentUserID { get; set; }
         }
         //任务发布管理/任务查询列表
         public async Task<JsonResult> GetList(PersonTaskPara para)

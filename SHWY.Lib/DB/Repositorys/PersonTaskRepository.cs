@@ -89,6 +89,16 @@ namespace SHWY.Lib.DB.Repositorys
                 throw ex;
             }
         }
+        public async Task<List<V_PersonTask>> GetTaskListAsync(DateTime fromDate, DateTime toDate, List<int> userIDs)
+        {
+            var taskList = await (from j in context.VPersonTask
+                                  where userIDs.Contains(j.handlerID) && (
+                                  (j.publishTimeDate >= fromDate && j.publishTimeDate < toDate) || (j.predDeadTimeDate >= fromDate && j.predDeadTimeDate < toDate)
+                                  )
+                                  orderby j.prodId
+                                  select j).ToListAsync();
+            return taskList;
+        }
         #region 增删改
         public async Task<bool> AddOrUpdateAsync(PersonTask ptask)
         {

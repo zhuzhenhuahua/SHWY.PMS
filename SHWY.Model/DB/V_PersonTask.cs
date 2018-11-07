@@ -54,6 +54,10 @@ namespace SHWY.Model.DB
         /// </summary>
         public string predDeadTime { get; set; }
         /// <summary>
+        /// 预期完成时间（原字段类型）
+        /// </summary>
+        public DateTime predDeadTimeDate { get; set; }
+        /// <summary>
         /// 当前任务状态，对应TaskStatus（未开始、解决中、已完成、完成但是存在问题、放弃）
         /// </summary>
         public int taskStatus { get; set; }
@@ -105,5 +109,10 @@ namespace SHWY.Model.DB
         /// 评价描述
         /// </summary>
         public string evaDesc { get; set; }
+        /// <summary>
+        /// 任务过程
+        /// </summary>
+        [NotMapped]
+        public List<PersonTaskProcess> PersonTaskProcess { get; set; }
     }
 }

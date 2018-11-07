@@ -22,6 +22,22 @@ namespace SHWY.Lib.DB.Repositorys
                               select j).Skip(form).Take(pageSize).ToListAsync();
             return Tuple.Create<int, List<PersonTaskProcess>>(total, list);
         }
+        public async Task<List<PersonTaskProcess>> GetListAsync(string taskId, DateTime date)
+        {
+            try
+            {
+                var addDate = date.AddDays(1);
+                var list = await (from j in context.PersonTaskProcess
+                                  where j.TaskId == taskId && j.WorkStartTime >= date && j.WorkEndTime < addDate
+                                  orderby j.addTime
+                                  select j).ToListAsync();
+                return list;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public async Task<bool> AddOrUpdateAsync(PersonTaskProcess process)
         {
             try

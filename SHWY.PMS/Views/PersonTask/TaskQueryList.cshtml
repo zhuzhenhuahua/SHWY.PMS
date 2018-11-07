@@ -1,4 +1,4 @@
-﻿
+﻿@model SHWY.PMS.Controllers.PersonTaskController.TaskQueryViewModel
 @{
     ViewBag.Title = "任务查询";
     Layout = "~/Views/Shared/_BaseContent.cshtml";
@@ -9,9 +9,9 @@
     <div style="margin-bottom:5px">
         <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditPersonTask(1)">详情</a>
         <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="TaskProcess()">任务过程</a>
-        <a class="easyui-linkbutton" data-options="iconCls:'icon-dayrep',plain:true" onclick="TaskProcess()">日报统计</a>
-        <a class="easyui-linkbutton" data-options="iconCls:'icon-weekrep',plain:true" onclick="TaskProcess()">周报统计</a>
-        <a class="easyui-linkbutton" data-options="iconCls:'icon-monthrep',plain:true" onclick="TaskProcess()">月报统计</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-dayrep',plain:true" onclick="ReportShowUser('daily')">日报统计</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-weekrep',plain:true" onclick="ReportShowUser('weekly')">周报统计</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-monthrep',plain:true" onclick="ReportShowUser('monthly')">月报统计</a>
     </div>
     <div>
         <span class="l-btn-text">项目：</span><input class="easyui-textbox" id="txtItemQ" style="width:120px;" />
@@ -23,11 +23,74 @@
         <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
     </div>
 </div>
+<div id="w_showUser" class="easyui-window" title="人员" data-options="iconCls:'icon-man',closed:'true'" style="width:500px;height:255px;padding:5px;">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'" style="padding:10px;">
+            @foreach (var item in Model.userList)
+            {
+                if (item.Uid == Model.currentUserID)
+                {
+                    <div style="margin-bottom:10px;float:left;">
+                        <input class="easyui-checkbox" name="user" value="@item.Uid" label="@item.Name" labelPosition="after" checked="checked">
+                    </div>
+                }
+                else
+                {
+                    <div style="margin-bottom:10px;float:left;">
+                        <input class="easyui-checkbox" name="user" value="@item.Uid" label="@item.Name" labelPosition="after">
+                    </div>
+                }
+            }
+        </div>
+        <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="ShowReport()" style="width:80px">Ok</a>
+            <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="Win_User('close')" style="width:80px">Cancel</a>
+        </div>
+    </div>
+    <div id="ddShowReport"></div>
+</div>
+<div id="dd" class="easyui-window" title="My Dialog" style="width:500px;height:255px;"
+     data-options="iconCls:'icon-save',resizable:true,modal:true,closed:'true'">
+    <p id="showReport"></p>
+</div>
 <script type="text/javascript">
     $(function () {
         InitCombobox();
         InitGrid();
     });
+    var reportType = "";
+    function ReportShowUser(type) {
+        reportType = type;
+        Win_User('open');
+    }
+    function Win_User(openOrClose) {
+        $("#w_showUser").window(openOrClose);
+    }
+    function GetCheckUser() {
+        var ids = [];
+        var checkUser = $('input[name=user]:checked');
+        $.each(checkUser, function () {
+            ids.push($(this).val());
+        });
+        return ids;
+    }
+    function ShowReport() {
+        var userIds = GetCheckUser();
+        if (userIds.length > 0) {
+            $.post("/PersonTask/GetReport", { type: reportType, userIDs: userIds }, function (result) {
+                Win_User('close');
+                if (result) {
+                    $("#showReport").html(result);
+                    $('#dd').window({
+                        title: reportType
+                    });
+                    $('#dd').window('open');
+                }
+            });
+        } else {
+            AlertMsg('请选择人员');
+        }
+    }
     function InitCombobox() {
         $("#txtHandlerIDQ").combobox({
             url: '/User/GetAllUsers?isAddAll=1',
