@@ -49,6 +49,8 @@ namespace SHWY.Lib.DB.Context
         public DbSet<Party> Partys { get; set; }
         public DbSet<Items> Items { get; set; }
         public DbSet<PersonTask> PersonTasks { get; set; }
+        public DbSet<PersonTaskDaily> PersonTaskDailys { get; set; }
+        public DbSet<V_PersonTaskDaily> V_PersonTaskDailys { get; set; }
         public DbSet<V_PersonTask> VPersonTask { get; set; }
         public DbSet<CodeTaskStatus> TaskStatus { get; set; }
         public DbSet<CodeTaskType> TaskTypes { get; set; }

@@ -50,6 +50,14 @@ namespace SHWY.Model.DB
         /// </summary>
         public DateTime publishTimeDate { get; set; }
         /// <summary>
+        /// 预计开始时间
+        /// </summary>
+        public string perdStartTime { get; set; }
+        /// <summary>
+        /// 预计开始时间(原字段类型)
+        /// </summary>
+        public DateTime perdStartTimeDate { get; set; }
+        /// <summary>
         /// 预期完成时间
         /// </summary>
         public string predDeadTime { get; set; }
@@ -85,6 +93,7 @@ namespace SHWY.Model.DB
         /// 完成时间
         /// </summary>
         public string complTime { get; set; }
+        public DateTime? complTimeDate { get; set; }
         /// <summary>
         /// 任务完成度
         /// </summary>

@@ -55,6 +55,11 @@ namespace SHWY.Model.DB
         [DisplayName("发布时间")]
         public DateTime publishTime { get; set; }
         /// <summary>
+        /// 预计开始时间
+        /// </summary>
+        [DisplayName("预计开始时间")]
+        public DateTime perdStartTime { get; set; }
+        /// <summary>
         /// 预期完成时间
         /// </summary>
         [DisplayName("预期完成时间")]

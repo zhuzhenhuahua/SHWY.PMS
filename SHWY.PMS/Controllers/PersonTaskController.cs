@@ -22,7 +22,7 @@ namespace SHWY.PMS.Controllers
         Sys_UserRepository userRepo = new Sys_UserRepository();
         // GET: PersonTask
         #region PersonTask任务
-            //任务发布管理
+        //任务发布管理
         public ActionResult TaskPublishList()
         {
             return View();
@@ -41,17 +41,19 @@ namespace SHWY.PMS.Controllers
             model.currentUserID = sessionUser.Sys_User.Uid;
             return View(model);
         }
-        public async Task<JsonResult> GetReport(string type,List<int> userIDs)
+        public async Task<JsonResult> GetReport(string type, List<int> userIDs)
         {
             if (string.IsNullOrEmpty(type))
                 return null;
             string result = string.Empty;
             ITaskReport iReport = null;
             if (type == "daily")
-            {
                 iReport = new daily();
-                result=await iReport.CreateReport(userIDs);
-            }
+            else if (type == "weekly")
+                iReport = new weekly();
+            else if (type == "monthly")
+                iReport = new monthly();
+            result = await iReport.CreateReport(userIDs);
             return Json(result);
         }
         public class TaskQueryViewModel
@@ -62,14 +64,14 @@ namespace SHWY.PMS.Controllers
         //任务发布管理/任务查询列表
         public async Task<JsonResult> GetList(PersonTaskPara para)
         {
-            var result = await pTaskRepo.GetListAsync(para.page, para.rows, para.handlerId, para.itemId,para.prodId, para.taskStatus,para.publishForm,para.publishTo);
+            var result = await pTaskRepo.GetListAsync(para.page, para.rows, para.handlerId, para.itemId, para.prodId, para.taskStatus, para.publishForm, para.publishTo);
             return Json(new { total = result.Item1, rows = result.Item2 });
         }
         //个人任务列表
         public async Task<JsonResult> GetMyTaskList(PersonTaskPara para)
         {
             var sessionUser = Session["CurrentUser"] as CurrentUser;
-            var result = await pTaskRepo.GetListAsync(para.page, para.rows, sessionUser.Sys_User.Uid, para.itemId,para.prodId, para.taskStatus, para.publishForm, para.publishTo);
+            var result = await pTaskRepo.GetListAsync(para.page, para.rows, sessionUser.Sys_User.Uid, para.itemId, para.prodId, para.taskStatus, para.publishForm, para.publishTo);
             return Json(new { total = result.Item1, rows = result.Item2 });
         }
         public async Task<ActionResult> TaskPublishEdit(string id)
@@ -108,7 +110,7 @@ namespace SHWY.PMS.Controllers
 
             //完成程度
             var TaskComplDegree = new List<SelectListItem>();
-            var taskDegree =await codeRepo.GetCodesListAsync( ECodesTypeId.taskComplDegree);
+            var taskDegree = await codeRepo.GetCodesListAsync(ECodesTypeId.taskComplDegree);
             var taskDegree2 = new SelectList(taskDegree, "Code", "Text");
             TaskComplDegree.AddRange(taskDegree2);
             ViewBag.TaskComplDegreeV = TaskComplDegree;
@@ -137,6 +139,8 @@ namespace SHWY.PMS.Controllers
             {
                 var session = Session["CurrentUser"] as CurrentUser;
                 task.publisherID = task.handlerID = task.followerID = session.Sys_User.Uid;
+                task.perdStartTime = DateTime.Now;
+                task.predDeadTime = DateTime.Now.AddDays(1);
             }
             else
             {
@@ -150,6 +154,7 @@ namespace SHWY.PMS.Controllers
             PersonTask task = await pTaskRepo.GetTaskAsync(taskId);
             if (task == null || string.IsNullOrEmpty(task.ID))
             {
+                task.perdStartTime = DateTime.Now;
                 task.predDeadTime = DateTime.Now.AddDays(1);
             }
             //产品
@@ -207,10 +212,12 @@ namespace SHWY.PMS.Controllers
             var diffLevel2 = new SelectList(diffLevel, "Code", "Text");
             TaskDiffLevel.AddRange(diffLevel2);
             ViewBag.TaskDiffLevelV = TaskDiffLevel;
-            if ( string.IsNullOrEmpty(taskId)||taskId=="0")
+            if (string.IsNullOrEmpty(taskId) || taskId == "0")
             {
                 var session = Session["CurrentUser"] as CurrentUser;
                 task.publisherID = task.handlerID = task.followerID = session.Sys_User.Uid;
+                task.perdStartTime = DateTime.Now;
+                task.predDeadTime = DateTime.Now.AddDays(1);
             }
             else
             {

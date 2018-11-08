@@ -13,11 +13,11 @@ namespace SHWY.Lib.Business.TaskReport
         public async Task<string> CreateReport(List<int> userIDs)
         {
             DateTime nowTime = DateTime.Now.Date;
-            DateTime yesterday = DateTime.Now.AddDays(-1).Date;
+            DateTime yesterDay = nowTime.AddDays(-1);
             StringBuilder sbDaily = new StringBuilder();
             using (PersonTaskRepository ptaskRepo = new PersonTaskRepository())
             {
-                var vTaskList = await ptaskRepo.GetTaskListAsync(yesterday, nowTime.AddDays(1), userIDs);//把昨天和今天的任务一次性查出来
+                var vTaskList = await ptaskRepo.GetPersonTaskDailyListAsync(userIDs, yesterDay, nowTime);//把昨天和今天的任务一次性查出来
                 foreach (var uid in userIDs)
                 {
                     if (vTaskList.Where(p => p.handlerID == uid).FirstOrDefault() == null)
@@ -26,23 +26,19 @@ namespace SHWY.Lib.Business.TaskReport
                     sbDaily.AppendLine("<br>-------" + uName + nowTime.ToString("yyyy-MM-dd") + "日报----------");
                     sbDaily.AppendLine("<br>昨天：");
                     var y_source = (from j in vTaskList
-                                    where j.handlerID==uid&&(
-               (j.publishTimeDate >= yesterday && j.publishTimeDate < nowTime)
-               || (j.predDeadTimeDate >= yesterday && j.predDeadTimeDate < nowTime))
+                                    where j.handlerID==uid&&j.DateLine== yesterDay
                                     select j).ToList();
-                    sbDaily.AppendLine(await GetContent(y_source, yesterday));
+                    sbDaily.AppendLine(GetContent(y_source,yesterDay));
                     sbDaily.AppendLine("<br>今天：");
                     var t_source = (from j in vTaskList
-                                    where j.handlerID==uid &&(
-               (j.publishTimeDate >= nowTime && j.publishTimeDate < nowTime.AddDays(1))
-               || (j.predDeadTimeDate >= nowTime && j.predDeadTimeDate < nowTime.AddDays(1)))
+                                    where j.handlerID==uid &&j.DateLine==nowTime
                                     select j).ToList();
-                    sbDaily.AppendLine(await GetContent(t_source, nowTime));
+                    sbDaily.AppendLine(GetContent(t_source,nowTime));
                 }
             }
             return sbDaily.ToString();
         }
-        private async Task<string> GetContent(List<V_PersonTask> taskList,DateTime date)
+        private string GetContent(List<V_PersonTaskDaily> taskList,DateTime date)
         {
             using (PersonTaskProcessRepository ptaskProcessRepo = new PersonTaskProcessRepository())
             {
@@ -50,13 +46,14 @@ namespace SHWY.Lib.Business.TaskReport
                 int tNum = 1;
                 foreach (var task in taskList)
                 {
-                    sb.AppendLine("<br>"+tNum + "：" + task.detail+"（"+task.taskStatusName+"）");
-                    task.PersonTaskProcess = await ptaskProcessRepo.GetListAsync(task.ID,date);
+                    sb.AppendLine("<br>"+tNum + "：" + task.detail+"（"+task.taskStatusName+"）");//拼接任务描述
                     if (task.PersonTaskProcess != null && task.PersonTaskProcess.Count > 0)
                     {
-                        for (int i = 0; i < task.PersonTaskProcess.Count; i++)
+                        var addDate = date.AddDays(1);
+                        var daliyProcess = task.PersonTaskProcess.Where(j => j.WorkStartTime >= date && j.WorkEndTime < addDate).ToList();//日报只取当天的任务过程
+                        for (int i = 0; i < daliyProcess.Count; i++)
                         {
-                            sb.AppendLine(" <br> (" + (i + 1) + "):" + task.PersonTaskProcess[i].Details);
+                            sb.AppendLine(" <br> (" + (i + 1) + "):" + daliyProcess[i].Details);//拼接任务过程
                         }
                     }
                     tNum++;

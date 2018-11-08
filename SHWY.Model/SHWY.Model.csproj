@@ -61,6 +61,7 @@
     <Compile Include="DB\Need.cs" />
     <Compile Include="DB\Party.cs" />
     <Compile Include="DB\PersonTask.cs" />
+    <Compile Include="DB\PersonTaskDaily.cs" />
     <Compile Include="DB\PersonTaskProcess.cs" />
     <Compile Include="DB\PlanPoint.cs" />
     <Compile Include="DB\Plan.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="DB\CodeTaskStatus.cs" />
     <Compile Include="DB\CodeTaskType.cs" />
     <Compile Include="DB\V_PersonTask.cs" />
+    <Compile Include="DB\V_PersonTaskDaily.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XML\soToWmsResponse.cs" />
   </ItemGroup>

@@ -4,31 +4,31 @@
     Layout = "~/Views/Shared/_BaseContent.cshtml";
 }
 <script type="text/javascript">
-        function ProdOnSelect(record) {
-            var prodId = record.value;
-            $("#ModuleID").combobox({
-                url: '/Product/GetProdModuleByProdId?prodID=' + prodId,
-                valueField: 'ModuleID',
-                textField: 'NAME',
-                editable: false,
-                required: false,
-                onBeforeLoad: function (para) {
-                    $("#ModuleID").combobox("clear");
-                },
-                onLoadSuccess: function () {
-                    if ('@Model.ModuleID' != 0) {
-                        var data = $("#ModuleID").combobox("getData");
-                        if (data.length > 0) {
-                            $(data).each(function (index, obj) {
-                                if (obj.ModuleID == '@Model.ModuleID')
-                                    $("#ModuleID").combobox("select", '@Model.ModuleID');
-                            });
+    function ProdOnSelect(record) {
+        var prodId = record.value;
+        $("#ModuleID").combobox({
+            url: '/Product/GetProdModuleByProdId?prodID=' + prodId,
+            valueField: 'ModuleID',
+            textField: 'NAME',
+            editable: false,
+            required: false,
+            onBeforeLoad: function (para) {
+                $("#ModuleID").combobox("clear");
+            },
+            onLoadSuccess: function () {
+                if ('@Model.ModuleID' != 0) {
+                    var data = $("#ModuleID").combobox("getData");
+                    if (data.length > 0) {
+                        $(data).each(function (index, obj) {
+                            if (obj.ModuleID == '@Model.ModuleID')
+                                $("#ModuleID").combobox("select", '@Model.ModuleID');
+                        });
 
-                        }
                     }
                 }
-            });
-        }
+            }
+        });
+    }
 </script>
 <form id="formMyTaskPublishEidt">
     <table>
@@ -45,13 +45,19 @@
             <td>@Html.DropDownListFor(p => p.TaskType, ViewBag.TaskTypeList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
             <td style="padding-left:20px;">当前状态:</td>
             <td>@Html.DropDownListFor(p => p.taskStatus, ViewBag.TaskStatusList as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
-            <td style="padding-left:20px;">预期完成时间:</td>
-            <td>@Html.TextBoxFor(p => p.predDeadTime, new { @class = "easyui-datetimebox", Value = Model.predDeadTime.ToString("yyyy-MM-dd HH:mm"), data_options = "required:true" })
-            </td>
+            <td style="padding-left:20px;">所属模块:</td>
+            <td>@Html.TextBoxFor(p => p.ModuleID)</td>
         </tr>
         <tr style="height:30px;">
-            <td style="padding-left:20px;">所属模块:</td>
-            <td colspan="5">@Html.TextBoxFor(p => p.ModuleID)</td>
+            <td style="padding-left:20px;">预计开始:</td>
+            <td>
+                @Html.TextBoxFor(p => p.perdStartTime, new { @class = "easyui-datetimebox", Value = Model.perdStartTime.ToString("yyyy-MM-dd HH:mm"), data_options = "required:true" })
+            </td>
+            <td style="padding-left:20px;">预期完成:</td>
+            <td>
+                @Html.TextBoxFor(p => p.predDeadTime, new { @class = "easyui-datetimebox", Value = Model.predDeadTime.ToString("yyyy-MM-dd HH:mm"), data_options = "required:true" })
+            </td>
+            <td colspan="2"></td>
         </tr>
         <tr>
             <td style="padding-left:20px;">任务描述:</td>
@@ -67,7 +73,7 @@
         </tr>
         <tr style="height:30px;">
             <td style="padding-left:20px;">完成时间:</td>
-            <td>@Html.TextBoxFor(p => p.complTime, new { @class = "easyui-datetimebox",Value=Model.complTime==null?"": Model.complTime.Value.ToString("yyyy-MM-dd HH:mm") })</td>
+            <td>@Html.TextBoxFor(p => p.complTime, new { @class = "easyui-datetimebox", Value = Model.complTime == null ? "" : Model.complTime.Value.ToString("yyyy-MM-dd HH:mm") })</td>
             <td style="padding-left:20px;">完成程度:</td>
             <td>@Html.DropDownListFor(p => p.taskComplDegree, ViewBag.TaskComplDegreeV as IEnumerable<SelectListItem>, new { @class = "easyui-combobox", data_options = "editable:false", style = "width:170px;" })</td>
             <td style="padding-left:20px;">服务态度:</td>
@@ -91,4 +97,3 @@
     @Html.HiddenFor(p => p.ID)
     @Html.HiddenFor(p => p.publishTime);
 </form>
-

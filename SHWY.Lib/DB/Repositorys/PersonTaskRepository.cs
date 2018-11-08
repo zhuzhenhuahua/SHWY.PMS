@@ -97,6 +97,10 @@ namespace SHWY.Lib.DB.Repositorys
                                   )
                                   orderby j.prodId
                                   select j).ToListAsync();
+            foreach (var item in taskList)
+            {
+                item.PersonTaskProcess = await context.PersonTaskProcess.Where(p => p.TaskId == item.ID).ToListAsync();
+            }
             return taskList;
         }
         #region 增删改
@@ -122,8 +126,10 @@ namespace SHWY.Lib.DB.Repositorys
                     }
                 }
                 if (isNew)
-                    context.PersonTasks.Add(ptask);
-                return await context.SaveChangesAsync() == 1;
+                    context.PersonTasks.Add(taskNew);
+                await AddTaskDailyAsync(taskNew);
+                int res = await context.SaveChangesAsync();
+                return res > 0;
             }
             catch
             {
@@ -146,6 +152,43 @@ namespace SHWY.Lib.DB.Repositorys
                 return await context.SaveChangesAsync() > 0;
             }
             return false;
+        }
+        #endregion
+
+        #region PersonTaskDaily任务日志
+        public async Task<List<V_PersonTaskDaily>> GetPersonTaskDailyListAsync(List<int> userIDs, DateTime fromDate, DateTime toDate, bool isGetProcess = true)
+        {
+            var list = await (from j in context.V_PersonTaskDailys
+                              where userIDs.Contains(j.handlerID) &&
+                              j.DateLine >= fromDate && j.DateLine <= toDate
+                              select j
+                           ).ToListAsync();
+            if (isGetProcess)
+            {
+                foreach (var item in list)
+                {
+                    item.PersonTaskProcess = await context.PersonTaskProcess.Where(p => p.TaskId == item.TaskId).ToListAsync();
+                }
+            }
+            return list;
+        }
+        private async Task<bool> AddTaskDailyAsync(PersonTask newTask)
+        {
+            var list = await context.PersonTaskDailys.Where(p => p.TaskId == newTask.ID).ToListAsync();
+            if (list.Count > 0)
+                context.PersonTaskDailys.RemoveRange(list);//增加前先全部删除
+            //增加到任务日志。从开始时间到完成时间（预期完成时间），每一天都会生成一条记录，增加前先根据任务ID删除
+            DateTime endTime = newTask.predDeadTime.Date;
+            if (newTask.complTime != null && newTask.complTime.Value.Year != 1900)
+                endTime = newTask.complTime.Value.Date;
+            TimeSpan timeSpan = endTime.Subtract(newTask.perdStartTime.Date);
+            int totalDay = timeSpan.Days + 1;
+            for (int i = 0; i < totalDay; i++)
+            {
+                PersonTaskDaily daily = new PersonTaskDaily() { TaskId = newTask.ID, DateLine = newTask.perdStartTime.Date.AddDays(i) };
+                context.PersonTaskDailys.Add(daily);
+            }
+            return true;//下面方法一起提交，这里就不需要提交了,所以此方法用了private
         }
         #endregion
     }
