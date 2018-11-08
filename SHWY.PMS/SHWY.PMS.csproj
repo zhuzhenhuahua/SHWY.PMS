@@ -831,6 +831,7 @@
     <Content Include="Content\jquery-easyui-1.5.3\themes\icons\cancel.png" />
     <Content Include="Content\jquery-easyui-1.5.3\themes\icons\clear.png" />
     <Content Include="Content\jquery-easyui-1.5.3\themes\icons\cut.png" />
+    <Content Include="Content\jquery-easyui-1.5.3\themes\icons\dayrep.png" />
     <Content Include="Content\jquery-easyui-1.5.3\themes\icons\edit_add.png" />
     <Content Include="Content\jquery-easyui-1.5.3\themes\icons\edit_remove.png" />
     <Content Include="Content\jquery-easyui-1.5.3\themes\icons\filesave.png" />
@@ -846,6 +847,7 @@
     <Content Include="Content\jquery-easyui-1.5.3\themes\icons\mini_add.png" />
     <Content Include="Content\jquery-easyui-1.5.3\themes\icons\mini_edit.png" />
     <Content Include="Content\jquery-easyui-1.5.3\themes\icons\mini_refresh.png" />
+    <Content Include="Content\jquery-easyui-1.5.3\themes\icons\monthrep.png" />
     <Content Include="Content\jquery-easyui-1.5.3\themes\icons\more.png" />
     <Content Include="Content\jquery-easyui-1.5.3\themes\icons\no.png" />
     <Content Include="Content\jquery-easyui-1.5.3\themes\icons\ok.png" />
@@ -857,6 +859,7 @@
     <Content Include="Content\jquery-easyui-1.5.3\themes\icons\sum.png" />
     <Content Include="Content\jquery-easyui-1.5.3\themes\icons\tip.png" />
     <Content Include="Content\jquery-easyui-1.5.3\themes\icons\undo.png" />
+    <Content Include="Content\jquery-easyui-1.5.3\themes\icons\weekrep.png" />
     <Content Include="Content\jquery-easyui-1.5.3\themes\material\accordion.css" />
     <Content Include="Content\jquery-easyui-1.5.3\themes\material\calendar.css" />
     <Content Include="Content\jquery-easyui-1.5.3\themes\material\combo.css" />
@@ -1580,6 +1583,7 @@
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\cancel.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\clear.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\cut.png" />
+    <Content Include="Content\jquery-easyui-1.6.7\themes\icons\dayrep.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\edit_add.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\edit_remove.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\filesave.png" />
@@ -1595,6 +1599,7 @@
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\mini_add.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\mini_edit.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\mini_refresh.png" />
+    <Content Include="Content\jquery-easyui-1.6.7\themes\icons\monthrep.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\more.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\no.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\ok.png" />
@@ -1606,6 +1611,7 @@
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\sum.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\tip.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\undo.png" />
+    <Content Include="Content\jquery-easyui-1.6.7\themes\icons\weekrep.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\material-teal\accordion.css" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\material-teal\calendar.css" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\material-teal\checkbox.css" />
