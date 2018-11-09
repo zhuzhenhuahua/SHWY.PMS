@@ -228,6 +228,7 @@
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\ServerController.cs" />
+    <Compile Include="Controllers\TopicLogController.cs" />
     <Compile Include="Controllers\TreeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\XMLSerializaController.cs" />
@@ -1583,6 +1584,7 @@
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\cancel.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\clear.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\cut.png" />
+    <Content Include="Content\jquery-easyui-1.6.7\themes\icons\daily.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\dayrep.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\edit_add.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\edit_remove.png" />
@@ -1945,6 +1947,7 @@
     <Content Include="Views\ApiMana\ApiParaEdit.cshtml" />
     <Content Include="Views\ApiMana\BaseUrlIndex.cshtml" />
     <Content Include="Views\ApiMana\EditBaseUrl.cshtml" />
+    <Content Include="Views\TopicLog\TopicIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

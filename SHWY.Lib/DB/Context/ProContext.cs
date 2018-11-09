@@ -68,5 +68,6 @@ namespace SHWY.Lib.DB.Context
         public DbSet<ApiBaseUrl> ApiBaseUrls { get; set; }
         public DbSet<ApiUrl> ApiUrls { get; set; }
         public DbSet<ApiParameter> ApiParameters { get; set; }
+        public DbSet<TopicLog> TopicLogs { get; set; }
     }
 }

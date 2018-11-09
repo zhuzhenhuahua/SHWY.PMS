@@ -81,6 +81,7 @@
     <Compile Include="DB\Sys_User.cs" />
     <Compile Include="DB\CodeTaskStatus.cs" />
     <Compile Include="DB\CodeTaskType.cs" />
+    <Compile Include="DB\TopicLog.cs" />
     <Compile Include="DB\V_PersonTask.cs" />
     <Compile Include="DB\V_PersonTaskDaily.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

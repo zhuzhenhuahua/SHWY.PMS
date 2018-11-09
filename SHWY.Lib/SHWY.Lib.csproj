@@ -88,6 +88,7 @@
     <Compile Include="DB\Repositorys\Sys_RoleOperRepository.cs" />
     <Compile Include="DB\Repositorys\Sys_RoleRepository.cs" />
     <Compile Include="DB\Repositorys\Sys_UserRepository.cs" />
+    <Compile Include="DB\Repositorys\TopicLogRepository.cs" />
     <Compile Include="Log\SHLog4net.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\MDConfigurationManager.cs" />
