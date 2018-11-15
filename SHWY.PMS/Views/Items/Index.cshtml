@@ -20,7 +20,8 @@
             AlertMsg("请选择一行数据后再操作");
             return;
         }
-        ShowDialogNoSaveCancel("项目日志", 800, 400, "/TopicLog/TopicIndex?topic=1");
+        var topicID = row.ItemID;
+        ShowDialogNoSaveCancel("项目日志", 800, 400, "/TopicLog/TopicIndex?topic=1&topicID=" + topicID);
     }
     $(function () {
         InitCombobox();

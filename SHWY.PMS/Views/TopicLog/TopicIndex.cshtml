@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_BaseContent.cshtml";
 }
 @Html.HiddenFor(p => p.Topic)
+@Html.HiddenFor(p=>p.TopicID)
 <table id="ttTopicLog"></table>
 <script type="text/javascript">
     $(function () {
@@ -58,7 +59,7 @@
             rownumbers: true,
             fit: true,
             queryParams: {
-                topicID: selectRow.ItemID,
+                topicID: $("#TopicID").val(),
                 eTopic: $("#Topic").val()
             }
         });
@@ -103,7 +104,7 @@
     function SaveData(row) {
         var selectRow = $('#tt').datagrid('getSelected');
         if (selectRow != null) {
-            row.TopicID = selectRow.ItemID;
+            row.TopicID = $("#TopicID").val();
             $.post("/TopicLog/SaveTopicLog", row, function (result) {
                 if (result.isOk) {
                     AlertMsg('保存成功');

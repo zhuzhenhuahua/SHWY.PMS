@@ -3,9 +3,25 @@
     ViewBag.Title = "产品管理";
     Layout = "~/Views/Shared/_BaseContent.cshtml";
 }
-
+<div id="tb">
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditProd(0)">新增</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditProd(1)">修改</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelProd()">删除</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-daily',plain:true" onclick="ShowLog()">产品日志</a>
+    <span class="l-btn-text">产品名称：</span><input class="easyui-textbox" id="txtProdNameQ" style="width:120px;" />
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
+</div>
 <table id="tt"></table>
 <script>
+    function ShowLog() {
+        var row = $("#tt").datagrid("getSelected");
+        if (row == null) {
+            AlertMsg("请选择一行数据后再操作");
+            return;
+        }
+        var topicID = row.ProID;
+        ShowDialogNoSaveCancel("产品日志", 800, 400, "/TopicLog/TopicIndex?topic=1&topicID=" + topicID);
+    }
     $(function () {
         InitGrid();
     });
@@ -21,47 +37,7 @@
             striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
             nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
             singleSelect: true,
-            toolbar: [{
-                iconCls: 'icon-add',
-                id:'btnAdd',
-                text: '新增',
-                handler: function () {
-                    EditProd(0);
-                }
-            }, {
-                iconCls: 'icon-edit',
-                id: 'btnEdit',
-                text: '修改',
-                handler: function () {
-                    var row = $("#tt").datagrid("getSelected");
-                    if (row == null) {
-                        AlertMsg("请选择一行数据后再操作");
-                        return;
-                    }
-                    EditProd(row.ProID);
-                }
-            }, {
-                iconCls: 'icon-clear',
-                id:'btnDelete',
-                text: '删除',
-                handler: function () {
-                    var row = $("#tt").datagrid("getSelected");
-                    if (row == null) {
-                        AlertMsg("请选择一行数据后再操作");
-                        return;
-                    }
-                    DelProd(row.ProID);
-                }
-            }, {
-                text:'产品名称：<input type="text" id="txtProdNameQ" style="width:120px;" />'
-            }, {
-                iconCls: 'icon-search',
-                id:'btnSearch',
-                text: '查询',
-                handler: function () {
-                    GridReload("load");
-                }
-            }],
+            toolbar: '#tb',
             pagination: true,
             pageSize: 20,
             idField: 'ProID',
@@ -81,8 +57,15 @@
     function EditProd(prodId) {
         if (prodId == 0)
             isAdd = true;
-        else
+        else {
+            var row = $("#tt").datagrid("getSelected");
+            if (row == null) {
+                AlertMsg("请选择一行数据后再操作");
+                return;
+            }
+            prodId = row.ProID;
             isAdd = false;
+        }
         ShowDialog("产品管理", 600, 400, "/Product/EditProd?prodId=" + prodId, saveProd);
     }
     function DelProd(prodId) {

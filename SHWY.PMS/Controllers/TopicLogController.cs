@@ -12,9 +12,9 @@ namespace SHWY.PMS.Controllers
     public class TopicLogController : BaseController
     {
         // GET: TopicLog
-        public ActionResult TopicIndex(int topic = 0)
+        public ActionResult TopicIndex(string topicID,int topic = 0)
         {
-            TopicParaModel para = new TopicParaModel() { Topic = topic, nowTime=DateTime.Now.ToString("yyyy-MM-dd") };
+            TopicParaModel para = new TopicParaModel() { Topic = topic, nowTime=DateTime.Now.ToString("yyyy-MM-dd"), TopicID= topicID };
             return View(para);
         }
         public async Task<JsonResult> GetTopicLogListAsync(int page, int rows, int eTopic, string topicID)
@@ -58,6 +58,7 @@ namespace SHWY.PMS.Controllers
         {
             public string nowTime { get; set; }
             public int Topic { get; set; }
+            public string TopicID { get; set; }
         }
     }
 }
