@@ -6,9 +6,16 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     @Scripts.Render("~/bundles/jquery")
+    <link id="easyuiTheme" href="~/Content/jquery-easyui-1.6.7/themes/default/easyui.css" rel="stylesheet" />
     @Styles.Render("~/Content/EasyUiCss")
     @Scripts.Render("~/bundles/jqueryEasyUi")
     @Scripts.Render("~/bundles/CommonJS")
+    <script type="text/javascript">
+        $(function () {
+            var thems=parent.$("#select_changeTheme").combobox("getValue");
+            changeTheme(thems);
+        });
+    </script>
 </head>
 <body class="easyui-layout">
     @RenderBody()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SHWY.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -28,15 +29,9 @@ namespace SHWY.PMS.Controllers.Filter
                 //filterContext.Result = new JavaScriptResult() { Script = "alert('dfd')" };
                 //var result= new JavaScriptResult() { Script = "window.top.location.href = '/Account/Login'" };
             }
+            var user = sessionUser as CurrentUser;
+            filterContext.Controller.ViewData["easyuiTheme"] = EasyuiThemesHelper.GetValue(user.Sys_User.Uid);
             base.OnActionExecuting(filterContext);
-        }
-        /// <summary>
-        /// 被拦截Action后执行
-        /// </summary>
-        /// <param name="filterContext"></param>
-        public override void OnActionExecuted(ActionExecutedContext filterContext)
-        {
-
         }
     }
 }

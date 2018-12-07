@@ -10,7 +10,8 @@ namespace SHWY.PMS
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/json2.js"));
+                        "~/Scripts/json2.js",
+                        "~/Scripts/jquery.cookie.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -29,12 +30,12 @@ namespace SHWY.PMS
                       "~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/EasyUiCss").Include(
-"~/Content/jquery-easyui-1.6.7/themes/default/easyui.css",
 "~/Content/jquery-easyui-1.6.7/themes/icon.css"));
             bundles.Add(new ScriptBundle("~/bundles/jqueryEasyUi").Include(
                 "~/Content/jquery-easyui-1.6.7/jquery.easyui.min.js",
                 "~/Content/jquery-easyui-1.6.7/locale/easyui-lang-zh_CN.js"));
             bundles.Add(new ScriptBundle("~/bundles/CommonJS").Include("~/Scripts/Common.js"));
+
         }
     }
 }

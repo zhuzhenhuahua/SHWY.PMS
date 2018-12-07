@@ -5,7 +5,26 @@
         </td>
     </tr>
     <tr>
-        <td align="right" style="height:5px; padding-right:30px;">
+        <td align="right" style="padding-right:30px;">
+            Thems:
+            <select id="select_changeTheme" class="easyui-combobox" style="height:22px;width:130px;" data-options="editable :false, onSelect: function(rec){changeTheme(rec.value);}">
+                <option value="default">default</option>
+                <option value="black">black</option>
+                <option value="bootstrap">bootstrap</option>
+                <option value="gray">gray</option>
+                <option value="material">material</option>
+                <option value="material-teal">material-teal</option>
+                <option value="sunny">sunny</option>
+                <option value="pepper-grinder">pepper-grinder</option>
+                <option value="dark-hive">dark-hive</option>
+                <option value="cupertino">cupertino</option>
+                <option value="metro">metro</option>
+                <option value="metro-gray">metro-gray</option>
+                <option value="metro-blue">metro-blue</option>
+                <option value="metro-red">metro-red</option>
+                <option value="metro-orange">metro-orange</option>
+                <option value="metro-green">metro-green</option>
+            </select>
             <a href="#" id="aLoginOut" style="font-size:12px;">退出登录</a>
         </td>
     </tr>
