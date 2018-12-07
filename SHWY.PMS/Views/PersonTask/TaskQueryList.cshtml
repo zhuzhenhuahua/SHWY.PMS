@@ -43,6 +43,7 @@
             }
         </div>
         <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
+            统计日期：<input class="easyui-datebox" id="txtReportDate" style="width:100px;" />
             <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="ShowReport()" style="width:80px">Ok</a>
             <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="Win_User('close')" style="width:80px">Cancel</a>
         </div>
@@ -75,21 +76,27 @@
         return ids;
     }
     function ShowReport() {
+        debugger;
         var userIds = GetCheckUser();
-        if (userIds.length > 0) {
-            $.post("/PersonTask/GetReport", { type: reportType, userIDs: userIds }, function (result) {
-                Win_User('close');
-                if (result) {
-                    $("#showReport").html(result);
-                    $('#dd').window({
-                        title: reportType
-                    });
-                    $('#dd').window('open');
-                }
-            });
-        } else {
+        if (userIds.length == 0) {
             AlertMsg('请选择人员');
+            return;
         }
+        var cdate = $("#txtReportDate").datebox('getValue')
+        if (cdate == "") {
+            AlertMsg('请选择统计日期');
+            return;
+        }
+        $.post("/PersonTask/GetReport", { type: reportType, userIDs: userIds, reportDate: cdate }, function (result) {
+            Win_User('close');
+            if (result) {
+                $("#showReport").html(result);
+                $('#dd').window({
+                    title: reportType
+                });
+                $('#dd').window('open');
+            }
+        });
     }
     function InitCombobox() {
         $("#txtHandlerIDQ").combobox({

@@ -9,32 +9,38 @@ using System.Threading.Tasks;
 
 namespace SHWY.Lib.Business.TaskReport
 {
-   public class monthly : ITaskReport
+    public class monthly : ITaskReport
     {
-        public async Task<string> CreateReport(List<int> userIDs)
+        public async Task<string> CreateReport(List<int> userIDs, DateTime reportDate)
         {
-            DateTime nowTime = DateTime.Now.Date;
+            DateTime nowTime = reportDate;
             var monthStart = CommonHelper.GetTimeStartByType(ETimeType.Month, nowTime).Value;
             var monthEnd = CommonHelper.GetTimeEndByType(ETimeType.Month, nowTime).Value;
             int MonthOfYear = CommonHelper.GetMonthOfYear(monthStart);//当前第几月
             StringBuilder sbMonthly = new StringBuilder();
             using (PersonTaskRepository ptaskRepo = new PersonTaskRepository())
             {
-                var vTaskList = await ptaskRepo.GetPersonTaskDailyListAsync(userIDs, monthStart, monthEnd,false);//把本月的任务一次性查出来
-                var vTaskListDistinct = GetDistinct(vTaskList);//去重复
-                foreach (var uid in userIDs)
+                using (Sys_UserRepository userRepo = new Sys_UserRepository())
                 {
-                    var myTaskDaily = vTaskListDistinct.Where(p => p.handlerID == uid).ToList();//个人本周任务列表
-                    if (myTaskDaily.Count == 0)
-                        continue;
-                    var myTaskGroupByProd = myTaskDaily.GroupBy(p => p.ProdName).Select(p => new { p.Key }).ToList();//按产品分组
-                    string uName = myTaskDaily.Where(p => p.handlerID == uid).FirstOrDefault().handlerName;
-                    sbMonthly.AppendLine("<br>-------" + uName + MonthOfYear + "月份月报----------");
-                    foreach (var prod in myTaskGroupByProd)
+                    var vTaskList = await ptaskRepo.GetPersonTaskDailyListAsync(userIDs, monthStart, monthEnd, false);//把本月的任务一次性查出来
+                    var vTaskListDistinct = GetDistinct(vTaskList);//去重复
+                    foreach (var uid in userIDs)
                     {
-                        sbMonthly.AppendLine("<br>产品：" + prod.Key);
-                        var myProdTaskList = myTaskDaily.Where(p => p.ProdName == prod.Key).ToList();
-                        sbMonthly.AppendLine(GetContent(myProdTaskList, monthStart));
+                        var user = await userRepo.GetUserDicAsync(uid);
+                        var myTaskDaily = vTaskListDistinct.Where(p => p.handlerID == uid).ToList();//个人本周任务列表
+                        if (myTaskDaily.Count == 0)
+                        {
+                            sbMonthly.AppendLine("<br>-------" + user.Name + MonthOfYear + "月份月报----------");
+                            continue;
+                        }
+                        var myTaskGroupByProd = myTaskDaily.GroupBy(p => p.ProdName).Select(p => new { p.Key }).ToList();//按产品分组
+                        sbMonthly.AppendLine("<br>-------" + user.Name + MonthOfYear + "月份月报----------");
+                        foreach (var prod in myTaskGroupByProd)
+                        {
+                            sbMonthly.AppendLine("<br>产品：" + prod.Key);
+                            var myProdTaskList = myTaskDaily.Where(p => p.ProdName == prod.Key).ToList();
+                            sbMonthly.AppendLine(GetContent(myProdTaskList, monthStart));
+                        }
                     }
                 }
             }

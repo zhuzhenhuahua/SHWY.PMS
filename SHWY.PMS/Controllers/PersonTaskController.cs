@@ -41,7 +41,7 @@ namespace SHWY.PMS.Controllers
             model.currentUserID = sessionUser.Sys_User.Uid;
             return View(model);
         }
-        public async Task<JsonResult> GetReport(string type, List<int> userIDs)
+        public async Task<JsonResult> GetReport(string type, List<int> userIDs,DateTime reportDate)
         {
             if (string.IsNullOrEmpty(type))
                 return null;
@@ -53,7 +53,7 @@ namespace SHWY.PMS.Controllers
                 iReport = new weekly();
             else if (type == "monthly")
                 iReport = new monthly();
-            result = await iReport.CreateReport(userIDs);
+            result = await iReport.CreateReport(userIDs,reportDate);
             return Json(result);
         }
         public class TaskQueryViewModel

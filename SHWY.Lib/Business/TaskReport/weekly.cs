@@ -11,30 +11,37 @@ namespace SHWY.Lib.Business.TaskReport
 {
     public class weekly : ITaskReport
     {
-        public async Task<string> CreateReport(List<int> userIDs)
+        public async Task<string> CreateReport(List<int> userIDs, DateTime reportDate)
         {
-            DateTime nowTime = DateTime.Now.Date;
+            DateTime nowTime = reportDate;
             var weekStart = CommonHelper.GetTimeStartByType(ETimeType.Week, nowTime).Value;
             var weekEnd = CommonHelper.GetTimeEndByType(ETimeType.Week, nowTime).Value;
             int weekOfYear = CommonHelper.GetWeekOfYear(weekStart);//当前第几周
             StringBuilder sbWeekly = new StringBuilder();
             using (PersonTaskRepository ptaskRepo = new PersonTaskRepository())
             {
-                var vTaskList = await ptaskRepo.GetPersonTaskDailyListAsync(userIDs, weekStart, weekEnd);//把本周的任务一次性查出来
-                var vTaskListDistinct = GetDistinct(vTaskList);//去重复
-                foreach (var uid in userIDs)
+                using (Sys_UserRepository userRepo = new Sys_UserRepository())
                 {
-                    var myTaskDaily = vTaskListDistinct.Where(p => p.handlerID == uid).ToList();//个人本周任务列表
-                    if (myTaskDaily.Count == 0)
-                        continue;
-                    var myTaskGroupByProd = myTaskDaily.GroupBy(p => p.ProdName).Select(p => new { p.Key }).ToList();//按产品分组
-                    string uName = myTaskDaily.Where(p => p.handlerID == uid).FirstOrDefault().handlerName;
-                    sbWeekly.AppendLine("<br>-------" + uName + "第"+ weekOfYear + "周周报----------");
-                    foreach (var prod in myTaskGroupByProd)
+                    var vTaskList = await ptaskRepo.GetPersonTaskDailyListAsync(userIDs, weekStart, weekEnd);//把本周的任务一次性查出来
+                    var vTaskListDistinct = GetDistinct(vTaskList);//去重复
+                    foreach (var uid in userIDs)
                     {
-                        sbWeekly.AppendLine("<br>产品：" + prod.Key);
-                        var myProdTaskList = myTaskDaily.Where(p => p.ProdName == prod.Key).ToList();
-                        sbWeekly.AppendLine(GetContent(myProdTaskList, weekStart));
+                        var user = await userRepo.GetUserDicAsync(uid);
+                        var myTaskDaily = vTaskListDistinct.Where(p => p.handlerID == uid).ToList();//个人本周任务列表
+                        if (myTaskDaily.Count == 0)
+                        {
+                            sbWeekly.AppendLine("<br>-------" + user.Name + "第" + weekOfYear + "周周报----------");
+                            continue;
+                        }
+                        var myTaskGroupByProd = myTaskDaily.GroupBy(p => p.ProdName).Select(p => new { p.Key }).ToList();//按产品分组
+
+                        sbWeekly.AppendLine("<br>-------" + user.Name + "第" + weekOfYear + "周周报----------");
+                        foreach (var prod in myTaskGroupByProd)
+                        {
+                            sbWeekly.AppendLine("<br>产品：" + prod.Key);
+                            var myProdTaskList = myTaskDaily.Where(p => p.ProdName == prod.Key).ToList();
+                            sbWeekly.AppendLine(GetContent(myProdTaskList, weekStart));
+                        }
                     }
                 }
             }

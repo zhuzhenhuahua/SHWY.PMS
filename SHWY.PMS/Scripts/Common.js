@@ -2,7 +2,6 @@
 function changeTheme(themeName) {
     if (themeName == "" || themeName == undefined)
         return;
-    debugger;
     var $easyuiTheme = $('#easyuiTheme');
     var url = $easyuiTheme.attr('href');
     if (!url)

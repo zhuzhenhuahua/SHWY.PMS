@@ -25,6 +25,7 @@ namespace SHWY.PMS.Controllers.Filter
                     controller = "Account",
                     action = "Login"
                 }));
+                return;
                 //filterContext.Result = new ContentResult() { Content = "登录超时，请重新登录" };
                 //filterContext.Result = new JavaScriptResult() { Script = "alert('dfd')" };
                 //var result= new JavaScriptResult() { Script = "window.top.location.href = '/Account/Login'" };

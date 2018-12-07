@@ -14,6 +14,6 @@ namespace SHWY.Lib.Business.TaskReport
         /// <summary>
         /// 创建报表
         /// </summary>
-      Task<string> CreateReport(List<int> userIDs);
+      Task<string> CreateReport(List<int> userIDs,DateTime reportDate);
     }
 }
