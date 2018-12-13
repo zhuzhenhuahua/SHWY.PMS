@@ -33,6 +33,10 @@ namespace SHWY.Model.DB
         /// </summary>
         public DateTime addDate { get; set; }
         /// <summary>
+        /// 模块ID
+        /// </summary>
+        public int ModuleID { get; set; }
+        /// <summary>
         /// 内容
         /// </summary>
         public string Contents { get; set; }

@@ -1,31 +1,36 @@
-﻿<table style="width:100%;">
-    <tr>
-        <td>
-            <span style="font-size:20px;font-weight:bold;padding-left:30px;"> 企业项目管理系统</span>
-        </td>
-    </tr>
-    <tr>
-        <td align="right" style="padding-right:30px;">
-            Thems:
-            <select id="select_changeTheme" class="easyui-combobox" style="height:22px;width:130px;" data-options="editable :false, onSelect: function(rec){changeTheme(rec.value);}">
-                <option value="default">default</option>
-                <option value="black">black</option>
-                <option value="bootstrap">bootstrap</option>
-                <option value="gray">gray</option>
-                <option value="material">material</option>
-                <option value="material-teal">material-teal</option>
-                <option value="sunny">sunny</option>
-                <option value="pepper-grinder">pepper-grinder</option>
-                <option value="dark-hive">dark-hive</option>
-                <option value="cupertino">cupertino</option>
-                <option value="metro">metro</option>
-                <option value="metro-gray">metro-gray</option>
-                <option value="metro-blue">metro-blue</option>
-                <option value="metro-red">metro-red</option>
-                <option value="metro-orange">metro-orange</option>
-                <option value="metro-green">metro-green</option>
-            </select>
-            <a href="#" id="aLoginOut" style="font-size:12px;">退出登录</a>
-        </td>
-    </tr>
-</table>
+﻿<header style="background-image:url(../../Content/Images/bgheader.jpg);height:56px;width:auto; background-repeat:no-repeat; background-size:100% 100%;">
+
+    <div style="margin-left:18rem;padding-top:8px;color:#FFF;font-size:1.5rem;font-weight:700;float:left;">企业项目管理系统</div>
+    <a href="#" id="aLoginOut" style="font-size:12px;float:right;padding-right:30px;padding-top:18px;">退出登录</a>
+    <div style="padding-right:5px; margin-top:15px;float:right;">
+        Thems:
+        <select id="select_changeTheme" class="easyui-combobox" style="height:22px;width:130px;" data-options="editable :false, onSelect: function(rec){changeTheme(rec.value);}">
+            <option value="default">default</option>
+            <option value="black">black</option>
+            <option value="bootstrap">bootstrap</option>
+            <option value="gray">gray</option>
+            <option value="material">material</option>
+            <option value="material-teal">material-teal</option>
+            <option value="sunny">sunny</option>
+            <option value="pepper-grinder">pepper-grinder</option>
+            <option value="dark-hive">dark-hive</option>
+            <option value="cupertino">cupertino</option>
+            <option value="metro">metro</option>
+            <option value="metro-gray">metro-gray</option>
+            <option value="metro-blue">metro-blue</option>
+            <option value="metro-red">metro-red</option>
+            <option value="metro-orange">metro-orange</option>
+            <option value="metro-green">metro-green</option>
+        </select>
+    </div>
+    @*<tr>
+            <td>
+                <span style="font-size:20px;font-weight:bold;padding-left:30px;"> </span>
+            </td>
+        </tr>
+        <tr>
+            <td align="right" style="padding-right:30px;">
+
+            </td>
+        </tr>*@
+</header>

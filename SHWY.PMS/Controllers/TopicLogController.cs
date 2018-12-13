@@ -17,6 +17,11 @@ namespace SHWY.PMS.Controllers
             TopicParaModel para = new TopicParaModel() { Topic = topic, nowTime=DateTime.Now.ToString("yyyy-MM-dd"), TopicID= topicID };
             return View(para);
         }
+        public ActionResult ProTopicIndex(string topicID, int topic = 0)
+        {
+            TopicParaModel para = new TopicParaModel() { Topic = topic, nowTime = DateTime.Now.ToString("yyyy-MM-dd"), TopicID = topicID };
+            return View(para);
+        }
         public async Task<JsonResult> GetTopicLogListAsync(int page, int rows, int eTopic, string topicID)
         {
             using (TopicLogRepository repo = new TopicLogRepository())
@@ -31,6 +36,7 @@ namespace SHWY.PMS.Controllers
                         Tid = log.Tid,
                         log.Topic,
                         log.TopicID,
+                        ModuleID=log.ModuleID,
                         addDate = log.addDate.ToString("yyyy-MM-dd"),
                         log.Contents
                     });

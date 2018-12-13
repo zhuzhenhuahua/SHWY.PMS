@@ -16,9 +16,9 @@
                 { field: 'Topic', title: 'Topic', hidden: true },
             { field: 'TopicID', title: 'TopicID', hidden: true },
                 {
-                    field: 'addDate', title: '开始时间',width:100,editor: { type: 'datebox', options: { required: true } }
+                    field: 'addDate', title: '开始时间',width:80,editor: { type: 'datebox', options: { required: true } }
                 },
-                { field: 'Contents', title: '内容',width:572, editor: { type: 'textbox', options: { required: true } } },
+                { field: 'Contents', title: '内容',width:592, editor: { type: 'textbox', options: { required: true } } },
                 {
                     field: 'action', title: '操作',width:75, align: 'center', formatter: function (value, row, index) {
                         if (row.editing) {
@@ -27,8 +27,8 @@
                             return s + c;
                         } else {
                             var e = '<a href="#" onclick="editrow(this)">Edit</a> ';
-                            var d = '<a href="#" onclick="deleterow(this)">Delete</a>';
-                            return e + d;
+                            //var d = '<a href="#" onclick="deleterow(this)">Delete</a>';
+                            return e;
                         }
                     }
                 }

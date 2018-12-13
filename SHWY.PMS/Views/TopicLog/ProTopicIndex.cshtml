@@ -1,0 +1,156 @@
+﻿@model SHWY.PMS.Controllers.TopicLogController.TopicParaModel
+@{
+    ViewBag.Title = "ProTopicIndex";
+    Layout = "~/Views/Shared/_BaseContent.cshtml";
+}
+@Html.HiddenFor(p => p.Topic)
+@Html.HiddenFor(p => p.TopicID)
+<table id="ttTopicLog"></table>
+<script type="text/javascript">
+    var moduleList;
+    $.post("/Product/GetProdModuleByProdId", { prodID: '@Model.TopicID' }, function (result) {
+        moduleList = result;
+    });
+    $(function () {
+        var selectRow = $('#tt').datagrid('getSelected');
+        $("#ttTopicLog").datagrid({
+            url: '/TopicLog/GetTopicLogListAsync',
+            columns: [[
+                { field: 'Tid', title: 'Tid', hidden: true },
+                { field: 'Topic', title: 'Topic', hidden: true },
+            { field: 'TopicID', title: 'TopicID', hidden: true },
+                {
+                    field: 'addDate', title: '开始时间', width: 80, editor: { type: 'datebox', options: { required: true } }
+                },
+                {
+                    field: 'ModuleID', title: '模块', width: 100,
+                    formatter: function (value, row, index) {
+                        for (var i = 0; i < moduleList.length; i++) {
+                            if (moduleList[i].ModuleID == value)
+                                return moduleList[i].NAME;
+                        }
+                        return "";
+                    },
+                    editor: {
+                        type: 'combobox', options: {
+                            url: '/Product/GetProdModuleByProdId?prodID=@Model.TopicID',
+                            textField: 'NAME',
+                            valueField: 'ModuleID',
+                            required: true,
+                            editable: false
+                        }
+                    }
+                },
+                { field: 'Contents', title: '内容', width: 492, editor: { type: 'textbox', options: { required: true } } },
+                {
+                    field: 'action', title: '操作', width: 75, align: 'center', formatter: function (value, row, index) {
+                        if (row.editing) {
+                            var s = '<a href="#" onclick="saverow(this)">Save</a> ';
+                            var c = '<a href="#" onclick="cancelrow(this)">Cancel</a>';
+                            return s + c;
+                        } else {
+                            var e = '<a href="#" onclick="editrow(this)">Edit</a> ';
+                            var d = '<a href="#" onclick="deleterow(this)">Delete</a>';
+                            return e+d;
+                        }
+                    }
+                }
+            ]],
+            onBeforeEdit: function (index, row) {
+                row.editing = true;
+                updateActions(index, row.editing);
+            },
+            onAfterEdit: function (index, row) {
+                row.editing = false;
+                updateActions(index, row.editing);
+                SaveData(row);
+            },
+            onCancelEdit: function (index, row) {
+                row.editing = false;
+                updateActions(index, row.editing);
+            },
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            singleSelect: true,
+            toolbar: [{
+                iconCls: 'icon-add',
+                text: '新增',
+                handler: insert
+            }],
+            pagination: true,
+            pageSize: 10,
+            idField: 'Tid',
+            rownumbers: true,
+            fit: true,
+            queryParams: {
+                topicID: $("#TopicID").val(),
+                eTopic: $("#Topic").val()
+            }
+        });
+    });
+    function editrow(target) {
+        $("#ttTopicLog").datagrid('beginEdit', getRowIndex(target));
+    }
+    function saverow(target) {
+        $("#ttTopicLog").datagrid('endEdit', getRowIndex(target));
+    }
+    function deleterow(target) {
+        $.messager.confirm('提示', '确定要删除吗？', function (r) {
+            if (r) {
+                $("#ttTopicLog").datagrid('deleteRow', getRowIndex(target));
+                DeleteProcess();
+            }
+        });
+    }
+    function cancelrow(target) {
+        $('#ttTopicLog').datagrid('cancelEdit', getRowIndex(target));
+    }
+    function getRowIndex(target) {
+        var tr = $(target).closest('tr.datagrid-row');
+        return parseInt(tr.attr('datagrid-row-index'));
+    }
+    function insert() {
+        var index = 0;
+        $('#ttTopicLog').datagrid('insertRow', {
+            index: index,
+            row: { addDate: '@Model.nowTime', Topic: '@Model.Topic' }
+        });
+        $('#ttTopicLog').datagrid('selectRow', index);
+        $('#ttTopicLog').datagrid('beginEdit', index);
+    }
+    function updateActions(index, editing) {
+        $('#ttTopicLog').datagrid('updateRow', {
+            index: index,
+            row: { action: editing }//此处不知是版本原因还是其他，必须要传editing才会重新渲染，示例上是不用的(示例直接row：{}，没有editing参数)
+        });
+    }
+    //单行提交
+    function SaveData(row) {
+        debugger;
+        var selectRow = $('#tt').datagrid('getSelected');
+        if (selectRow != null) {
+            row.TopicID = $("#TopicID").val();
+            $.post("/TopicLog/SaveTopicLog", row, function (result) {
+                if (result.isOk) {
+                    AlertMsg('保存成功');
+                    $("#ttTopicLog").datagrid('acceptChanges');
+                } else {
+                    AlertMsg('保存失败');
+                }
+            });
+        }
+    }
+    function DeleteProcess() {
+        var rows = $("#ttTopicLog").datagrid('getChanges', 'deleted'); //获取删除的数据
+        if (rows) {
+            $.post("/TopicLog/DelTopicLog", { tid: rows[0].Tid }, function (result) {
+                if (result.isOk) {
+                    AlertMsg("删除成功");
+                }
+                else {
+                    AlertMsg('删除失败');
+                }
+            });
+            $("#ttTopicLog").datagrid('acceptChanges');
+        }
+    }
+</script>

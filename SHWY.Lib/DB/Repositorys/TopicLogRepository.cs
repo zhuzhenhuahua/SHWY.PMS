@@ -31,6 +31,7 @@ namespace SHWY.Lib.DB.Repositorys
                 newLog = new TopicLog() { Topic = logPara.Topic, TopicID = logPara.TopicID };
             }
             newLog.addDate = logPara.addDate;
+            newLog.ModuleID = logPara.ModuleID;
             newLog.Contents = logPara.Contents;
             if (isAdd)
                 context.TopicLogs.Add(newLog);

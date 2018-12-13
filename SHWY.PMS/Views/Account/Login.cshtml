@@ -7,23 +7,63 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>登录</title>
-    @Scripts.Render("~/bundles/jquery")
-    <script type="text/javascript">
-        function Login() {
-            $("#formLogin").submit();
-        }
-    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link href="~/Content/reset.css" rel="stylesheet" />
+    <link href="~/Content/login.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/login.js"></script>
 </head>
 <body>
-    <form id="formLogin" method="post" action="/Account/LoginSubmit">
-        <div>
-            用户名：@Html.TextBoxFor(p=>p.LoginName)<br />
-            &nbsp;&nbsp;&nbsp;密码：@Html.PasswordFor(p=>p.Password)
-            <input type="button" value="登录" onclick="Login()" /><br />
-            <p id="p_msg">@ViewBag.errorMsg</p>
+    <div class="page">
+        <div class="loginwarrp">
+            <div class="logo">管理员登陆</div>
+            <div class="login_form">
+                <form id="formLogin" method="post" action="/Account/LoginSubmit">
+                    <div class="login-item">
+                        <span>用户名：</span>
+                        @Html.TextBoxFor(p => p.LoginName, new { @class = "login_input" })
+                    </div>
+                    <div class="login-item">
+                        <span>密　码：</span>
+                        @Html.PasswordFor(p => p.Password,new{@class="login_input" })
+                        @*<span id="password-msg" class="error"></span>*@
+                    </div>
+                    <div style="text-align:center;color:red;">
+                        @ViewBag.errorMsg
+                    </div>
+                    @*<li class="login-item verify">
+                            <span>验证码：</span>
+                            <input type="text" name="CheckCode" class="login_input verify_input">
+                        </li>*@
+                    @*<img src="images/verify.png" border="0" class="verifyimg" />*@
+                    <div class="clearfix"></div>
+                    <div class="login-sub">
+                        <input type="submit" name="Submit" value="登录" />
+                        <input type="reset" name="Reset" value="重置" />
+                    </div>
+                </form>
+            </div>
         </div>
-    </form>
+    </div>
+    <script type="text/javascript">
+        window.onload = function () {
+            var config = {
+                vx: 4,
+                vy: 4,
+                height: 2,
+                width: 2,
+                count: 100,
+                color: "121, 162, 185",
+                stroke: "100, 200, 180",
+                dist: 6000,
+                e_dist: 20000,
+                max_conn: 10
+            }
+            CanvasParticle(config);
+        }
+    </script>
+    <script src="~/Scripts/canvas-particle.js"></script>
 </body>
 </html>

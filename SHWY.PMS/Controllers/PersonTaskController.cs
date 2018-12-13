@@ -47,6 +47,7 @@ namespace SHWY.PMS.Controllers
                 return null;
             string result = string.Empty;
             ITaskReport iReport = null;
+            //根据类型不同创建不同的工厂
             if (type == "daily")
                 iReport = new daily();
             else if (type == "weekly")

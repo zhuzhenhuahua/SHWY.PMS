@@ -246,6 +246,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\bgheader.jpg" />
     <Content Include="Content\jquery-easyui-1.5.3\changelog.txt" />
     <Content Include="Content\jquery-easyui-1.5.3\demo\accordion\actions.html" />
     <Content Include="Content\jquery-easyui-1.5.3\demo\accordion\ajax.html" />
@@ -2316,6 +2317,8 @@
     <Content Include="Content\jsonFormatter\images\Expanded.gif" />
     <Content Include="Content\jsonFormatter\jsonFormater.css" />
     <Content Include="Content\jsonFormatter\jsonFormater.js" />
+    <Content Include="Content\login.css" />
+    <Content Include="Content\reset.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -2376,6 +2379,7 @@
     <Content Include="Content\jquery-easyui-1.6.7\themes\material\images\Thumbs.db" />
     <None Include="Properties\PublishProfiles\PMSWeb.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\canvas-particle.js" />
     <Content Include="Scripts\Common.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -2388,6 +2392,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\json2.js" />
+    <Content Include="Scripts\login.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -2471,6 +2476,7 @@
     <Content Include="Views\ApiMana\BaseUrlIndex.cshtml" />
     <Content Include="Views\ApiMana\EditBaseUrl.cshtml" />
     <Content Include="Views\TopicLog\TopicIndex.cshtml" />
+    <Content Include="Views\TopicLog\ProTopicIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
