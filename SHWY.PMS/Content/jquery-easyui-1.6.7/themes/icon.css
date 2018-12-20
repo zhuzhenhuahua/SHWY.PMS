@@ -79,6 +79,9 @@
 .icon-daily {
     background:url('icons/daily.png') no-repeat center center;
 }
+.icon-deploy {
+    background:url('icons/deploy.png') no-repeat center center;
+}
 
 
 .icon-mini-add{

@@ -16,6 +16,9 @@ namespace SHWY.Model.DB
     [Table("Prod")]
    public class Product
     {
+        /// <summary>
+        /// 产品ID主键（自增长）
+        /// </summary>
         [Key]
         [DisplayName("产品编号")]
         public string ProID { get; set; }

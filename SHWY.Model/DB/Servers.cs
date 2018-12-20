@@ -13,6 +13,9 @@ namespace SHWY.Model.DB
     [Table("Server")]
    public class Servers
     {
+        /// <summary>
+        /// 服务器主键ID（自增长）
+        /// </summary>
         [Key]
         [DisplayName("服务器ID")]
         public int sid { get; set; }
@@ -29,5 +32,7 @@ namespace SHWY.Model.DB
 
         [NotMapped]
         public string itemName { get; set; }
+        [NotMapped]
+        public List<ServerIp> ServerIP { get; set; }
     }
 }

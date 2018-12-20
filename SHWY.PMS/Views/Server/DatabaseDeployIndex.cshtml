@@ -30,10 +30,10 @@
         $("#tt").datagrid({
             url: '/Server/GetDataBaseDeployList',
             columns: [[
-                { field: 'PartyName', title: '甲方公司名称', width: 180 },
                 { field: 'id', title: 'id', hidden: true },
+                { field: 'PartyName', title: '甲方公司名称'},
+                { field: 'ServerName', title: '服务器名称', width: 120 },    
                 { field: 'name', title: '数据库中文名', width: 220 },
-                { field: 'ServerName', title: '服务器名称', width: 120 },
                 { field: 'SchemaName', title: '数据库架构', width: 200 },
                 { field: 'dbType', title: '数据库类型', width: 80 },
                 { field: 'sqlServerCatlog', title: 'MSSQL数据库英文名', width: 120 },

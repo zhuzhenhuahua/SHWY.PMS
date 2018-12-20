@@ -85,16 +85,39 @@ namespace SHWY.Lib.DB.Repositorys
         public async Task<List<Codes>> GetCodesListAsync(ECodesTypeId typeId)
         {
             int typeid = Convert.ToInt32(typeId);
-            if (!_dicCodes.ContainsKey(typeid))
+            if (_dicCodes.ContainsKey(typeid))
             {
-                var list = await (from j in context.Codes
-                                  where j.TypeId == typeid && j.Status == 1
-                                  select j).ToListAsync();
-                _dicCodes[typeid] = list;
-                return list;
+                return _dicCodes[typeid];
             }
-            return _dicCodes[typeid];
-
+            var list = await (from j in context.Codes
+                              where j.TypeId == typeid && j.Status == 1
+                              select j).ToListAsync();
+            if (list.Count > 0)
+            {
+                _dicCodes[typeid] = list;
+            }
+            return list;
+        }
+        public async Task<string> GetCodesTextAsync(ECodesTypeId typeid, string code)
+        {
+            var list = await GetCodesListAsync(typeid);
+            if (list == null || list.Count == 0)
+                return string.Empty;
+            var codeModel = list.Where(p => p.Code == code).FirstOrDefault();
+            if (codeModel != null)
+            {
+                return codeModel.Text;
+            }
+            int typID = Convert.ToInt32(typeid);
+            var codeList = await (from j in context.Codes
+                                  where j.TypeId == typID
+                                  select j).ToListAsync();
+            if (codeList.Count>0)
+            {
+                _dicCodes[typID] = codeList;
+                return codeList.Where(p => p.Code == code).FirstOrDefault()?.Text;
+            }
+            return string.Empty;
         }
         #endregion
     }

@@ -8,12 +8,27 @@
     <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditItem(1)">修改</a>
     <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelItem()">删除</a>
     <a class="easyui-linkbutton" data-options="iconCls:'icon-daily',plain:true" onclick="ShowLog()">项目日志</a>
+    <a class="easyui-linkbutton" data-options="iconCls:'icon-deploy',plain:true" onclick="DeployInfo()">部署情况</a>
     <span class="l-btn-text">甲方公司：</span><input class="easyui-textbox" id="txtPartyQ" style="width:200px;" />
     <span class="l-btn-text">项目名称：</span><input class="easyui-textbox" id="txtItemNameQ" style="width:100px;" />
     <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
 </div>
 <table id="tt"></table>
+<div id="div_deployInfo" style="font-size:14px;"></div>
 <script>
+    function DeployInfo() {
+        var selectedRow = dataGrid.IsSelectDataGrid("tt");
+        if (selectedRow == null)
+            return;
+        var docWidth = $(document).width();
+        $("#div_deployInfo").window({
+            width: docWidth-400,
+            height: 600,
+            modal: true,
+            collapsible: false,
+            title: '项目部署情况',
+        }).window("refresh", "/Items/GetTDeployInfo?itemID=" + selectedRow.ItemID);
+    }
     function ShowLog() {
         var row = $("#tt").datagrid("getSelected");
         if (row == null) {

@@ -1703,6 +1703,7 @@
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\cut.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\daily.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\dayrep.png" />
+    <Content Include="Content\jquery-easyui-1.6.7\themes\icons\deploy.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\edit_add.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\edit_remove.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\filesave.png" />

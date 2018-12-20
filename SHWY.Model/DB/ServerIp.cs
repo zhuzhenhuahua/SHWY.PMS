@@ -21,5 +21,8 @@ namespace SHWY.Model.DB
         public int ipid { get; set; }
         [DisplayName("甲方公司")]
         public string partyID { get; set; }
+        [NotMapped]
+        public IpAddress IPAddress { get; set; }
+
     }
 }

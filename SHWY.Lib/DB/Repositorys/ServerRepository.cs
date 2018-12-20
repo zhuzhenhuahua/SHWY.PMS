@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SHWY.Model.DB;
 using System.Data.Entity;
+using SHWY.Model.Join;
 
 namespace SHWY.Lib.DB.Repositorys
 {
@@ -210,6 +211,19 @@ namespace SHWY.Lib.DB.Repositorys
                               }).Skip(form).Take(pageSize).ToListAsync();
             return Tuple.Create<int, object>(total, list);
         }
+        public async Task<List<ServerIPView>> GetServerIPListBySidAsync(List<int> sids)
+        {
+            var list = await (from j in context.ServerIps
+                              join ip in context.IpAddress on j.ipid equals ip.ipid into tempIP
+                              from ips in tempIP.DefaultIfEmpty()
+                              where sids.Contains(j.sid)
+                              select new ServerIPView
+                              {
+                                  sid = j.sid,
+                                  IPAddress = ips
+                              }).ToListAsync();
+            return list;
+        }
         public async Task<ServerIp> GetServerIpAsync(int sid, int ipid)
         {
             var model = await context.ServerIps.Where(p => p.sid == sid && p.ipid == ipid).FirstOrDefaultAsync();
@@ -342,7 +356,7 @@ namespace SHWY.Lib.DB.Repositorys
                                  j.id,
                                  j.name,
                                  PartyName = party == null ? "" : party.name,
-                                 ServerName = server==null?"": server.name,
+                                 ServerName = server == null ? "" : server.name,
                                  SchemaName = schema.Text,
                                  dbType = dbType.Text,
                                  j.remark,

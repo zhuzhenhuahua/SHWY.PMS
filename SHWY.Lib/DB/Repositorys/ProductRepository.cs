@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SHWY.Model.DB;
+using SHWY.Model.Join;
 using System.Collections.Concurrent;
 
 namespace SHWY.Lib.DB.Repositorys
@@ -126,6 +127,19 @@ namespace SHWY.Lib.DB.Repositorys
                               }).Skip(form).Take(pageSize).ToListAsync();
             return Tuple.Create<int, object>(total, list);
         }
+        public async Task<List<ItemProdDB>> GetProdDBListAsync(string itemID)
+        {
+            var list = await (from j in context.ProdDBDeploys
+                              join db in context.DatabaseDeploys on j.dbId equals db.id into tempDB
+                              from dbs in tempDB.DefaultIfEmpty()
+                              where j.itemId == itemID
+                              select new ItemProdDB
+                              {
+                                  prodID = j.prodId,
+                                  database = dbs
+                              }).ToListAsync();
+            return list;
+        }
         public async Task<ProdDBDeploy> GetProdDBDeployAsync(int id)
         {
             var model = await context.ProdDBDeploys.Where(p => p.id == id).FirstOrDefaultAsync();
@@ -148,9 +162,12 @@ namespace SHWY.Lib.DB.Repositorys
                                && (string.IsNullOrEmpty(itemID) ? 1 == 1 : j.itemid == itemID)
                                select j).CountAsync();
             var list = await (from j in context.ProdServerDeploys
-                              join item in context.Items on j.itemid equals item.ItemID
-                              join prod in context.Products on j.prodid equals prod.ProID
-                              join server in context.Servers on j.serverid equals server.sid
+                              join item in context.Items on j.itemid equals item.ItemID into tempItem
+                              from items in tempItem.DefaultIfEmpty()
+                              join prod in context.Products on j.prodid equals prod.ProID into tempProd
+                              from prods in tempProd.DefaultIfEmpty()
+                              join server in context.Servers on j.serverid equals server.sid into tempServer
+                              from servers in tempServer.DefaultIfEmpty()
                               join codes in context.Codes.Where(p => p.TypeId == 6) on j.porttype.ToString() equals codes.Code
                               where (string.IsNullOrEmpty(prodID) ? 1 == 1 : j.prodid == prodID)
                                    && (serverID == 0 ? 1 == 1 : j.serverid == serverID)
@@ -160,16 +177,34 @@ namespace SHWY.Lib.DB.Repositorys
                               {
                                   j.id,
                                   j.itemid,
-                                  itemName = item.NAME,
+                                  itemName = items.NAME,
                                   j.prodid,
-                                  prodName = prod.NAME,
+                                  prodName = prods.NAME,
                                   j.serverid,
-                                  serverName = server.name,
+                                  serverName = servers.name,
                                   j.port,
                                   portTypeName = codes.Text,
                                   j.remark
                               }).Skip(form).Take(pageSize).ToListAsync();
             return Tuple.Create<int, object>(total, list);
+        }
+        public async Task<List<ItemProdServer>> GetProdServerDeployListByItemIDAsync(string itemID)
+        {
+            var list = await (from j in context.ProdServerDeploys
+                              join prod in context.Products on j.prodid equals prod.ProID into tempProd
+                              from prods in tempProd.DefaultIfEmpty()
+                              join server in context.Servers on j.serverid equals server.sid into tempServer
+                              from servers in tempServer.DefaultIfEmpty()
+                              join codes in context.Codes.Where(p => p.TypeId == (int)ECodesTypeId.ProtType) on j.porttype.ToString() equals codes.Code
+                              where j.itemid == itemID
+                              orderby j.prodid
+                              select new ItemProdServer
+                              {
+                                  porttypeName = codes.Text,
+                                  prod = prods,
+                                  server = servers,
+                              }).ToListAsync();
+            return list;
         }
         public async Task<ProdServerDeploy> GetProdServerDeployAsync(int id)
         {
@@ -332,7 +367,7 @@ namespace SHWY.Lib.DB.Repositorys
         }
         #endregion
 
-        #region ProdModule查询
+        #region ProdModule增删改
         public async Task<bool> AddOrUpdateProdModuleAsync(ProdModule modulePara)
         {
             var isAdd = false;

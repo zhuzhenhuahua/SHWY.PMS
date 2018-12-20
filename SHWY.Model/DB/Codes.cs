@@ -20,6 +20,9 @@ namespace SHWY.Model.DB
         public string Code { get; set; }
         public string Text { get; set; }
         public int Status { get; set; }
+        /// <summary>
+        /// 字典类型
+        /// </summary>
         public int TypeId { get; set; }
 
     }

@@ -11,7 +11,7 @@ namespace SHWY.Model.DB
 {
     [Serializable]
     [Table("IpAddress")]
-   public class IpAddress
+    public class IpAddress
     {
         [Key]
         [DisplayName("IpID")]
@@ -27,8 +27,5 @@ namespace SHWY.Model.DB
         /// </summary>
         [DisplayName("内外网")]
         public int belong { get; set; }
-
-        [NotMapped]
-        public string itemName { get; set; }
     }
 }

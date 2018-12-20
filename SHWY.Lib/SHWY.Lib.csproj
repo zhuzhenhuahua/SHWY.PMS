@@ -94,6 +94,7 @@
     <Compile Include="Util\MDConfigurationManager.cs" />
     <Compile Include="Util\JsonResponseHelper.cs" />
     <Compile Include="Util\QQEmailHelper.cs" />
+    <Compile Include="Util\StringJoinHelper.cs" />
     <Compile Include="Util\XMLHelper.cs" />
   </ItemGroup>
   <ItemGroup>
