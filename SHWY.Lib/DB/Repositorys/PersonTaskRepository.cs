@@ -153,6 +153,21 @@ namespace SHWY.Lib.DB.Repositorys
             }
             return false;
         }
+
+        public async Task<bool> UpdateTaskStatus(string id, int taskStatus)
+        {
+            var model = await context.PersonTasks.Where(p => p.ID == id).FirstOrDefaultAsync();
+            if (model != null)
+            {
+                model.taskStatus = taskStatus;
+                if (taskStatus == 3 || taskStatus == 4)
+                {
+                    model.complTime = model.predDeadTime;
+                }
+                return await context.SaveChangesAsync() > 0;
+            }
+            return false;
+        }
         #endregion
 
         #region PersonTaskDaily任务日志

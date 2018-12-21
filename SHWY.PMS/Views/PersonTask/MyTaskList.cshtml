@@ -8,7 +8,20 @@
     <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditPersonTask(0)">发布</a>
     <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditPersonTask(1)">修改</a>
     <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelTask()">删除</a>
+    <div class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></div>
     <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="TaskProcess()">任务过程</a>
+    <div class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></div>
+    
+    <a href="javascript:void(0)" id="mb" class="easyui-menubutton"
+       data-options="menu:'#mm',iconCls:'icon-edit'">快速标记</a>
+    <div id="mm" style="width:150px;">
+        <div data-options="iconCls:'icon-state_nostart'" state="1">未开始</div>
+        <div data-options="iconCls:'icon-state_handing'" state="2">解决中</div>
+        <div data-options="iconCls:'icon-state_ok'" state="3">已完成</div>
+        <div data-options="iconCls:'icon-state_bug'" state="4">完成但是存在问题</div>
+        <div data-options="iconCls:'icon-state_drop'" state="5">放弃</div>
+    </div>
+    <div class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></div>
     <span class="l-btn-text">项目：</span><input class="easyui-textbox" id="txtItemQ" style="width:120px;" />
     <span class="l-btn-text">状态：</span><input class="easyui-textbox" id="txtStatusQ" style="width:120px;" />
     <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="GridReload('load')">查询</a>
@@ -17,7 +30,26 @@
     $(function () {
         InitCombobox();
         InitGrid();
+        $("#mm").menu({
+            onClick: function (item) {
+                var state = $(item.target).attr("state");
+                FastSign(state);
+            }
+        });
     });
+    function FastSign(state) {
+        var selectedRow = dataGrid.IsSelectDataGrid_Tip("tt");
+        if (selectedRow == null)
+            return;
+        $.post("/PersonTask/FastSign", { taskID: selectedRow.ID, taskStatus: state }, function (result) {
+            if (result.isOk) {
+                GridReload("reload");
+                AlertMsg('标记成功');
+            } else {
+                AlertMsg('标记失败，' + result.msg);
+            }
+        });
+    }
     function InitCombobox() {
         $("#txtItemQ").combobox({
             url: '/Items/GetAllItems?isAddAll=1',

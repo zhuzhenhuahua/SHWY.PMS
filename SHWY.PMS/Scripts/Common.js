@@ -2,7 +2,7 @@
 ///升级内容：
 //1：增加方法判断datagrid是否单行选中
 var dataGrid = {
-    IsSelectDataGrid: function (gridID) {
+    IsSelectDataGrid_Tip: function (gridID) {
         var row = $("#" + gridID).datagrid("getSelected");
         if (row == null) {
             AlertMsg("请选择一行数据后再操作");

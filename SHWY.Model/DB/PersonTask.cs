@@ -65,7 +65,7 @@ namespace SHWY.Model.DB
         [DisplayName("预期完成时间")]
         public DateTime predDeadTime { get; set; }
         /// <summary>
-        /// 当前任务状态，对应TaskStatus（未开始、解决中、已完成、完成但是存在问题、放弃）
+        /// 当前任务状态，对应TaskStatus（1未开始、2解决中、3已完成、4完成但是存在问题、5放弃）
         /// </summary>
         [DisplayName("当前任务状态")]
         public int taskStatus { get; set; }

@@ -82,6 +82,21 @@
 .icon-deploy {
     background:url('icons/deploy.png') no-repeat center center;
 }
+.icon-state_nostart{
+    background:url('icons/state_nostart.png') no-repeat center center;
+}
+.icon-state_handing{
+    background:url('icons/state_handing.png') no-repeat center center;
+}
+.icon-state_ok{
+    background:url('icons/state_ok.png') no-repeat center center;
+}
+.icon-state_bug{
+    background:url('icons/state_bug.png') no-repeat center center;
+}
+.icon-state_drop{
+    background:url('icons/state_drop.png') no-repeat center center;
+}
 
 
 .icon-mini-add{

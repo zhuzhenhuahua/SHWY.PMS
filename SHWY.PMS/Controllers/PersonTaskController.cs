@@ -41,7 +41,7 @@ namespace SHWY.PMS.Controllers
             model.currentUserID = sessionUser.Sys_User.Uid;
             return View(model);
         }
-        public async Task<JsonResult> GetReport(string type, List<int> userIDs,DateTime reportDate)
+        public async Task<JsonResult> GetReport(string type, List<int> userIDs, DateTime reportDate)
         {
             if (string.IsNullOrEmpty(type))
                 return null;
@@ -54,7 +54,7 @@ namespace SHWY.PMS.Controllers
                 iReport = new weekly();
             else if (type == "monthly")
                 iReport = new monthly();
-            result = await iReport.CreateReport(userIDs,reportDate);
+            result = await iReport.CreateReport(userIDs, reportDate);
             return Json(result);
         }
         public class TaskQueryViewModel
@@ -291,6 +291,22 @@ namespace SHWY.PMS.Controllers
             var result = await pTaskRepo.DeletePersonTask(id);
             return Json(new { isOk = result });
         }
-        #endregion 
+        /// <summary>
+        /// 快速标记
+        /// </summary>
+        /// <param name="taskType"></param>
+        /// <returns></returns>
+        public async Task<JsonResult> FastSign(string taskID, int taskStatus)
+        {
+            using (PersonTaskRepository repoTask = new PersonTaskRepository())
+            {
+                var model = await repoTask.GetTaskAsync(taskID);
+                if (model == null || string.IsNullOrEmpty(model.ID))
+                    return Json(new { isOk = false, msg = "未查询到该数据" });
+                var result = await repoTask.UpdateTaskStatus(taskID, taskStatus);
+                return Json(new { isOk = true });
+            }
+        }
+        #endregion
     }
 }
