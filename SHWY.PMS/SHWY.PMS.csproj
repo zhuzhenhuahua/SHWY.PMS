@@ -1002,6 +1002,11 @@
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\redo.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\reload.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\search.png" />
+    <Content Include="Content\jquery-easyui-1.6.7\themes\icons\state_bug.png" />
+    <Content Include="Content\jquery-easyui-1.6.7\themes\icons\state_drop.png" />
+    <Content Include="Content\jquery-easyui-1.6.7\themes\icons\state_handing.png" />
+    <Content Include="Content\jquery-easyui-1.6.7\themes\icons\state_nostart.png" />
+    <Content Include="Content\jquery-easyui-1.6.7\themes\icons\state_ok.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\sum.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\tip.png" />
     <Content Include="Content\jquery-easyui-1.6.7\themes\icons\undo.png" />
