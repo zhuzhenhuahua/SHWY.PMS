@@ -121,6 +121,16 @@ namespace SHWY.Lib.DB.Repositorys
                 return false;
             }
         }
+        public async Task<bool> UpdateTheme(int userID,string theme)
+        {
+            var model = await context.Sys_Users.Where(p => p.Uid == userID).FirstOrDefaultAsync();
+            if (model != null)
+            {
+                model.Themes = theme;
+                return await context.SaveChangesAsync() > 0;
+            }
+            return false;
+        }
 
         public async Task<bool> DeleteUser(int uid)
         {

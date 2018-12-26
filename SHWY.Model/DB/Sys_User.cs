@@ -26,6 +26,11 @@ namespace SHWY.Model.DB
         /// </summary>
         [DisplayName("所属角色")]
         public int RoleId { get; set; }
+        /// <summary>
+        /// 主题
+        /// </summary>
+        [NotMapped]
+        public string Themes { get; set; }
 
         /// <summary>
         /// 所属角色名称

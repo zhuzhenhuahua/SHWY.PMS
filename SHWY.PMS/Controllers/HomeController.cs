@@ -14,6 +14,7 @@ namespace SHWY.PMS.Controllers
     public class HomeController : BaseController
     {
         PersonTaskRepository personTaskRepo = new PersonTaskRepository();
+        CodeRepository codeRepo = CodeRepository.CreateInstance();
         public ActionResult Index()
         {
             return View();

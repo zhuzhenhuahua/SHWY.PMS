@@ -64,10 +64,14 @@ namespace SHWY.Model.DB
         /// <summary>
         /// 接口请求类型(post、get)
         /// </summary>
-        MethodType=9,
+        MethodType = 9,
         /// <summary>
         /// API参数的数据类型
         /// </summary>
-        DataTypeByApiPara=10
+        DataTypeByApiPara = 10,
+        /// <summary>
+        /// 主题
+        /// </summary>
+        EasyuiThemes = 11
     }
 }

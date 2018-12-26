@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using SHWY.Lib.DB.Repositorys;
 using SHWY.PMS.Controllers.Filter;
+using SHWY.Utility;
 
 namespace SHWY.PMS.Controllers
 {
@@ -53,6 +54,10 @@ namespace SHWY.PMS.Controllers
         public JsonResult GetSessionUser()
         {
             var user = Session["CurrentUser"] as CurrentUser;
+            if (user != null)
+            {
+                user.Sys_User.Themes = EasyuiThemesHelper.GetValue(user.Sys_User.Uid);
+            }
             return Json(user.Sys_User);
         }
         public JsonResult GetSessionUserExists()

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SHWY.Utility
 {
-   public static class EasyuiThemesHelper
+    public static class EasyuiThemesHelper
     {
         private const string DefaultThemes = "default";
         private static ConcurrentDictionary<int, string> dicEasyuiThemes = new ConcurrentDictionary<int, string>();
