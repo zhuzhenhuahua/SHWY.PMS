@@ -101,6 +101,7 @@ namespace SHWY.Lib.DB.Repositorys
                 if (sysUser == null)
                 {
                     isNew = true;
+                    sysUser = new Sys_User();
                 }
                 foreach (var p in sysUser.GetType().GetProperties())
                 {
@@ -116,7 +117,7 @@ namespace SHWY.Lib.DB.Repositorys
                     context.Sys_Users.Add(sysUser);
                 return await context.SaveChangesAsync() == 1;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }
