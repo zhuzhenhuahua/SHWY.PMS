@@ -98,6 +98,13 @@ namespace SHWY.Lib.DB.Repositorys
             }
             return list;
         }
+        public async Task<List<Codes>> GetCodesListAsync(int typeId)
+        {
+            var list = await (from j in context.Codes
+                              where j.TypeId == typeId
+                              select j).ToListAsync();
+            return list;
+        }
         public async Task<string> GetCodesTextAsync(ECodesTypeId typeid, string code)
         {
             var list = await GetCodesListAsync(typeid);
@@ -118,6 +125,33 @@ namespace SHWY.Lib.DB.Repositorys
                 return codeList.Where(p => p.Code == code).FirstOrDefault()?.Text;
             }
             return string.Empty;
+        }
+        public async Task<Codes> GetCodeAsync(int codeId)
+        {
+            var model = await context.Codes.Where(p => p.Id == codeId).FirstOrDefaultAsync();
+            return model;
+        }
+        public async Task<bool> AddOrUpdateCode(Codes codePara)
+        {
+            var isAdd = false;
+            var model = await context.Codes.Where(p => p.Id == codePara.Id).FirstOrDefaultAsync();
+            if (model == null)
+            {
+                isAdd = true;
+                model = new Codes() { TypeId = codePara.TypeId };
+            }
+            model.Code = codePara.Code;
+            model.Text = codePara.Text;
+            model.Status = codePara.Status;
+            if (isAdd)
+                context.Codes.Add(model);
+            int res = await context.SaveChangesAsync();
+            if (res > 0)
+            {
+                var listCode = new List<Codes>();
+                _dicCodes.TryRemove(model.TypeId, out listCode);
+            }
+            return res>0;
         }
         #endregion
     }

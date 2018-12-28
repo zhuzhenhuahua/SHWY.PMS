@@ -1,0 +1,183 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_BaseLayOutContent.cshtml";
+}
+
+<div data-options="region:'west',title:'字典类型',split:true" style="width:360px;">
+    <div id="tbCodeType">
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditCodeType(0)">新增</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditCodeType(1)">修改</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-clear',plain:true" onclick="DelCodeType()">删除</a>
+        <span class="l-btn-text"></span><input class="easyui-textbox" id="txtTypeName" style="width:80px;" />
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="CodeTypeGridReload('load')">查询</a>
+    </div>
+    <table id="codeTypeGrid"></table>
+</div>
+<div data-options="region:'center',title:'数据字典'">
+    <div id="tb">
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="EditCodes(0)">新增</a>
+        <a class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="EditCodes(1)">修改</a>
+    </div>
+    <table id="tt"></table>
+</div>
+<script type="text/javascript">
+    $(function () {
+        InitCodeTypeGrid();
+        InitGrid();
+    });
+    var isCodeTypeAdd = false;
+    function EditCodeType(typeId) {
+        if (typeId == 0) {
+            isAdd = true;
+        }
+        else {
+            var row = dataGrid.IsSelectDataGrid_Tip("codeTypeGrid");
+            if (row == null)
+                return;
+            isAdd = false;
+            typeId = row.TypeId;
+        }
+        ShowDialog('字典类型维护', 600, 400, "/Codes/CodeTypeEdit?typeId=" + typeId, saveCodeType);
+    }
+    function DelCodeType() {
+        var row = dataGrid.IsSelectDataGrid_Tip("codeTypeGrid")
+        if (row == null) {
+            return;
+        }
+        $.messager.confirm('提示', "确定要删除吗？", function (r) {
+            if (r) {
+                $.post("/Codes/DelCodeType", { typeID: row.TypeId }, function (result) {
+                    if (result.isOk) {
+                        AlertMsg("删除成功");
+                        CodeTypeGridReload("reload");
+                    }
+                    else {
+                        AlertMsg('删除失败');
+                    }
+                });
+            }
+        });
+    }
+    function saveCodeType() {
+        var check = $("#formCodeTypeEdit").form('enableValidation').form('validate');
+        if (check) {
+            var postData = $("#formCodeTypeEdit").serialize();
+            $.post("/Codes/SaveCodeType", postData, function (result) {
+                if (result.isOk) {
+                    $('#PopWindow').dialog('close');
+                    $("#PopWindow").remove();
+                    CodeTypeGridReload(isAdd ? "load" : "reload");
+                }
+                else {
+                    AlertMsg('保存失败');
+                }
+
+            });
+        }
+    }
+    function CodeTypeGridReload(loaded) {
+        $("#codeTypeGrid").datagrid(loaded, {
+            typeName: $("#txtTypeName").val()
+        });
+    }
+    function InitCodeTypeGrid() {
+        $("#codeTypeGrid").datagrid({
+            url: '/Codes/GetCodeTypeList',
+            columns: [[
+                { field: 'TypeId', title: '编号', width: 30 },
+                { field: 'TypeName', title: '类型名称', width: 175 },
+                { field: 'Remark', title: '备注', width: 110 },
+            ]],
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            singleSelect: true,
+            pagination: true,
+            pageSize: 20,
+            idField: 'TypeId',
+            toolbar: '#tbCodeType',
+            rownumbers: true,
+            fit: true,
+            queryParams: {
+                typeName: ''
+            },
+            onClickRow: function (rowIndex, rowData) {
+                if (rowIndex >= 0) {
+                    GridReload('load');
+                }
+            }
+        });
+    }
+
+
+    function InitGrid() {
+        $("#tt").datagrid({
+            url: '/Codes/GetCodeListByTypeID',
+            columns: [[
+                { field: 'Id', title: 'Id', hidden: true },
+                { field: 'Code', title: '代码',width:100 },
+                { field: 'Text', title: '显示名称', width: 350 },
+                {
+                    field: 'Status', title: '是否显示', width: 120, formatter: function (value, row, index) {
+                        return value == 1 ? "显示" : "隐藏";
+                    }
+                }
+            ]],
+            autoRowHeight: false,//定义是否设置基于该行内容的行高度。设置为 false，则可以提高加载性能。
+            striped: true,//设置为 true，则把行条纹化。（即奇偶行使用不同背景色）
+            nowrap: true,//设置为 true，则把数据显示在一行里。设置为 true 可提高加载性能。
+            singleSelect: true,
+            pagination: false,
+            pageSize: 20,
+            toolbar: '#tb',
+            rownumbers: true,
+            fit: true,
+            queryParams: {
+                typeId: -1
+            }
+        });
+    }
+    function GridReload(loaded) {
+        var row = dataGrid.IsSelectDataGrid_Tip("codeTypeGrid");
+        if (row == null)
+            return;
+        $("#tt").datagrid(loaded, {
+            typeId: row.TypeId
+        });
+
+    }
+    var isAdd = false;
+    function EditCodes(codeID) {
+        var codeTypeRow = dataGrid.IsSelectDataGrid_Tip("codeTypeGrid");
+        if (codeTypeRow == null)
+            return;
+        if (codeID == 0)
+            isAdd = true;
+        else {
+            var codeRow = dataGrid.IsSelectDataGrid_Tip("tt");
+            if (codeRow == null)
+                return;
+            isAdd = false;
+            codeID = codeRow.Id;
+        }
+        ShowDialog(codeTypeRow.TypeName, 600, 400, "/Codes/CodeEdit?codeID=" + codeID + "&typeID=" + codeTypeRow.TypeId, saveCode);
+    }
+    function saveCode() {
+        var check = $("#formCodeEdit").form('enableValidation').form('validate');
+        if (check) {
+            var postData = $("#formCodeEdit").serialize();
+            $.post("/Codes/SaveCode", postData, function (result) {
+                if (result.isOk) {
+                    $('#PopWindow').dialog('close');
+                    $("#PopWindow").remove();
+                    GridReload(isAdd ? "load" : "reload");
+                }
+                else {
+                    AlertMsg('保存失败');
+                }
+
+            });
+        }
+    }
+</script>

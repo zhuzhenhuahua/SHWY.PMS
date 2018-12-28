@@ -209,6 +209,7 @@
     <Compile Include="Controllers\AlgorithmController.cs" />
     <Compile Include="Controllers\ApiManaController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CodesController.cs" />
     <Compile Include="Controllers\DataGridController.cs" />
     <Compile Include="Controllers\Demo\DevXtraReportController.cs" />
     <Compile Include="Controllers\Demo\OperFileController.cs" />
@@ -1734,6 +1735,9 @@
     <Content Include="Views\ApiMana\EditBaseUrl.cshtml" />
     <Content Include="Views\TopicLog\TopicIndex.cshtml" />
     <Content Include="Views\TopicLog\ProTopicIndex.cshtml" />
+    <Content Include="Views\Codes\Index.cshtml" />
+    <Content Include="Views\Codes\CodeTypeEdit.cshtml" />
+    <Content Include="Views\Codes\CodeEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

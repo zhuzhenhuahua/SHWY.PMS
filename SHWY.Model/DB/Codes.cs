@@ -16,6 +16,7 @@ namespace SHWY.Model.DB
     [Table("Codes")]
     public class Codes
     {
+        [Key]
         public int Id { get; set; }
         public string Code { get; set; }
         public string Text { get; set; }
@@ -25,53 +26,5 @@ namespace SHWY.Model.DB
         /// </summary>
         public int TypeId { get; set; }
 
-    }
-    public enum ECodesTypeId
-    {
-        /// <summary>
-        /// 服务态度
-        /// </summary>
-        [Description("服务态度")]
-        serviceAttri = 1,
-        /// <summary>
-        /// 完成速度
-        /// </summary>
-        complSpeed = 2,
-        /// <summary>
-        /// 任务困难程度
-        /// </summary>
-        taskDiffLevel = 3,
-        /// <summary>
-        /// 完成程度
-        /// </summary>
-        taskComplDegree = 4,
-        /// <summary>
-        /// IP地址内外网标识
-        /// </summary>
-        IpAddressBeLong = 5,
-        /// <summary>
-        /// 通讯协议类型(TCP/UDP)
-        /// </summary>
-        ProtType = 6,
-        /// <summary>
-        /// 数据库架构
-        /// </summary>
-        databaseSchema = 7,
-        /// <summary>
-        /// 数据库类型（sql/oracle）
-        /// </summary>
-        databaseType = 8,
-        /// <summary>
-        /// 接口请求类型(post、get)
-        /// </summary>
-        MethodType = 9,
-        /// <summary>
-        /// API参数的数据类型
-        /// </summary>
-        DataTypeByApiPara = 10,
-        /// <summary>
-        /// 主题
-        /// </summary>
-        EasyuiThemes = 11
     }
 }
