@@ -13,6 +13,10 @@ namespace SHWY.Model.DB
     [Table("ServerIp")]
     public class ServerIp
     {
+        /// <summary>
+        /// 用户修改时的字段
+        /// </summary>
+        public int Id { get; set; }
         [Key, Column(Order = 1)]
         [DisplayName("服务器")]
         public int sid { get; set; }
@@ -21,8 +25,6 @@ namespace SHWY.Model.DB
         public int ipid { get; set; }
         [DisplayName("甲方公司")]
         public string partyID { get; set; }
-        [NotMapped]
-        public IpAddress IPAddress { get; set; }
 
     }
 }

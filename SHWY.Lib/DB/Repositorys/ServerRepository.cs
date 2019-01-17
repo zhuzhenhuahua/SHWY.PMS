@@ -195,7 +195,7 @@ namespace SHWY.Lib.DB.Repositorys
                               join ipAddress in context.IpAddress on j.ipid equals ipAddress.ipid
                               where (server.name.Contains(serverName))
                              && (string.IsNullOrEmpty(partyID) ? 1 == 1 : j.partyID == partyID)
-                              orderby j.ipid descending
+                              orderby j.partyID,j.sid
                               select new
                               {
                                   j.ipid,
@@ -242,7 +242,7 @@ namespace SHWY.Lib.DB.Repositorys
         public async Task<bool> AddOrUpdateServerIpAsync(ServerIp serverIPPara)
         {
             var isAdd = false;
-            var model = await context.ServerIps.Where(p => p.sid == serverIPPara.sid && p.ipid == serverIPPara.ipid).FirstOrDefaultAsync();
+            var model = await context.ServerIps.Where(p => p.Id==serverIPPara.Id).FirstOrDefaultAsync();
             if (model == null)
             {
                 isAdd = true;
